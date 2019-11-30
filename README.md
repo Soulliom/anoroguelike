@@ -1,2 +1,2 @@
 # anoroguelike
-Another boring rogue-like game created in C++ SFML.
+Another boring rogue-like game created with C++.
