@@ -9,7 +9,7 @@ int main(){
 
 	/* Title */
 	scene.Title();
-	input.Pause("Press the [Space] key to Continue.", SPAC); 
+	input.Pause("Press [Space] to Continue.", 5, SPAC); 
 
 	/* Settings */
 }
