@@ -6,6 +6,9 @@
 #include <conio.h>
 #include <iostream>
 #include <string>
+#include <random>
+#include <time.h>
+#include <stdlib.h>
 
 //Definitions
 #define SPAC 32
