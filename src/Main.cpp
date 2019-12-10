@@ -5,10 +5,9 @@
 #include "../include/DEFINITIONS.h"
 
 /* TODO
- rando stats
- Tutorial scenes
+ Combat Scene
  Character Scene // Randomize stufs
- //Race -> Class -> Stats
+ //Race -> Class -> Stats (All one scene)
 */
 
 /* Init Class Objects*/
