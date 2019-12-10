@@ -1,7 +1,5 @@
 #include "../include/InputManager.h"
 
-extern Player player;
-
 /* Pauses, Inputs, Navigations.*/
 void InputManager::Pause(std::string text, const unsigned int seconds, const unsigned int key) {
 	//Sleep
@@ -62,27 +60,27 @@ int InputManager::IntInput(std::string text) {
 
 /* Menu Navigation Functions */
 void InputManager::WSNav(unsigned int input, const unsigned int max) {
-	if (selectState > 0) {
+	if (selectState.y > 0) {
 		if (input == WKEY) {
-			selectState--;
+			selectState.y--;
 		}
 	}
-	if(selectState < max){
+	if(selectState.y < max){
 		if (input == SKEY) {
-			selectState++;
+			selectState.y++;
 		}
 	}
 }
 
 void InputManager::ADNav(unsigned int input, const unsigned int max) {
-	if (selectState > 0) {
+	if (selectState.x > 0) {
 		if (input == AKEY) {
-			selectState--;
+			selectState.x--;
 		}
 	}
-	if (selectState < max) {
+	if (selectState.x < max) {
 		if (input == DKEY) {
-			selectState++;
+			selectState.x++;
 		}
 	}
 }
@@ -95,7 +93,7 @@ void InputManager::WASDNav() {
 bool InputManager::DiffInput(int keyPress) {
 	WSNav(keyPress, 3);
 
-	switch (selectState) {
+	switch (selectState.y) {
 	case 0: //Easy
 		if (keyPress == SPAC) {
 			player.diff = "Easy";
@@ -116,7 +114,7 @@ bool InputManager::DiffInput(int keyPress) {
 		break;
 	case 3: //Continue
 		if (keyPress == SPAC) {
-			selectState = 0;
+			selectState.y = 0;
 			return true;
 		}
 		break;
@@ -127,7 +125,7 @@ bool InputManager::DiffInput(int keyPress) {
 bool InputManager::SeedInput(int keyPress) {
 	WSNav(keyPress, 2);
 
-	switch (selectState) {
+	switch (selectState.y) {
 	case 0: // Randomize Seed
 		if (keyPress == SPAC) {
 			player.seed = rand() % 99999999 + 1111;
@@ -140,7 +138,7 @@ bool InputManager::SeedInput(int keyPress) {
 		break;
 	case 2: // Continue
 		if (keyPress == SPAC) {
-			selectState = 0;
+			selectState.y = 0;
 			return true;
 		}
 		break;
@@ -149,10 +147,14 @@ bool InputManager::SeedInput(int keyPress) {
 }
 
 /* Setters / Getters */
-void InputManager::setSelectState(unsigned int state) {
-	selectState = state;
+void InputManager::setSelectState(unsigned int x, unsigned int y) {
+	selectState.x = x;
+	selectState.y = y;
 }
 
-int InputManager::getSelectState() {
-	return selectState;
+int InputManager::getSelectStateX() {
+	return selectState.x;
+}
+int InputManager::getSelectStateY() {
+	return selectState.y;
 }

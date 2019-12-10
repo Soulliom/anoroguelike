@@ -1,21 +1,21 @@
 #include "../include/SceneManager.h"
 #include "../include/InputManager.h"
+#include "../include/Character.h"
 #include "../include/Player.h"
 #include "../include/DEFINITIONS.h"
 
 /* TODO
- comment for clarity
- Seedfunction
- DiffFunction
- Virtual? Character class
- extern objects
- Game function
+ rando stats
+ Tutorial scenes
+ Character Scene // Randomize stufs
+ //Race -> Class -> Stats
 */
 
-/* Init */
+/* Init Class Objects*/
 SceneManager scene;
 InputManager input;
 Player player;
+Character demoChar;
 
 int main() {
 	srand(time(NULL));
@@ -32,24 +32,24 @@ int main() {
 	//Randomize seed
 	player.seed = rand() % 99999999 + 1111;
 	//Reset select state
-	input.setSelectState(0);
+	input.setSelectState(0, 0);
 	//define continue, loop while continue button isnt pressed
 	contin = false;
 	while (!contin) {
 		//Print Setting Scene
-		scene.SettingsScene(input.getSelectState(), player.diff, player.seed);
+		scene.SettingsScene(input.getSelectStateY(), player.diff, player.seed);
 
 		//Get input
 		keyPress = _getch();
-		input.WSNav(keyPress, 2);
-		switch (input.getSelectState()) {
+		input.WSNav(keyPress, 4);
+		switch (input.getSelectStateY()) {
 		case 0: //Difficulty
 			if (keyPress == SPAC) {
-				input.setSelectState(0);
+				input.setSelectState(0, 0);
 				//Loop scene + input while not continued
 				while (!contin) {
 					//print difficulty scene
-					scene.DiffScene(input.getSelectState(), player.diff);
+					scene.DiffScene(input.getSelectStateY(), player.diff);
 					//Get input
 					keyPress = _getch();
 					//return true to continue, return false to keep looping - input
@@ -61,9 +61,9 @@ int main() {
 
 		case 1: //Seed -- Look above for comments
 			if (keyPress == SPAC) {
-				input.setSelectState(0);
+				input.setSelectState(0, 0);
 				while (!contin) {
-					scene.SeedScene(input.getSelectState(), player.seed);
+					scene.SeedScene(input.getSelectStateY(), player.seed);
 					keyPress = _getch();
 					contin = input.SeedInput(keyPress);
 				}
@@ -71,7 +71,27 @@ int main() {
 			}
 			break;
 
-		case 2: //Continue
+		case 2: //Tut on Character
+			if (keyPress == SPAC) {
+				input.setSelectState(0, 0);
+				scene.CharTut1Scene();
+				input.Pause("Press [Space] to cotinue to the next Page.", 2, SPAC);
+				scene.CharTut2Scene();
+				input.Pause("Press [Space] to Continue.", 2, SPAC);
+			}
+			break;
+
+		case 3: //Tut on Combat
+			if (keyPress == SPAC) {
+				input.setSelectState(0, 0);
+				scene.CombatTut1Scene();
+				input.Pause("Press [Space] to cotinue to the next Page.", 2, SPAC);
+				scene.CombatTut2Scene();
+				input.Pause("Press [Space] to Continue.", 2, SPAC);
+			}
+			break;
+
+		case 4: //Continue
 			if (keyPress == SPAC) {
 				contin = true;
 				//Init seed
@@ -89,4 +109,9 @@ int main() {
 	};
 
 	/* Character Customization*/
+	contin = false;
+	while (!contin) {
+		scene.CharacterScene(input.getSelectStateY(), player.raceStr, player.clasStr, player.pStats);
+		//...
+	}
 }
