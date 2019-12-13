@@ -1,17 +1,16 @@
-
 #ifndef INPUT_M_H
 #define INPUT_M_H
 
 #include "DEFINITIONS.h"
-#include "Player.h"
+
 
 //Saves SceneState and updates when different scenes are loaded
 class InputManager {
 private:
 	//Current Selected Item
-	struct selectStateStru {
-		unsigned int x = 0;
-		unsigned int y = 0;
+	struct selectStateStruct {
+		int x = 0;
+		int y = 0;
 	};
 public:
 	/* Pauses, Inputs, Navigations.*/
@@ -22,24 +21,32 @@ public:
 	//cin Int Input
 	int IntInput(std::string text);
 	//Up/Down Navigation
-	void WSNav(unsigned int input, const unsigned int max);
+	void WSNav(unsigned int input, const int max);
 	//Left/Right Navigation
-	void ADNav(unsigned int input, const unsigned int max);
+	void ADNav(unsigned int input, const int max);
 	//Up/Left/Down/Right Navigation (Patent Pending)
 	void WASDNav();
 
 	/* Inputs for Specific Scenes */
-	//Difficulty Scene Input
-	bool DiffInput(int temp);
 	//Seed Scene Input
-	bool SeedInput(int temp);
+	bool SeedInput(int keyPress);
+
+	/* Inputs for Options in Scenes */
+	//Difficulty Input
+	void DiffInput(selectStateStruct selectState);
+	//Race Character Customization Input
+	void RaceInput(selectStateStruct selectState);
+	//Class Character Customization Input
+	void ClasInput(selectStateStruct selectState);
+
 
 	// SelectState Obj
-	selectStateStru selectState;
+	selectStateStruct selectState;
 
 	/* Getters/Setters */
 	//Set Select State
-	void setSelectState(unsigned int x, unsigned int y);
+	void setSelectStateX(unsigned int x);
+	void setSelectStateY(unsigned int y);
 	//Get Select State
 	int getSelectStateX();
 	int getSelectStateY();
