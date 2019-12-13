@@ -1,5 +1,4 @@
 ﻿#include "../include/SceneManager.h"
-#include "../include/Character.h"
 
 /* TEMPLATE SCENE
 	system("CLS");
@@ -85,49 +84,20 @@ void SceneManager::SettingsScene(unsigned int state, std::string diff, long seed
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; IsSelected("  - Difficulty: ", 14, 13, 0, state); std::cout << diff;
+	std::cout << "\n "; IsSelected("  < Difficulty >: ", 14, 13, 0, state); std::cout << diff;
 	std::cout << "\n "; 
 	std::cout << "\n ";
 	std::cout << "\n "; IsSelected("  - Seed: ", 14, 13, 1, state); std::cout << seed;
 	std::cout << "\n "; 
 	std::cout << "\n ";
 	std::cout << "\n "; 
-	std::cout << "\n "; IsSelected("  * Tutorial on Races, Classes, and Stats *  ", 14, 13, 2, state);
+	std::cout << "\n "; IsSelected("  - Tutorial on Races, Classes, and Stats -  ", 14, 13, 2, state);
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n ";	IsSelected("  * Tutorial on Combat, Weapons, and Actions *  ", 14, 13, 3, state);
+	std::cout << "\n ";	IsSelected("  - Tutorial on Combat, Weapons, and Actions -  ", 14, 13, 3, state);
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n "; IsSelected("  - Continue - ", 14, 13, 4, state);
-	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
-	std::cout << "\n*----------------------------------------------------------------------------------------------------------------------*";
-	std::cout << "\n ";
-}
-
-void SceneManager::DiffScene(unsigned int state, std::string diff) {
-	system("CLS");
-	SetConsoleTextAttribute(textConsole, 2);
-	std::cout << "\n*----------------------------------------------------------------------------------------------------------------------*";
-	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 13);
-	std::cout << "\n                                                  Difficulty Setting";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n     Current Difficulty: "; std::cout << diff;
-	std::cout << "\n ";
-	std::cout << "\n "; 
-	std::cout << "\n "; IsSelected("  - Easy - ", 14, 13, 0, state);
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n "; IsSelected("  - Normal - ", 14, 13, 1, state);
-	std::cout << "\n "; 
-	std::cout << "\n ";
-	std::cout << "\n "; IsSelected("  - Hard - ", 14, 13, 2, state);
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n "; IsSelected("  - Continue - ", 14, 13, 3, state);
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*----------------------------------------------------------------------------------------------------------------------*";
 	std::cout << "\n ";
@@ -173,9 +143,9 @@ void SceneManager::CharTut1Scene() {
 	std::cout << "\n     - Stats: "; SetConsoleTextAttribute(textConsole, 5);
 	std::cout << "\n          + Strength:   Melee Hit Chance, Carry Weight.";
 	std::cout << "\n          + Fortitude:  Health, Better Block";
-	std::cout << "\n          + Agility:    Speed, Stamina, Melee Dodge Chance";
-	std::cout << "\n          + Wisdom:     Special Hit Chance, Stress Cap, Stress Relief";
-	std::cout << "\n          + Perception: Ranged Hit Chance, Ranged Dodge Chance";
+	std::cout << "\n          + Agility:    Speed, Dodge Chance";
+	std::cout << "\n          + Wisdom:     Special Hit Chance, Stress Cap";
+	std::cout << "\n          + Perception: Ranged Hit Chance, Mana";
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 13);
 	std::cout << "\n     - Classes: "; SetConsoleTextAttribute(textConsole, 5);
 	std::cout << "\n          + Warrior:  |Equipment| -Swords, Shields. Heavy Armor.";
@@ -203,14 +173,14 @@ void SceneManager::CharTut2Scene() {
 	std::cout << "\n "; 
 	std::cout << "\n     - Races:"; SetConsoleTextAttribute(textConsole, 5);
 	std::cout << "\n         + Elf:    |Stats| +2 Wisdom, +1 Perception, -1 Strength";
-	std::cout << "\n                   |Passive| (+)Extra Stamina, (-)Carry Less";
+	std::cout << "\n                   |Passive| (+)Extra Mana, (-)Carry Less";
 	std::cout << "\n         + Orc:    |Stats| +2 Strength, +1 Fortitude, -1 Perception";
 	std::cout << "\n                   |Passive| (+)Extra Melee Damage, (-)Less Defense";
-	std::cout << "\n         + Human:  |Stats| +1 Perception, +1 Wisdom, +1 Agility";
-	std::cout << "\n                   |Passive| (-)Less stress cap";
-	std::cout << "\n         + Goblin: |Stats| +1 Perception, +1 Strength";
-	std::cout << "\n                   |Passive| (+)Affected Less by Stress"; 
-	std::cout << "\n         + Dwarf:  |Stats| +2 Fortitude, +1 Strength, (-)1 Agility";
+	std::cout << "\n         + Human:  |Stats| +1 Perception, +1 Wisdom, +1 Fortitude";
+	std::cout << "\n                   |Passive| (NONE)";
+	std::cout << "\n         + Goblin: |Stats| +1 Perception, +1 Strength, +1 Agility";
+	std::cout << "\n                   |Passive| (-)Less Mana"; 
+	std::cout << "\n         + Dwarf:  |Stats| +2 Fortitude, +1 Strength, -1 Agility";
 	std::cout << "\n                   |Passive| (+)Weight doesn't affect speed, (-)Move slower"; 
 	std::cout << "\n         + Gnome:  |Stats| +2 Agility, +1 Perception, -1 Wisdom";
 	std::cout << "\n                   |Passive| (+)Move faster, (-)Carry less";
@@ -278,30 +248,30 @@ void SceneManager::CombatTut2Scene() {
 	std::cout << "\n ";
 }
 
-void SceneManager::CharacterScene(unsigned int state, std::string race, std::string clas, Stats stats) {
+void SceneManager::CharacterScene(unsigned int state, std::string race, std::string clas, Character::Stats stats, Character::Stats raceStats) {
 	system("CLS");
 	SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*----------------------------------------------------------------------------------------------------------------------*";
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 13);
 	std::cout << "\n                                               Character Customization";
 	std::cout << "\n ";
-	std::cout << "\n "; IsSelected("  - Race: ", 14, 13, 0, state); std::cout << race;
+	std::cout << "\n "; IsSelected("  < Race >: ", 14, 13, 0, state); std::cout << race;
 	std::cout << "\n ";
 	std::cout << "\n "; 
-	std::cout << "\n "; IsSelected("  - Class: ", 14, 13, 0, state); std::cout << clas;
+	std::cout << "\n "; IsSelected("  < Class >: ", 14, 13, 1, state); std::cout << clas;
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; IsSelected("  - Randomize Stats - ", 14, 13, 0, state); SetConsoleTextAttribute(textConsole, 5);
+	std::cout << "\n "; IsSelected("  - Randomize Stats - ", 14, 13, 2, state); SetConsoleTextAttribute(textConsole, 5);
+	std::cout << "\n ";
+	std::cout << "\n     - Stats:"; 
+	std::cout << "\n         + Strength:   "; std::cout << stats.strength + raceStats.strength;
+	std::cout << "\n         + Fortitude:  "; std::cout << stats.fortitude + raceStats.fortitude;
+	std::cout << "\n         + Agility:    "; std::cout << stats.agility + raceStats.agility;
+	std::cout << "\n         + Wisdom:     "; std::cout << stats.wisdom + raceStats.wisdom;
+	std::cout << "\n         + Perception: "; std::cout << stats.perception + raceStats.perception;
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n     -Stats:"; 
-	std::cout << "\n         + Strength:   "; std::cout << stats.strength;
-	std::cout << "\n         + Fortitude:  "; std::cout << stats.fortitude;
-	std::cout << "\n         + Agility:    "; std::cout << stats.agility;
-	std::cout << "\n         + Wisdom:     "; std::cout << stats.wisdom;
-	std::cout << "\n         + Perception: "; std::cout << stats.perception;
-	std::cout << "\n ";
-	std::cout << "\n "; IsSelected("  - Continue: ", 14, 13, 0, state);
+	std::cout << "\n "; IsSelected("  - Continue: -", 14, 13, 3, state);
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*----------------------------------------------------------------------------------------------------------------------*";
 	std::cout << "\n ";

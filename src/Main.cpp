@@ -1,37 +1,39 @@
+#include "../include/DEFINITIONS.h"
+
 #include "../include/SceneManager.h"
 #include "../include/InputManager.h"
 #include "../include/Character.h"
 #include "../include/Player.h"
-#include "../include/DEFINITIONS.h"
 
-/* TODO
- Combat Scene
- Character Scene // Randomize stufs
- //Race -> Class -> Stats (All one scene)
+/* -------TODO--------
+ Shop
+ Apply Race Passives
+ Combat Tutorial Scene
+ //Vector enemies
 */
 
 /* Init Class Objects*/
-SceneManager scene;
-InputManager input;
-Player player;
-Character demoChar;
+SceneManager scene; //Scenemanager (1)
+InputManager input; //Main inputmanager (1)
+InputManager bpinput; //Secondary input manager(1)
+Player player; //Player (1)
 
 int main() {
-	srand(time(NULL));
-
-	/* Init */
+	/* INIT */
 	bool contin = false;
-	int keyPress;
-
+	unsigned int keyPress = 0;
+	//Randomize seed
+	srand(time(NULL));
+	player.seed = rand() % 99998888 + 1111;
 	//Print title scene
 	scene.TitleScene();
-	input.Pause("Press [Space] to Continue.", 1, SPAC); 
+	input.Pause("Press [Space] to Continue.", 1, SPAC);
 
-	/* Settings */
-	//Randomize seed
-	player.seed = rand() % 99999999 + 1111;
 	//Reset select state
-	input.setSelectState(0, 0);
+	input.setSelectStateX(0);
+	input.setSelectStateY(0);
+
+	/* SETTINGS */
 	//define continue, loop while continue button isnt pressed
 	contin = false;
 	while (!contin) {
@@ -43,24 +45,13 @@ int main() {
 		input.WSNav(keyPress, 4);
 		switch (input.getSelectStateY()) {
 		case 0: //Difficulty
-			if (keyPress == SPAC) {
-				input.setSelectState(0, 0);
-				//Loop scene + input while not continued
-				while (!contin) {
-					//print difficulty scene
-					scene.DiffScene(input.getSelectStateY(), player.diff);
-					//Get input
-					keyPress = _getch();
-					//return true to continue, return false to keep looping - input
-					contin = input.DiffInput(keyPress);
-				}
-				contin = false;
-			}
+			input.ADNav(keyPress, 2);
+			input.DiffInput(input.selectState);
 			break;
 
 		case 1: //Seed -- Look above for comments
 			if (keyPress == SPAC) {
-				input.setSelectState(0, 0);
+				input.setSelectStateX(0);
 				while (!contin) {
 					scene.SeedScene(input.getSelectStateY(), player.seed);
 					keyPress = _getch();
@@ -72,7 +63,7 @@ int main() {
 
 		case 2: //Tut on Character
 			if (keyPress == SPAC) {
-				input.setSelectState(0, 0);
+				input.setSelectStateX(0);
 				scene.CharTut1Scene();
 				input.Pause("Press [Space] to cotinue to the next Page.", 2, SPAC);
 				scene.CharTut2Scene();
@@ -82,7 +73,7 @@ int main() {
 
 		case 3: //Tut on Combat
 			if (keyPress == SPAC) {
-				input.setSelectState(0, 0);
+				input.setSelectStateX(0);
 				scene.CombatTut1Scene();
 				input.Pause("Press [Space] to cotinue to the next Page.", 2, SPAC);
 				scene.CombatTut2Scene();
@@ -106,11 +97,62 @@ int main() {
 			break;
 		}
 	};
+	//Reset selectstates
+	input.setSelectStateY(0);
+	input.setSelectStateX(0);
 
-	/* Character Customization*/
+	/* CHARACTER CUSTOMIZATION */
+	//Temporary raceStats which show stats upon choosing a race and applies them when continue = true.
+	Character::Stats* raceStat = new Character::Stats;
+	//Randomize character stats
+	player.ch.randStats();
+	//Reset selectstates
 	contin = false;
 	while (!contin) {
-		scene.CharacterScene(input.getSelectStateY(), player.raceStr, player.clasStr, player.pStats);
-		//...
+		//Update Player's stats with current race
+		player.ch.configRaceStats(raceStat);
+
+		//Print Scene
+		scene.CharacterScene(input.getSelectStateY(),
+			player.ch.raceStr, player.ch.clasStr, player.ch.stats, *raceStat);
+
+		//Get input
+		keyPress = _getch();
+		input.WSNav(keyPress, 3);
+		switch (input.getSelectStateY()) {
+		case 0: //Race
+			input.ADNav(keyPress, 5);
+			input.RaceInput(input.selectState);
+			break;
+
+		case 1: //Class
+			bpinput.ADNav(keyPress, 3);
+			input.ClasInput(bpinput.selectState);
+			break;
+
+		case 2: //Reset Stats + Rand Stats
+			if (keyPress == SPAC) {
+				player.ch.resetStats();
+				player.ch.randStats();
+			}
+			break;
+
+		case 3: //Continue
+			if (keyPress == SPAC) {
+				player.ch.combineRaceStats(raceStat);
+				contin = true;
+			}
+			break;
+		}
 	}
+	//Delete pointer
+	delete(raceStat);
+	//Reset selectstates
+	input.setSelectStateX(0);
+	input.setSelectStateY(0);
+	bpinput.setSelectStateY(0);
+	bpinput.setSelectStateX(0);
+
+	/* SHOP */
+	contin = false;
 }
