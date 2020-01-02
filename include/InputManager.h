@@ -2,15 +2,15 @@
 #define INPUT_M_H
 
 #include "DEFINITIONS.h"
-
+#include "Items.h"
 
 //Saves SceneState and updates when different scenes are loaded
 class InputManager {
 private:
 	//Current Selected Item
 	struct selectStateStruct {
-		int x = 0;
-		int y = 0;
+		std::int8_t x = 0;
+		std::int8_t y = 0;
 	};
 public:
 	/* Pauses, Inputs, Navigations.*/
@@ -25,11 +25,36 @@ public:
 	//Left/Right Navigation
 	void ADNav(unsigned int input, const int max);
 	//Up/Left/Down/Right Navigation (Patent Pending)
-	void WASDNav();
 
 	/* Inputs for Specific Scenes */
-	//Seed Scene Input
+	// Returns contin
 	bool SeedInput(int keyPress);
+	// WEAPONS
+	// Melee Input
+	void MeleeInput(int keyPress);
+	// Ranged Input
+	void RangedInput(int KeyPress);
+	// Magic Input
+	void MagicInput(int KeyPress);
+	// Inspect Wep / Returns contin
+	bool ViewWepInput(int keyPress, Items::Weapon wep);
+	// Buy Wep / Returns contin
+	bool BuyWepInput(int keyPress, Items::Weapon wep);
+	// Wep Inventory
+	bool WepInvInput(int keyPress);
+	// ARMORS 
+	// Armor Shop
+	void ArmInput(int keyPress);
+	bool ViewArmInput(int keyPress, Items::Armor arm);
+	bool BuyArmInput(int keyPress, Items::Armor arm);
+	bool ArmInvInput(int keyPress);
+	// CONSUMABLES
+	// Consumable Shop
+	
+	void ConInput(int keyPress);
+	bool ViewConInput(int keyPress, Items::Consumable con);
+	bool BuyConInput(int keyPress, Items::Consumable con);
+	bool ConInvInput(int keyPress); 
 
 	/* Inputs for Options in Scenes */
 	//Difficulty Input
@@ -38,7 +63,6 @@ public:
 	void RaceInput(selectStateStruct selectState);
 	//Class Character Customization Input
 	void ClasInput(selectStateStruct selectState);
-
 
 	// SelectState Obj
 	selectStateStruct selectState;

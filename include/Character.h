@@ -16,7 +16,7 @@ public:
 
 	const enum RaceEnum {
 		Elf,    // +2 Wis, +1 Per, -1 Str  |Passive| Extra Mana / carry less
-		Orc,    // +2 Str, +1 Fort, -1 Per |Passive| Extra melee dmg / less defense
+		Orc,    // +2 Str, +1 Fort, -2 Per |Passive| NONE
 		Human,  // +1 Per, +1 Wis, +1 Fort |Passive| NONE
 		Goblin, // +1 Per, +1 Str, +1 Agl  |Passive| Less Mana
 		Dwarf,  // +2 Fort, +1 Str, -1 Agl |Passive| Weight doesn't affect speed / move slower
@@ -26,7 +26,7 @@ public:
 	const enum ClassEnum {
 		Warrior,  // |Weapon| Swords , shield      |Armor| Heavy  |Abilty| Roll Str, Extra run speed for x turns
 		Ranger,   // |Weapon| bows, guns           |Armor| Medium |Abilty| Roll Perception, Extra x turns
-		Magician, // |Weapon| wands, staffs, books |Armor| Robe   |Abilty| Roll Wisdom, choose: temp extra weapon range, temp extra damage
+		Magician, // |Weapon|  staffs, books       |Armor| Robe   |Abilty| Roll Wisdom, choose: temp extra weapon range, temp extra damage
 		Bandit    // |Weapon| daggers, throwables  |Armor| Light  |Abilty| Roll Dex, hidden for x turns
 	};
 
@@ -44,7 +44,7 @@ public:
 	//Clear Stats
 	void resetStats();
 	//Config Race Stats with Object stats
-	void configRaceStats(Stats *raceStat);
+	void configRaceStats(Stats* raceStat);
 	//Combine Race Stats with Object stats
 	void combineRaceStats(Stats* raceStat);
 };

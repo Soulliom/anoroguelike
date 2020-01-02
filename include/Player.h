@@ -3,6 +3,7 @@
 
 #include "DEFINITIONS.h"
 #include "Character.h"
+#include "Items.h"
 
 class Player {
 public:
@@ -17,35 +18,53 @@ public:
 	int maxTurns = 1;
 
 	/* Player Settings */
-	//Health
+	// Health
 	float health = 0;
 	int maxHealth = 1;
-	//Mana
+	// Mana
 	float mana = 0;
 	int maxMana = 1;
-	//Speed
+	// Speed
 	int speed = 0;
 	int maxSpeed = 15;
-	//Stress
+	// Stress
 	float stress = 0;
 	int maxStress = 1;
-	//Levels
+	// Levels
 	int level = 0;
-	const int MAXLEVEL = 20;
-	//Experience
+	int maxLevel = 10;
+	// Experience
 	int exp = 0;
-	int maxExp = 1;
-	//Weight
+	int maxExp = 10;
+	// Weight
 	float weight = 0;
 	float maxWeight = 1;
-	//Gold //TODO: difficulty divides gold/shop before game
-	int gold = 500; //Spent during pregame shop
+	// Gold (Pregame)
+	int gold = 350; //Spent during pregame shop
+
+	/* Player's Inventory */
+	// Player Weapons
+	std::vector<Items::Weapon> wep;
+	// Player Armor
+	std::vector<Items::Armor> arm;
+	// Player Consumables
+	std::vector<Items::Consumable> con;
 
 	/* Character Settings */
 	//Player's Character
 	Character ch;
 
 	/* Functions */
+	void aquireWep(Items::Weapon wep);
+	void aquireArm(Items::Armor arm);
+	void aquireCon(Items::Consumable con);
+
+	//Applies actual stats (e.g. health) from stats (e.g. fortitude)
+	void applyStats();
+	//Applies race passives to Player
+	void applyRacePassive();
+	//Apply weight
+	void applyCurrentWeight();
 
 private:
 };
