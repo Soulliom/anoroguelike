@@ -14,7 +14,7 @@ void Character::randStats() {
 	//Randomized stat order
 	unsigned int chs = 0;
 	//Each past stat
-	unsigned int rmb[5];
+	std::array<unsigned int, 5> rmb;
 
 	int total = 0;
 
@@ -91,7 +91,7 @@ void Character::configRaceStats(Stats *raceStat) {
 			raceStat->fortitude = 1;
 			raceStat->agility = 0;
 			raceStat->wisdom = 0;
-			raceStat->perception = -1;
+			raceStat->perception = -2;
 			break;
 
 		case Character::Human:
