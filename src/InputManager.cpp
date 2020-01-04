@@ -16,16 +16,16 @@ void InputManager::Pause(std::string text, const unsigned int seconds, const uns
 	std::cout << std::endl << text << std::endl;
 
 	//If correct key is pressed continue. (Unless NULL then continue otherwise)
-	bool pressed = false;
-	while (!pressed) {
+	bool contin = false;
+	while (!contin) {
+		int but = _getch();
 		if (key != NULL) {
-			if (key == _getch()) {
-				pressed = true;
+			if (key == but) {
+				contin = true;
 			}
 		}
 		else {
-			_getch();
-			pressed = true;
+			contin = true;
 		}
 	}
 }
@@ -94,79 +94,132 @@ void InputManager::ADNav(unsigned int input, const int max) {
 }
 
 /* Inputs for Specific Scenes*/
-bool InputManager::SeedInput(int keyPress) {
-	switch (selectState.y) {
-	case 0: // Randomize Seed
-		if (keyPress == SPAC) {
-			player.seed = rand() % 99999999 + 1111;
+void InputManager::SeedInput() {
+	this->selectState.x = 0;
+	this->selectState.y = 0;
+
+	bool contin = false;
+	while (!contin) {
+		scene.SeedScene(input.getSelectStateY(), player.seed);
+
+		int keyPress = _getch();
+		input.WSNav(keyPress, 2);
+
+		switch (selectState.y) {
+		case 0: // Randomize Seed
+			if (keyPress == SPAC) {
+				player.seed = rand() % 99999999 + 1111;
+			}
+			break;
+		case 1: // Input Custom Seed
+			if (keyPress == SPAC) {
+				player.seed = IntInput("Enter seed, then press [Enter]");
+			}
+			break;
+		case 2: // Continue
+			if (keyPress == SPAC) {
+				this->selectState.y = 0;
+				contin = true;
+			}
+			break;
 		}
-		break;
-	case 1: // Input Custom Seed
-		if (keyPress == SPAC) {
-			player.seed = IntInput("Enter seed, then press [Enter]");
-		}
-		break;
-	case 2: // Continue
-		if (keyPress == SPAC) {
-			selectState.y = 0;
-			return true;
-		}
-		break;
 	}
-	return false;
+
+	this->selectState.x = 0;
+	this->selectState.y = 0;
 }
 
 /* WEAPONS */
-void InputManager::MeleeInput(int keyPress) {
+void InputManager::WepInput() {
+	bool contin = false;
+
+	selectState.y = 0;
+	while (!contin) {
+		scene.WeaponsScene(selectState.y);
+
+		int keyPress = _getch();
+		input.WSNav(keyPress, 3);
+		switch (input.getSelectStateY()) {
+		case 0: //Melee Shop
+			if (keyPress == SPAC) {
+				input.MeleeInput();
+			}
+			break;
+
+		case 1: //Ranged Shop
+			if (keyPress == SPAC) {
+				input.RangedInput();
+			}
+			break;
+
+		case 2: //Magic Shop
+			if (keyPress == SPAC) {
+				input.MagicInput();
+			}
+			break;
+
+		case 3: //Continue
+			if (keyPress == SPAC) {
+				contin = true;
+			}
+		}
+	}
+	selectState.y = 0;
+}
+
+void InputManager::MeleeInput() {
+	this->selectState.x = 0;
+	this->selectState.y = 0;
+
 	bool contin = false;
 	while (!contin) {
 		scene.MeleeScene(selectState.y, item.weapons);
 
-		keyPress = _getch();
+		int keyPress = _getch();
 		WSNav(keyPress, 5);
 		switch (selectState.y) {
 		case 0: //Rapier
 			if (keyPress == SPAC) {
-				contin = ViewWepInput(keyPress, item.weapons.at(0));
+				contin = ViewWepInput(item.weapons.at(0));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyWepInput(keyPress, item.weapons.at(0));
+				contin = BuyWepInput(item.weapons.at(0));
 			}
 			break;
 
 		case 1: //Claymore
 			if (keyPress == SPAC) {
-				contin = ViewWepInput(keyPress, item.weapons.at(1));
+				contin = ViewWepInput(item.weapons.at(1));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyWepInput(keyPress, item.weapons.at(1));
+				contin = BuyWepInput(item.weapons.at(1));
 			}
 			break;
 
 		case 2: //Dagger
 			if (keyPress == SPAC) {
-				contin = ViewWepInput(keyPress, item.weapons.at(2));
+				contin = ViewWepInput(item.weapons.at(2));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyWepInput(keyPress, item.weapons.at(2));
+				contin = BuyWepInput(item.weapons.at(2));
 			}
 			break;
 
 		case 3: //Small Shield
 			if (keyPress == SPAC) {
-				contin = ViewWepInput(keyPress, item.weapons.at(3));
+				contin = ViewWepInput(item.weapons.at(3));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyWepInput(keyPress, item.weapons.at(3));
+				contin = BuyWepInput(item.weapons.at(3));
 			}
 			break;
 
 		case 4: //Large Sheild
 			if (keyPress == SPAC) {
-				contin = ViewWepInput(keyPress, item.weapons.at(4));
+				contin = ViewWepInput(item.weapons.at(4));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyWepInput(keyPress, item.weapons.at(4));
+				contin = BuyWepInput(item.weapons.at(4));
 			}
 			break;
 
@@ -178,41 +231,46 @@ void InputManager::MeleeInput(int keyPress) {
 		
 		}
 	}
+
+	this->selectState.x = 0;
+	this->selectState.y = 0;
 }
 
-void InputManager::RangedInput(int keyPress) {
-	bool contin = false;
+void InputManager::RangedInput() {
+	this->selectState.x = 0;
+	this->selectState.y = 0;
 
+	bool contin = false;
 	while (!contin) {
 		scene.RangedScene(selectState.y, item.weapons);
 
-		keyPress = _getch();
+		int keyPress = _getch();
 		WSNav(keyPress, 3);
 		switch (selectState.y) {
 		case 0: //Recurve Bow
 			if (keyPress == SPAC) {
-				contin = ViewWepInput(keyPress, item.weapons.at(5));
+				contin = ViewWepInput(item.weapons.at(5));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyWepInput(keyPress, item.weapons.at(5));
+				contin = BuyWepInput(item.weapons.at(5));
 			}
 			break;
 
 		case 1: //Longbow
 			if (keyPress == SPAC) {
-				contin = ViewWepInput(keyPress, item.weapons.at(6));
+				contin = ViewWepInput(item.weapons.at(6));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyWepInput(keyPress, item.weapons.at(6));
+				contin = BuyWepInput(item.weapons.at(6));
 			}
 			break;
 
 		case 2: //Crossbow
 			if (keyPress == SPAC) {
-				contin = ViewWepInput(keyPress, item.weapons.at(7));
+				contin = ViewWepInput(item.weapons.at(7));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyWepInput(keyPress, item.weapons.at(7));
+				contin = BuyWepInput(item.weapons.at(7));
 			}
 			break;
 
@@ -223,50 +281,55 @@ void InputManager::RangedInput(int keyPress) {
 			break;
 		}
 	}
+
+	this->selectState.x = 0;
+	this->selectState.y = 0;
 }
 
-void InputManager::MagicInput(int keyPress) {
-	bool contin = false;
+void InputManager::MagicInput() {
+	this->selectState.x = 0;
+	this->selectState.y = 0;
 
+	bool contin = false;
 	while (!contin) {
 		scene.MagicScene(selectState.y, item.weapons);
 
-		keyPress = _getch();
+		int keyPress = _getch();
 		WSNav(keyPress, 4);
 		switch (selectState.y) {
 		case 0: //Sapphire Staff
 			if (keyPress == SPAC) {
-				contin = ViewWepInput(keyPress, item.weapons.at(8));
+				contin = ViewWepInput(item.weapons.at(8));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyWepInput(keyPress, item.weapons.at(8));
+				contin = BuyWepInput(item.weapons.at(8));
 			}
 			break;
 
 		case 1: //Ruby Staff
 			if (keyPress == SPAC) {
-				contin = ViewWepInput(keyPress, item.weapons.at(9));
+				contin = ViewWepInput(item.weapons.at(9));
 			}
 			else if(keyPress == ENTR){
-				contin = BuyWepInput(keyPress, item.weapons.at(9));
+				contin = BuyWepInput(item.weapons.at(9));
 			}
 			break;
 
 		case 2: //Book of Chaos
 			if (keyPress == SPAC) {
-				contin = ViewWepInput(keyPress, item.weapons.at(10));
+				contin = ViewWepInput(item.weapons.at(10));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyWepInput(keyPress, item.weapons.at(10));
+				contin = BuyWepInput(item.weapons.at(10));
 			}
 			break;
 
 		case 3: //Book of Creation
 			if (keyPress == SPAC) {
-				contin = ViewWepInput(keyPress, item.weapons.at(11));
+				contin = ViewWepInput(item.weapons.at(11));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyWepInput(keyPress, item.weapons.at(11));
+				contin = BuyWepInput(item.weapons.at(11));
 			}
 			break;
 
@@ -277,15 +340,18 @@ void InputManager::MagicInput(int keyPress) {
 			break;
 		}
 	}
+
+	this->selectState.x = 0;
+	this->selectState.y = 0;
 }
 
-bool InputManager::ViewWepInput(int keyPress, Items::Weapon wep) {
+bool InputManager::ViewWepInput(Items::Weapon wep) {
 	scene.ViewWeapon(wep);
 	Pause("Press [Space] to Continue!", 2, SPAC);
 	return false;
 }
 
-bool InputManager::BuyWepInput(int keyPress, Items::Weapon wep){
+bool InputManager::BuyWepInput(Items::Weapon wep){
 	//Add weapon to inventory, subtract gold by cost
 	if (player.gold >= wep.cost) {
 		player.gold -= wep.cost;
@@ -299,78 +365,109 @@ bool InputManager::BuyWepInput(int keyPress, Items::Weapon wep){
 	}
 }
 
-bool InputManager::WepInvInput(int keyPress) {
-	if (!player.wep.empty()) {
-		scene.ViewWepInv(selectState.y, selectState.x);
+void InputManager::WepInvInput() 
+{
+	this->selectState.x = 0;
+	this->selectState.y = 0;
 
-		keyPress = _getch();
-		WSNav(keyPress, 3);
-		switch (selectState.y) {
-		case 0: // Wep Select
-			ADNav(keyPress, player.wep.size() - 1);
-			break;
-		case 1: // Wep Inspect
-			if (keyPress == SPAC) {
-				scene.ViewWeapon(player.wep.at(selectState.x));
-				Pause("Press [Space] to continue", 2, SPAC);
+	bool contin = false;
+
+	while (!contin) {
+
+		if (!player.wep.empty()) {
+			scene.ViewWepInv(selectState.y, selectState.x);
+
+			int keyPress = _getch();
+			WSNav(keyPress, 4);
+			switch (selectState.y) {
+			case 0: // Wep Select
+				ADNav(keyPress, player.wep.size() - 1);
+				break;
+
+			case 1: // Wep Inspect
+				if (keyPress == SPAC) {
+					scene.ViewWeapon(player.wep.at(selectState.x));
+					Pause("Press [Space] to continue", 2, SPAC);
+				}
+				break;
+
+			case 2: //Equip weapon
+				if (keyPress == SPAC) {
+					player.selectWep(player.wep.at(selectState.x));
+				}
+				break;
+
+			case 3: // Delete Weapon
+				// Delete item
+				if (keyPress == SPAC) {
+					if (player.wep.at(selectState.x) == player.selectedWep[0]) {
+						player.selectedWep[0] = item.weapons.at(12);
+					}
+					else if (player.wep.at(selectState.x) == player.selectedWep[1]) {
+						player.selectedWep[1] = item.weapons.at(12);
+					}
+
+					player.wep.erase(player.wep.begin() + selectState.x);
+				}
+				break;
+
+			case 4: // Continue
+				//Reset input and contin
+				if (keyPress == SPAC) {
+					this->selectState.x = 0;
+					this->selectState.y = 0;
+
+					contin = true;
+				}
+				break;
 			}
-			break;
-		case 2: // Delete Weapon
-			// Delete item
-			if (keyPress == SPAC) {
-				player.wep.erase(player.wep.begin() + selectState.x);
-				return true;
-			}
-			break;
-		case 3: // Continue
-			//Reset input and contin
-			if (keyPress == SPAC) {
-				return true;
-			}
-			break;
 		}
-		return false;
-	}
-	else { //If player wep inv empty
-		Pause("You do not have any weapons. Press [Space] to continue", 0, SPAC);
-		return true;
+		else { //If player wep inv empty
+			Pause("You do not have any weapons. Press [Space] to continue", 0, SPAC);
+			this->selectState.x = 0;
+			this->selectState.y = 0;
+
+			contin = true;
+		}
 	}
 }
 
 /* ARMORS */
-void InputManager::ArmInput(int keyPress) {
+void InputManager::ArmInput() {
+	this->selectState.x = 0;
+	this->selectState.y = 0;
+	
 	bool contin = false;
-
 	while (!contin) {
 		scene.ArmorsScene(selectState.y, item.armors);
 
-		keyPress = _getch();
+		int keyPress = _getch();
 		WSNav(keyPress, 3);
 		switch (selectState.y) {
 		case 0: //Light Armor
 			if (keyPress == SPAC) {
-				contin = ViewArmInput(keyPress, item.armors.at(0));
+				contin = ViewArmInput(item.armors.at(0));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyArmInput(keyPress, item.armors.at(0));
+				contin = BuyArmInput(item.armors.at(0));
 			}
 			break;
 
 		case 1: //Medium Armor
 			if (keyPress == SPAC) {
-				contin = ViewArmInput(keyPress, item.armors.at(1));
+				contin = ViewArmInput(item.armors.at(1));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyArmInput(keyPress, item.armors.at(1));
+				contin = BuyArmInput(item.armors.at(1));
 			}
 			break;
 
 		case 2: //Heavy Armor
 			if (keyPress == SPAC) {
-				contin = ViewArmInput(keyPress, item.armors.at(2));
+				contin = ViewArmInput(item.armors.at(2));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyArmInput(keyPress, item.armors.at(2));
+				contin = BuyArmInput(item.armors.at(2));
 			}
 			break;
 
@@ -381,15 +478,18 @@ void InputManager::ArmInput(int keyPress) {
 			break;
 		}
 	}
+
+	this->selectState.x = 0;
+	this->selectState.y = 0;
 }
 
-bool InputManager::ViewArmInput(int keyPress, Items::Armor arm) {
+bool InputManager::ViewArmInput(Items::Armor arm) {
 	scene.ViewArmor(arm);
 	Pause("Press [Space] to Continue!", 2, SPAC);
 	return false;
 }
 
-bool InputManager::BuyArmInput(int keyPress, Items::Armor arm) {
+bool InputManager::BuyArmInput(Items::Armor arm) {
 	//Add weapon to inventory, subtract gold by cost
 	if (player.gold >= arm.cost) {
 		player.gold -= arm.cost;
@@ -403,80 +503,105 @@ bool InputManager::BuyArmInput(int keyPress, Items::Armor arm) {
 	}
 }
 
-bool InputManager::ArmInvInput(int keyPress) {
-	if (!player.arm.empty()) {
-		scene.ViewArmInv(selectState.y, selectState.x);
+void InputManager::ArmInvInput() {
+	this->selectState.x = 0;
+	this->selectState.y = 0;
 
-		keyPress = _getch();
-		WSNav(keyPress, 3);
-		switch (selectState.y) {
-		case 0: // Armor Select
-			ADNav(keyPress, player.arm.size() - 1);
-			break;
+	bool contin = false;
+	
+	while (!contin) {
+		if (!player.arm.empty()) {
+			scene.ViewArmInv(selectState.y, selectState.x);
 
-		case 1: // Armor Inspect
-			if (keyPress == SPAC) {
-				scene.ViewArmor(player.arm.at(selectState.x));
-				Pause("Press [Space] to continue", 2, SPAC);
+			int keyPress = _getch();
+			WSNav(keyPress, 4);
+			switch (selectState.y) {
+			case 0: // Armor Select
+				ADNav(keyPress, player.arm.size() - 1);
+				break;
+
+			case 1: // Armor Inspect
+				if (keyPress == SPAC) {
+					scene.ViewArmor(player.arm.at(selectState.x));
+					Pause("Press [Space] to continue", 2, SPAC);
+				}
+				break;
+
+			case 2: //Equip Armor
+				if (keyPress == SPAC) {
+					player.selectArm(player.arm.at(selectState.x));
+				}
+				break;
+
+			case 3: // Delete Armor
+				// Delete item
+				if (keyPress == SPAC) {
+					if (player.arm.at(selectState.x) == player.selectedArm) {
+						player.selectedArm = item.armors.at(3); //Armor is now empty armor
+					}
+
+					player.arm.erase(player.arm.begin() + selectState.x);
+				}
+				break;
+
+			case 4: // Continue
+				//Reset input and contin
+				if (keyPress == SPAC) {
+					this->selectState.x = 0;
+					this->selectState.y = 0;
+
+					contin = true;
+				}
+				break;
 			}
-			break;
-
-		case 2: // Delete Armor
-			// Delete item
-			if (keyPress == SPAC) {
-				player.arm.erase(player.arm.begin() + selectState.x);
-				return true;
-			}
-			break;
-
-		case 3: // Continue
-			//Reset input and contin
-			if (keyPress == SPAC) {
-				return true;
-			}
-			break;
 		}
-		return false;
-	}
-	else { //If player wep inv empty
-		Pause("You do not have any armors. Press [Space] to continue", 0, SPAC);
-		return true;
+		else { //If player wep inv empty
+			Pause("You do not have any armors. Press [Space] to continue", 0, SPAC);
+
+			this->selectState.x = 0;
+			this->selectState.y = 0;
+
+			contin = true;
+		}
 	}
 }
 
-void InputManager::ConInput(int keyPress) {
-	bool contin = false;
+/* CONSUMABLES */
+void InputManager::ConInput() {
+	this->selectState.x = 0;
+	this->selectState.y = 0;
 
+	bool contin = false;
 	while (!contin) {
 		scene.ConsumeScene(selectState.y, item.consumes);
 
-		keyPress = _getch();
+		int keyPress = _getch();
 		WSNav(keyPress, 3);
 		switch (selectState.y) {
-		case 0: //Light Armor
+		case 0: //Lesser healing potion
 			if (keyPress == SPAC) {
-				contin = ViewConInput(keyPress, item.consumes.at(0));
+				contin = ViewConInput(item.consumes.at(0));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyConInput(keyPress, item.consumes.at(0));
+				contin = BuyConInput(item.consumes.at(0));
 			}
 			break;
 
-		case 1: //Medium Armor
+		case 1: //Healing potion
 			if (keyPress == SPAC) {
-				contin = ViewConInput(keyPress, item.consumes.at(1));
+				contin = ViewConInput(item.consumes.at(1));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyConInput(keyPress, item.consumes.at(1));
+				contin = BuyConInput(item.consumes.at(1));
 			}
 			break;
 
-		case 2: //Heavy Armor
+		case 2: //Bigger healing potion
 			if (keyPress == SPAC) {
-				contin = ViewConInput(keyPress, item.consumes.at(2));
+				contin = ViewConInput(item.consumes.at(2));
 			}
 			else if (keyPress == ENTR) {
-				contin = BuyConInput(keyPress, item.consumes.at(2));
+				contin = BuyConInput(item.consumes.at(2));
 			}
 			break;
 
@@ -487,15 +612,18 @@ void InputManager::ConInput(int keyPress) {
 			break;
 		}
 	}
+
+	this->selectState.x = 0;
+	this->selectState.y = 0;
 }
 
-bool InputManager::ViewConInput(int keyPress, Items::Consumable con) {
+bool InputManager::ViewConInput(Items::Consumable con) {
 	scene.ViewConsume(con);
 	Pause("Press [Space] to Continue!", 2, SPAC);
 	return false;
 }
 
-bool InputManager::BuyConInput(int keyPress, Items::Consumable con) {
+bool InputManager::BuyConInput(Items::Consumable con) {
 	//Add weapon to inventory, subtract gold by cost
 	if (player.gold >= con.cost) {
 		player.gold -= con.cost;
@@ -509,16 +637,23 @@ bool InputManager::BuyConInput(int keyPress, Items::Consumable con) {
 	}
 }
 
-bool InputManager::ConInvInput(int keyPress) {
+void InputManager::ConInvInput() {
+	this->selectState.x = 0;
+	this->selectState.y = 0;
+
+	bool contin = false;
+
+	while(!contin)
 	if (!player.con.empty()) {
 		scene.ViewConInv(selectState.y, selectState.x);
 
-		keyPress = _getch();
-		WSNav(keyPress, 3);
+		int keyPress = _getch();
+		WSNav(keyPress, 4);
 		switch (selectState.y) {
 		case 0: // Consume Select
 			ADNav(keyPress, player.con.size() - 1);
 			break;
+
 		case 1: // Consume Inspect
 			if (keyPress == SPAC) {
 				scene.ViewConsume(player.con.at(selectState.x));
@@ -526,32 +661,87 @@ bool InputManager::ConInvInput(int keyPress) {
 			}
 			break;
 
-		case 2: // Consume Armor
+		case 2: //Use Consume
+			if (keyPress == SPAC) {
+				player.useConsume(player.con.at(selectState.x), selectState.x);
+			}
+			break;
+
+		case 3: // Delete Consume
 			// Delete item
 			if (keyPress == SPAC) {
 				player.con.erase(player.con.begin() + selectState.x);
-				return true;
+			}
+			break;
+
+		case 4: // Continue
+			//Reset input and contin
+			if (keyPress == SPAC) {
+				this->selectState.x = 0;
+				this->selectState.y = 0;
+
+				contin = true;
+			}
+			break;
+		}
+	}
+	else { //If player wep inv empty
+		Pause("You do not have any consumables. Press [Space] to continue", 0, SPAC);
+
+		this->selectState.x = 0;
+		this->selectState.y = 0;
+
+		contin = true;
+	}
+} 
+
+//Inventory Input/Scene
+void InputManager::InventoryInput() {
+	this->selectState.x = 0;
+	this->selectState.y = 0;
+
+	bool contin = false;
+	while (!contin) {
+		scene.ViewInventory(selectState.y);
+
+		int keyPress = _getch();
+		WSNav(keyPress, 3);
+
+		switch (selectState.y) {
+		case 0: // Weapons Inventory
+			if (keyPress == SPAC) {
+				WepInvInput();
+				contin = false;
+			}
+			break;
+
+		case 1: // Armor
+			if (keyPress == SPAC) {
+				input.ArmInvInput();
+				contin = false;
+			}
+			break;
+
+		case 2: // Consumables
+			if (keyPress == SPAC) {
+				input.ConInvInput();
+				contin = false;
 			}
 			break;
 
 		case 3: // Continue
-			//Reset input and contin
 			if (keyPress == SPAC) {
-				return true;
+				contin = true;
 			}
 			break;
-
 		}
-		return false;
 	}
-	else { //If player wep inv empty
-		Pause("You do not have any consumables. Press [Space] to continue", 0, SPAC);
-		return true;
-	}
-	return false;
-} 
 
-/* Inputs for Options in Scenes */
+	this->selectState.x = 0;
+	this->selectState.y = 0;
+}
+
+/* Inputs for Scrolls in Scenes */
 void InputManager::DiffInput(selectStateStruct selectState) {
 	switch (selectState.x) {
 	case 0:

@@ -7,20 +7,21 @@
 #include "../include/Items.h"
 
 /*-------TODO--------
- Main Screen (3rd)
+ 1/2 dmg from other class weapons
+ Battle Scene
  Class bonus check in each battle
- Item selection, equiped, slots, hands (2nd)
- Combat Tutorial Scene (4th)
+ Combat Tutorial Scene 
  Vector enemies
- Balance Scenes (1st)
+ Balance Scenes 
+ if weight > maxweight -50% speed
 */
 
 /* Init Class Objects */
 SceneManager scene; //Scenemanager (extern)
-InputManager input; //Main input manager
+InputManager input; //Main input manager (extern)
 InputManager bpinput; //Secondary input manager
-Player player; //Player (extern)
 Items item; //Items (extern)
+Player player; //Player (extern)
 
 int main() {
 	/* INIT */
@@ -33,10 +34,6 @@ int main() {
 	scene.TitleScene();
 	input.Pause("Press [Space] to Continue.", 1, SPAC);
 
-	//Reset select state
-	input.setSelectStateX(0);
-	input.setSelectStateY(0);
-
 	/* SETTINGS */
 	//define continue, loop while continue button isnt pressed
 	contin = false;
@@ -46,8 +43,10 @@ int main() {
 
 		//Get input
 		keyPress = _getch();
+		//Check if input was for navigation
 		input.WSNav(keyPress, 4);
 
+		//Use input otherwise
 		switch (input.getSelectStateY()) {
 		case 0: //Difficulty
 			input.ADNav(keyPress, 2);
@@ -56,21 +55,12 @@ int main() {
 
 		case 1: //Seed -- Look above for comments
 			if (keyPress == SPAC) {
-				input.setSelectStateX(0);
-				while (!contin) {
-					input.WSNav(keyPress, 2);
-
-					scene.SeedScene(input.getSelectStateY(), player.seed);
-					keyPress = _getch();
-					contin = input.SeedInput(keyPress);
-				}
-				contin = false;
+				input.SeedInput();
 			}
 			break;
 
 		case 2: //Tut on Character
 			if (keyPress == SPAC) {
-				input.setSelectStateX(0);
 				scene.CharTut1Scene();
 				input.Pause("Press [Space] to cotinue to the next Page.", 2, SPAC);
 				scene.CharTut2Scene();
@@ -80,7 +70,6 @@ int main() {
 
 		case 3: //Tut on Combat
 			if (keyPress == SPAC) {
-				input.setSelectStateX(0);
 				scene.CombatTut1Scene();
 				input.Pause("Press [Space] to cotinue to the next Page.", 2, SPAC);
 				scene.CombatTut2Scene();
@@ -120,12 +109,12 @@ int main() {
 		player.ch.configRaceStats(raceStat);
 
 		//Update Scene
-		scene.CharacterScene(input.getSelectStateY(),
-			player.ch.raceStr, player.ch.clasStr, player.ch.stats, *raceStat);
+		scene.CharacterScene(input.getSelectStateY(), player.ch.raceStr, player.ch.clasStr, player.ch.stats, *raceStat);
 
 		//Get input
 		keyPress = _getch();
 		input.WSNav(keyPress, 3);
+
 		switch (input.getSelectStateY()) {
 		case 0: //Race
 			input.ADNav(keyPress, 5);
@@ -173,133 +162,29 @@ int main() {
 
 		switch (input.getSelectStateY()) {
 		case 0: //Weapons Shop
-			//Weapons has 3 sections, Melee, Ranged, and Magic
 			if (keyPress == SPAC) {
-				input.setSelectStateY(0);
-				while (!contin) {
-					scene.WeaponsScene(input.getSelectStateY());
-
-					keyPress = _getch();
-					input.WSNav(keyPress, 3);
-					switch (input.getSelectStateY()) {
-					case 0: //Melee Shop
-						if (keyPress == SPAC) {
-							input.setSelectStateY(0);
-							input.MeleeInput(keyPress);
-							input.setSelectStateY(0);
-						}
-						break;
-
-					case 1: //Ranged Shop
-						if (keyPress == SPAC) {
-							input.setSelectStateY(0);
-							input.RangedInput(keyPress);
-							input.setSelectStateY(0);
-						}
-						break;
-
-					case 2: //Magic Shop
-						if (keyPress == SPAC) {
-							input.setSelectStateY(0);
-							input.MagicInput(keyPress);
-							input.setSelectStateY(0);
-						}
-						break;
-
-					case 3: //Continue
-						if (keyPress == SPAC) {
-							contin = true;
-						}
-					}
-				}
-				//Reset input and contin
-				input.setSelectStateY(0);
+				input.WepInput();
 				contin = false;
 			}
 			break;
 
 		case 1: //Armors Shop
 			if (keyPress == SPAC) {
-				input.setSelectStateY(0);
-
-				input.ArmInput(keyPress);
-
-				//Reset input and contin
-				input.setSelectStateY(0);
+				input.ArmInput();
 				contin = false;
 			}
 			break;
 
 		case 2: //Consumables Shop
 			if (keyPress == SPAC) {
-				input.setSelectStateY(0);
-
-				input.ConInput(keyPress);
-
-				//Reset input and contin
-				input.setSelectStateY(0);
+				input.ConInput();
 				contin = false;
 			}
 			break;
 
 		case 3: //Inventory
 			if (keyPress == SPAC) {
-				input.setSelectStateY(0);
-
-				while (!contin) {
-					scene.ViewInventory(input.getSelectStateY());
-
-					keyPress = _getch();
-					input.WSNav(keyPress, 3);
-
-					switch (input.getSelectStateY()) {
-					case 0: // Weapons Inventory
-						if (keyPress == SPAC) {
-							input.setSelectStateY(0);
-							while (!contin) {
-								contin = input.WepInvInput(keyPress);
-							}
-							//Reset input and contin
-							input.setSelectStateY(0);
-							input.setSelectStateX(0);
-							contin = false;
-						}
-						break;
-
-					case 1: // Armor
-						if (keyPress == SPAC) {
-							input.setSelectStateY(0);
-							while (!contin) {
-								contin = input.ArmInvInput(keyPress);
-							}
-							//Reset input and contin
-							input.setSelectStateY(0);
-							input.setSelectStateX(0);
-							contin = false;
-						}
-						break;
-
-					case 2: // Consumables
-						if (keyPress == SPAC) {
-							input.setSelectStateY(0);
-							while (!contin) {
-								contin = input.ConInvInput(keyPress);
-							}
-							//Reset input and contin
-							input.setSelectStateY(0);
-							input.setSelectStateX(0);
-							contin = false;
-						}
-						break;
-
-					case 3: // Continue
-						if (keyPress == SPAC) {
-							contin = true;
-						}
-						break;
-					}
-				}
-				input.setSelectStateY(0);
+				input.InventoryInput();
 				contin = false;
 			}
 			break;
@@ -311,22 +196,40 @@ int main() {
 			break;
 		}
 	}
+	//Reset selectstates
+	input.setSelectStateX(0);
+	input.setSelectStateY(0);
 
+	/* Player Finalization */
 	//Apply player stats
 	player.applyStats();
 	player.applyRacePassive();
 	//Apply Weight of items
 	player.applyCurrentWeight();
-
-	//Reset selectstates
-	input.setSelectStateX(0);
-	input.setSelectStateY(0);
-
+	
+	/* GAME */
 	contin = false;
 	while (!contin) {
-		// 2 main scenes, Wander, Battle.
-		// Wander- stats, moving, inventory.
 		// Battle- Actions, Enemy race/weapons/position, Player Position
-	}
+		if (!player.inBattle) { //Wandering Scene
+			scene.WanderScene(input.getSelectStateX());
 
+			keyPress = _getch();
+			input.ADNav(keyPress, 2);
+			switch (input.getSelectStateX()) {
+			case 0: // Actions (move forward)
+				break;
+			case 1: // Inventory (Prompts inventory)
+				if (keyPress == SPAC) {
+					input.InventoryInput();
+				}
+				break;
+			case 2: // Other (Game Exit, Tutorials)
+				break;
+			}
+		}
+		else if(player.inBattle){ //Battling Scene
+
+		}
+	}
 }

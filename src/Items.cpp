@@ -21,10 +21,14 @@ Items::Items() {
 	createWeapon("Book of Chaos", 3, 2, 15, 0, 5, typeEnum::magic, 150);
 	createWeapon("Book of Creation", 2, 1, 40, 0, 3, typeEnum::magic, 100);
 
+	/* Empty */
+	createWeapon("Empty", 0, 0, 0, 0, 0, typeEnum::melee, 0);
+
 	/* ARMORS */
 	createArmor("Light Armor", 10, .10f, 100);
 	createArmor("Medium Armor", 25, .20f, 150);
 	createArmor("Heavy Armor", 50, .40f, 200);
+	createArmor("No Armor", 0, 0, 0);
 
 	/* CONSUMABLES*/
 	createConsume("Lesser Health Pot", 1, 0.25, 75);

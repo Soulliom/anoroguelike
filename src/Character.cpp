@@ -37,7 +37,7 @@ void Character::randStats() {
 
 			if (!skip && max > 0) {
 				//Randomize stat
-				min = (rand() % max / 2) + 1;
+				min = (rand() % max / 3) + 2;
 				max -= min;
 
 				//Choose random stat
