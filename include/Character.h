@@ -10,9 +10,9 @@ public:
 		int strength = 0;   // Strength:   Melee Hit Chance, Carry Weight.
 		int fortitude = 0;  // Fortitude:  Health, Better Block
 		int agility = 0;    // Agility:    Speed, Dodge Chance
-		int wisdom = 0;     // Wisdom:     Special Hit Chance, Stress Cap
-		int perception = 0; // Perception: Ranged Hit Chance, Mana
-	}stats;
+		int wisdom = 0;     // Wisdom:     Special Hit Chance, Mana
+		int perception = 0; // Perception: Ranged Hit Chance, Stress Cap
+	} stats;
 
 	const enum RaceEnum {
 		Elf,    // +2 Wis, +1 Per, -1 Str  |Passive| Extra Mana / carry less

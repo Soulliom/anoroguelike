@@ -43,14 +43,33 @@ public:
 		int enchant = 0;
 		typeEnum type;
 		std::uint8_t cost = 0;
+		bool equipped = false;
+
+		bool operator==(const Weapon& w) {
+			if ((this->name == w.name) && (this->dmg == w.dmg) && (this->enchant == w.enchant) && (this->type == w.type)) {
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
 	};
 	std::vector<Weapon> weapons;
-	
+
 	struct Armor {
 		std::string name = "";
 		float protection = 0; //How much less damage is taken
 		float weight = 0;
 		std::uint8_t cost = 0;
+
+		bool operator==(const Armor& a) {
+			if ((this->name == a.name) && (this->protection == a.protection)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
 	};
 	std::vector<Armor> armors;
 

@@ -60,6 +60,10 @@ public:
 	void ViewArmInv(std::int8_t stateY, std::int8_t stateX);
 	void ViewConInv(std::int8_t stateY, std::int8_t stateX);
 
+	/* Game Scenes */
+	void WanderScene(std::int8_t stateX);
+	void ActionScene(std::int8_t stateX);
+
 private:
 	HWND consoleWindow = GetConsoleWindow();
 	HANDLE textConsole = GetStdHandle(STD_OUTPUT_HANDLE);

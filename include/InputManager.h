@@ -28,33 +28,28 @@ public:
 
 	/* Inputs for Specific Scenes */
 	// Returns contin
-	bool SeedInput(int keyPress);
+	void SeedInput();
 	// WEAPONS
-	// Melee Input
-	void MeleeInput(int keyPress);
-	// Ranged Input
-	void RangedInput(int KeyPress);
-	// Magic Input
-	void MagicInput(int KeyPress);
-	// Inspect Wep / Returns contin
-	bool ViewWepInput(int keyPress, Items::Weapon wep);
-	// Buy Wep / Returns contin
-	bool BuyWepInput(int keyPress, Items::Weapon wep);
-	// Wep Inventory
-	bool WepInvInput(int keyPress);
+	void WepInput();
+	void MeleeInput();
+	void RangedInput();
+	void MagicInput();
+	bool ViewWepInput(Items::Weapon wep);
+	bool BuyWepInput(Items::Weapon wep);
+	void WepInvInput();
 	// ARMORS 
-	// Armor Shop
-	void ArmInput(int keyPress);
-	bool ViewArmInput(int keyPress, Items::Armor arm);
-	bool BuyArmInput(int keyPress, Items::Armor arm);
-	bool ArmInvInput(int keyPress);
+	void ArmInput();
+	bool ViewArmInput(Items::Armor arm);
+	bool BuyArmInput(Items::Armor arm);
+	void ArmInvInput();
 	// CONSUMABLES
-	// Consumable Shop
-	
-	void ConInput(int keyPress);
-	bool ViewConInput(int keyPress, Items::Consumable con);
-	bool BuyConInput(int keyPress, Items::Consumable con);
-	bool ConInvInput(int keyPress); 
+	void ConInput();
+	bool ViewConInput(Items::Consumable con);
+	bool BuyConInput(Items::Consumable con);
+	void ConInvInput(); 
+
+	// Inventory 
+	void InventoryInput();
 
 	/* Inputs for Options in Scenes */
 	//Difficulty Input
@@ -75,5 +70,5 @@ public:
 	int getSelectStateX();
 	int getSelectStateY();
 };
-
+extern InputManager input;
 #endif 

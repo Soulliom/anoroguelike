@@ -2,11 +2,14 @@
 #define PLAYER_H
 
 #include "DEFINITIONS.h"
+#include "InputManager.h"
 #include "Character.h"
 #include "Items.h"
 
 class Player {
 public:
+	Player();
+
 	/* Game Settings */
 	//Difficulty
 	std::string diff = "Easy";
@@ -16,6 +19,8 @@ public:
 	//Turns;
 	int turns = 0;
 	int maxTurns = 1;
+	//In battle
+	bool inBattle = false;
 
 	/* Player Settings */
 	// Health
@@ -50,20 +55,32 @@ public:
 	// Player Consumables
 	std::vector<Items::Consumable> con;
 
+	/* Player's Selected Items */
+	//Selected Weapon
+	std::array<Items::Weapon, 2> selectedWep;
+	//Selected Armor
+	Items::Armor selectedArm;
+
 	/* Character Settings */
 	//Player's Character
 	Character ch;
 
 	/* Functions */
+	//Aquire Items
 	void aquireWep(Items::Weapon wep);
 	void aquireArm(Items::Armor arm);
 	void aquireCon(Items::Consumable con);
+
+	//Use Items
+	void selectWep(Items::Weapon &wep);
+	void selectArm(Items::Armor arm);
+	void useConsume(Items::Consumable con, int state);
 
 	//Applies actual stats (e.g. health) from stats (e.g. fortitude)
 	void applyStats();
 	//Applies race passives to Player
 	void applyRacePassive();
-	//Apply weight
+	//Apply weight by from player's inventory
 	void applyCurrentWeight();
 
 private:
