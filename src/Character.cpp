@@ -76,7 +76,7 @@ void Character::resetStats() {
 	this->stats.perception = 0;
 }
 
-void Character::configRaceStats(Stats *raceStat) {
+void Character::configRaceStats(Stats* raceStat) {
 	switch(this->race){
 		case Character::Elf:
 			raceStat->strength = -1;

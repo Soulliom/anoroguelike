@@ -1,13 +1,17 @@
 #include "../include/DEFINITIONS.h"
 
+#include "../include/GameManager.h"
 #include "../include/SceneManager.h"
 #include "../include/InputManager.h"
 #include "../include/Character.h"
 #include "../include/Player.h"
 #include "../include/Items.h"
+#include "../include/Enemy.h"
 
 /*-------TODO--------
  1/2 dmg from other class weapons
+ random enemy gen
+ random wep gen
  Battle Scene
  Class bonus check in each battle
  Combat Tutorial Scene 
@@ -16,127 +20,127 @@
  if weight > maxweight -50% speed
 */
 
-/* Init Class Objects */
-SceneManager scene; //Scenemanager (extern)
-InputManager input; //Main input manager (extern)
-InputManager bpinput; //Secondary input manager
-Items item; //Items (extern)
-Player player; //Player (extern)
+GameManager g_Game;
+SceneManager g_Scene;
+InputManager g_Input;
+InputManager g_Bpinput;
+Items g_Item;
+Player g_Player;
+Enemy g_Enemy;
 
 int main() {
 	/* INIT */
-	bool contin = false;
+	bool b_contin = false;
 	unsigned int keyPress = 0;
 	//Randomize seed
 	srand(time(NULL));
-	player.seed = rand() % 99998888 + 1111;
-	//Print title scene
-	scene.TitleScene();
-	input.Pause("Press [Space] to Continue.", 1, SPAC);
+	g_Game.seed = rand() % 99998888 + 1111;
+	//Print title g_Scene
+	g_Scene.titleScene();
+	g_Input.pause("Press [Space] to Continue.", 1, SPAC);
 
 	/* SETTINGS */
 	//define continue, loop while continue button isnt pressed
-	contin = false;
-	while (!contin) {
+	b_contin = false;
+	while (!b_contin) {
 		//Update Scene
-		scene.SettingsScene(input.getSelectStateY(), player.diff, player.seed);
+		g_Scene.settingsScene(g_Input.getSelectStateY(), g_Game.diff, g_Game.seed);
 
-		//Get input
+		//Get g_Input
 		keyPress = _getch();
-		//Check if input was for navigation
-		input.WSNav(keyPress, 4);
+		//Check if g_Input was for navigation
+		g_Input.upDownNav(keyPress, 4);
 
-		//Use input otherwise
-		switch (input.getSelectStateY()) {
+		//Use g_Input otherwise
+		switch (g_Input.getSelectStateY()) {
 		case 0: //Difficulty
-			input.ADNav(keyPress, 2);
-			input.DiffInput(input.selectState);
+			g_Input.leftRightNav(keyPress, 2);
+			g_Input.diffInput(g_Input.selectState);
 			break;
 
 		case 1: //Seed -- Look above for comments
 			if (keyPress == SPAC) {
-				input.SeedInput();
+				g_Input.seedInput();
 			}
 			break;
 
 		case 2: //Tut on Character
 			if (keyPress == SPAC) {
-				scene.CharTut1Scene();
-				input.Pause("Press [Space] to cotinue to the next Page.", 2, SPAC);
-				scene.CharTut2Scene();
-				input.Pause("Press [Space] to Continue.", 2, SPAC);
+				g_Scene.charTut1Scene();
+				g_Input.pause("Press [Space] to cotinue to the next Page.", 2, SPAC);
+				g_Scene.charTut2Scene();
+				g_Input.pause("Press [Space] to Continue.", 2, SPAC);
 			}
 			break;
 
 		case 3: //Tut on Combat
 			if (keyPress == SPAC) {
-				scene.CombatTut1Scene();
-				input.Pause("Press [Space] to cotinue to the next Page.", 2, SPAC);
-				scene.CombatTut2Scene();
-				input.Pause("Press [Space] to Continue.", 2, SPAC);
+				g_Scene.combatTut1Scene();
+				g_Input.pause("Press [Space] to cotinue to the next Page.", 2, SPAC);
+				g_Scene.combatTut2Scene();
+				g_Input.pause("Press [Space] to Continue.", 2, SPAC);
 			}
 			break;
 
 		case 4: //Continue
 			if (keyPress == SPAC) {
-				contin = true;
+				b_contin = true;
 				//Init seed
-				if (player.seed == 0) {
+				if (g_Game.seed == 0) {
 					//if 0 randomize seed
 					srand(time(NULL));
 				}
 				else {
 					//if seed is present, use seed
-					srand(player.seed);
+					srand(g_Game.seed);
 				}
 			}
 			break;
 		}
 	};
 	//Reset selectstates
-	input.setSelectStateY(0);
-	input.setSelectStateX(0);
+	g_Input.selectState.reset();
 
 	/* CHARACTER CUSTOMIZATION */
 	//Temporary raceStats which show stats upon choosing a race and applies them when continue = true.
 	Character::Stats* raceStat = new Character::Stats;
 	//Randomize character stats
-	player.ch.randStats();
+	g_Player.randStats();
 	//Reset selectstates
-	contin = false;
-	while (!contin) {
+	b_contin = false;
+	while (!b_contin) {
 		//Update Player's stats with current race
-		player.ch.configRaceStats(raceStat);
+		g_Player.configRaceStats(raceStat);
 
 		//Update Scene
-		scene.CharacterScene(input.getSelectStateY(), player.ch.raceStr, player.ch.clasStr, player.ch.stats, *raceStat);
+		g_Scene.characterScene(g_Input.getSelectStateY(), g_Player.raceStr, g_Player.clasStr, g_Player.stats, *raceStat);
 
-		//Get input
+		//Get g_Input
 		keyPress = _getch();
-		input.WSNav(keyPress, 3);
+		g_Input.upDownNav(keyPress, 3);
 
-		switch (input.getSelectStateY()) {
+		switch (g_Input.getSelectStateY()) {
 		case 0: //Race
-			input.ADNav(keyPress, 5);
-			input.RaceInput(input.selectState);
+			g_Input.leftRightNav(keyPress, 5);
+			g_Input.raceInput(g_Input.selectState);
 			break;
 
 		case 1: //Class
-			bpinput.ADNav(keyPress, 3);
-			input.ClasInput(bpinput.selectState);
+			g_Bpinput.leftRightNav(keyPress, 3);
+			g_Input.clasInput(g_Bpinput.selectState);
 			break;
 
 		case 2: //Reset Stats + Rand Stats
 			if (keyPress == SPAC) {
-				player.ch.resetStats();
-				player.ch.randStats();
+				g_Player.resetStats();
+				g_Player.randStats();
 			}
 			break;
 
 		case 3: //Continue
 			if (keyPress == SPAC) {
-				player.ch.combineRaceStats(raceStat);
-				contin = true;
+				g_Player.combineRaceStats(raceStat);
+				b_contin = true;
 			}
 			break;
 		}
@@ -144,92 +148,79 @@ int main() {
 	//Delete unnecessary pointer
 	delete(raceStat);
 	//Reset selectstates
-	input.setSelectStateX(0);
-	input.setSelectStateY(0);
-	bpinput.setSelectStateY(0);
-	bpinput.setSelectStateX(0);
+	g_Input.selectState.reset();
+	g_Bpinput.selectState.reset();
 
 	/* SHOP */
-	//Change gold accourding to difficulty
-	player.gold = player.gold / player.diffRate;
-	contin = false;
-	while (!contin) {
+	//Change gold accourding to difficulty 
+	g_Player.gold = round(g_Player.gold / g_Game.diffRate);
+	b_contin = false;
+	while (!b_contin) {
 		//Update Scene
-		scene.ShopScene(input.getSelectStateY(), player.gold);
+		g_Scene.shopScene(g_Input.getSelectStateY(), g_Player.gold);
 
 		keyPress = _getch();
-		input.WSNav(keyPress, 4);
+		g_Input.upDownNav(keyPress, 4);
 
-		switch (input.getSelectStateY()) {
+		switch (g_Input.getSelectStateY()) {
 		case 0: //Weapons Shop
 			if (keyPress == SPAC) {
-				input.WepInput();
-				contin = false;
+				g_Input.wepInput();
+				b_contin = false;
 			}
 			break;
 
 		case 1: //Armors Shop
 			if (keyPress == SPAC) {
-				input.ArmInput();
-				contin = false;
+				g_Input.armInput();
+				b_contin = false;
 			}
 			break;
 
 		case 2: //Consumables Shop
 			if (keyPress == SPAC) {
-				input.ConInput();
-				contin = false;
+				g_Input.conInput();
+				b_contin = false;
 			}
 			break;
 
 		case 3: //Inventory
 			if (keyPress == SPAC) {
-				input.InventoryInput();
-				contin = false;
+				g_Input.inventoryInput();
+				b_contin = false;
 			}
 			break;
 
 		case 4: // Continue
 			if (keyPress == SPAC) {
-				contin = true;
+				b_contin = true;
 			}
 			break;
 		}
 	}
 	//Reset selectstates
-	input.setSelectStateX(0);
-	input.setSelectStateY(0);
+	g_Input.selectState.reset();
 
 	/* Player Finalization */
-	//Apply player stats
-	player.applyStats();
-	player.applyRacePassive();
+	//Apply g_Player stats
+	g_Player.levelUp();
+	g_Player.applyRacePassive();
 	//Apply Weight of items
-	player.applyCurrentWeight();
+	g_Player.applyCurrentWeight();
 	
 	/* GAME */
-	contin = false;
-	while (!contin) {
+	//g_Game over condition
+	b_contin = false;
+	while (!b_contin) {
 		// Battle- Actions, Enemy race/weapons/position, Player Position
-		if (!player.inBattle) { //Wandering Scene
-			scene.WanderScene(input.getSelectStateX());
-
-			keyPress = _getch();
-			input.ADNav(keyPress, 2);
-			switch (input.getSelectStateX()) {
-			case 0: // Actions (move forward)
-				break;
-			case 1: // Inventory (Prompts inventory)
-				if (keyPress == SPAC) {
-					input.InventoryInput();
-				}
-				break;
-			case 2: // Other (Game Exit, Tutorials)
-				break;
-			}
+		if (!g_Player.b_inBattle) { //Wandering Scene
+			b_contin = g_Input.wanderInput();
 		}
-		else if(player.inBattle){ //Battling Scene
+		else if(g_Player.b_inBattle){ //Battling Scene
 
 		}
 	}
+
+	std::cout << "Thanks for playing! Press [Space] to continue";
+	_getch();
 }
