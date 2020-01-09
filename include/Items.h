@@ -6,13 +6,13 @@
 class Items {
 private:
 	/* Conditions */
-	enum class typeEnum {
+	enum class e_type {
 		melee,
 		ranged,
 		magic
 	};
 
-	enum class enchantEnum {
+	enum class e_enchant {
 		none,
 		flame,
 		penetrate,
@@ -20,7 +20,7 @@ private:
 	};
 
 	/* Weapons */
-	void createWeapon(std::string name, float weight, std::uint8_t hands, std::uint8_t range, std::uint8_t knockb, std::uint8_t dmg, typeEnum type, std::uint8_t cost);
+	void createWeapon(std::string name, float weight, std::uint8_t hands, std::uint8_t range, std::uint8_t knockb, std::uint8_t dmg, e_type type, std::uint8_t cost);
 
 	/* Armor */
 	void createArmor(std::string name, float weight, float proc, std::uint8_t cost);
@@ -41,9 +41,9 @@ public:
 		int knockb = 0;
 		int dmg = 0;
 		int enchant = 0;
-		typeEnum type;
+		e_type type;
 		std::uint8_t cost = 0;
-		bool equipped = false;
+		bool b_equipped = false;
 
 		bool operator==(const Weapon& w) {
 			if ((this->name == w.name) && (this->dmg == w.dmg) && (this->enchant == w.enchant) && (this->type == w.type)) {
@@ -81,5 +81,5 @@ public:
 	};
 	std::vector<Consumable> consumes;
 };
-extern Items item;
+extern Items g_Item;
 #endif

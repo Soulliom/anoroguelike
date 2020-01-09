@@ -8,67 +8,76 @@
 class InputManager {
 private:
 	//Current Selected Item
-	struct selectStateStruct {
+	struct SelectState {
 		std::int8_t x = 0;
 		std::int8_t y = 0;
+
+		void reset();
 	};
 public:
 	/* Pauses, Inputs, Navigations.*/
 	//Text- What text will be displayed. Seconds- length of delay. Key- what key is needed to press to continue, NULL for none.
-	void Pause(std::string text, const unsigned int seconds, const unsigned int key = NULL);
+	void pause(std::string text, const unsigned int seconds, const unsigned int key = NULL);
 	//cin String Input
-	std::string StringInput(std::string text);
+	std::string stringInput(std::string text);
 	//cin Int Input
-	int IntInput(std::string text);
+	int intInput(std::string text);
 	//Up/Down Navigation
-	void WSNav(unsigned int input, const int max);
+	void upDownNav(unsigned int g_Input, const int max);
 	//Left/Right Navigation
-	void ADNav(unsigned int input, const int max);
+	void leftRightNav(unsigned int g_Input, const int max);
 	//Up/Left/Down/Right Navigation (Patent Pending)
 
 	/* Inputs for Specific Scenes */
-	// Returns contin
-	void SeedInput();
+	// Returns b_contin
+	void seedInput();
 	// WEAPONS
-	void WepInput();
-	void MeleeInput();
-	void RangedInput();
-	void MagicInput();
-	bool ViewWepInput(Items::Weapon wep);
-	bool BuyWepInput(Items::Weapon wep);
-	void WepInvInput();
+	void wepInput();
+	void meleeInput();
+	void rangedInput();
+	void magicInput();
+	bool viewWepInput(Items::Weapon wep);
+	bool buyWepInput(Items::Weapon wep);
+	void wepInvInput();
 	// ARMORS 
-	void ArmInput();
-	bool ViewArmInput(Items::Armor arm);
-	bool BuyArmInput(Items::Armor arm);
-	void ArmInvInput();
+	void armInput();
+	bool viewArmInput(Items::Armor arm);
+	bool buyArmInput(Items::Armor arm);
+	void armInvInput();
 	// CONSUMABLES
-	void ConInput();
-	bool ViewConInput(Items::Consumable con);
-	bool BuyConInput(Items::Consumable con);
-	void ConInvInput(); 
+	void conInput();
+	bool viewConInput(Items::Consumable con);
+	bool buyConInput(Items::Consumable con);
+	void conInvInput(); 
 
-	// Inventory 
-	void InventoryInput();
+	// Player's Inventory
+	void inventoryInput();
+
+	//g_Game Scenes
+	//Wandering
+	int wanderInput();
+	void wanderActionInput();
+	int otherInput();
 
 	/* Inputs for Options in Scenes */
-	//Difficulty Input
-	void DiffInput(selectStateStruct selectState);
-	//Race Character Customization Input
-	void RaceInput(selectStateStruct selectState);
+	//Difficulty Input (Settings)
+	void diffInput(SelectState selectState);
+	//Race Character Customization Input 
+	void raceInput(SelectState selectState);
 	//Class Character Customization Input
-	void ClasInput(selectStateStruct selectState);
+	void clasInput(SelectState selectState);
 
 	// SelectState Obj
-	selectStateStruct selectState;
+	SelectState selectState;
 
 	/* Getters/Setters */
-	//Set Select State
-	void setSelectStateX(unsigned int x);
-	void setSelectStateY(unsigned int y);
 	//Get Select State
 	int getSelectStateX();
 	int getSelectStateY();
 };
-extern InputManager input;
+
+//Main g_Input
+extern InputManager g_Input;
+//Backup g_Input
+extern InputManager g_Bpinput;
 #endif 

@@ -6,21 +6,9 @@
 #include "Character.h"
 #include "Items.h"
 
-class Player {
+class Player : public Character{
 public:
 	Player();
-
-	/* Game Settings */
-	//Difficulty
-	std::string diff = "Easy";
-	float diffRate = 0.80f;
-	// Seed
-	unsigned int seed = NULL;
-	//Turns;
-	int turns = 0;
-	int maxTurns = 1;
-	//In battle
-	bool inBattle = false;
 
 	/* Player Settings */
 	// Health
@@ -40,12 +28,14 @@ public:
 	int maxLevel = 10;
 	// Experience
 	int exp = 0;
-	int maxExp = 10;
+	int maxExp = 2;
 	// Weight
 	float weight = 0;
 	float maxWeight = 1;
 	// Gold (Pregame)
 	int gold = 350; //Spent during pregame shop
+	//In battle
+	bool b_inBattle = false;
 
 	/* Player's Inventory */
 	// Player Weapons
@@ -61,10 +51,6 @@ public:
 	//Selected Armor
 	Items::Armor selectedArm;
 
-	/* Character Settings */
-	//Player's Character
-	Character ch;
-
 	/* Functions */
 	//Aquire Items
 	void aquireWep(Items::Weapon wep);
@@ -77,14 +63,14 @@ public:
 	void useConsume(Items::Consumable con, int state);
 
 	//Applies actual stats (e.g. health) from stats (e.g. fortitude)
-	void applyStats();
+	void levelUp();
 	//Applies race passives to Player
 	void applyRacePassive();
-	//Apply weight by from player's inventory
+	//Apply weight by from g_Player's inventory
 	void applyCurrentWeight();
 
 private:
 };
-extern Player player;
+extern Player g_Player;
 
 #endif // !PLAYER_H

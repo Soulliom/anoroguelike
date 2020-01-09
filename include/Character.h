@@ -14,7 +14,7 @@ public:
 		int perception = 0; // Perception: Ranged Hit Chance, Stress Cap
 	} stats;
 
-	const enum RaceEnum {
+	const enum e_Race {
 		Elf,    // +2 Wis, +1 Per, -1 Str  |Passive| Extra Mana / carry less
 		Orc,    // +2 Str, +1 Fort, -2 Per |Passive| NONE
 		Human,  // +1 Per, +1 Wis, +1 Fort |Passive| NONE
@@ -23,15 +23,15 @@ public:
 		Gnome   // +2 Agl, +1 Per, -1 Wis  |Passive| Moves faster / carry less
 	};
 
-	const enum ClassEnum {
+	const enum e_Class {
 		Warrior,  // |Weapon| Swords , shield      |Armor| Heavy  |Abilty| Roll Str, Extra run speed for x turns
 		Ranger,   // |Weapon| bows, guns           |Armor| Medium |Abilty| Roll Perception, Extra x turns
 		Magician, // |Weapon|  staffs, books       |Armor| Robe   |Abilty| Roll Wisdom, choose: temp extra weapon range, temp extra damage
 		Bandit    // |Weapon| daggers, throwables  |Armor| Light  |Abilty| Roll Dex, hidden for x turns
 	};
 
-	int race = RaceEnum(Elf);
-	int clas = ClassEnum(Warrior);
+	int race = e_Race(Elf);
+	int clas = e_Class(Warrior);
 	//Display race string
 	std::string raceStr = "Elf";
 	//Display class string
