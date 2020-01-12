@@ -4,11 +4,11 @@ Character::Character() {
 	
 }
 
-void Character::randStats() {
+void Character::randStats(int t_extra) {
 	//Skip
 	bool skip = false;
 	//Maximum number of points
-	int max = 16;
+	int max = 16 + t_extra;
 	//Points given to a stat
 	unsigned int min = rand() % (max / 2) + 1;
 	//Randomized stat order
@@ -18,7 +18,7 @@ void Character::randStats() {
 
 	int total = 0;
 
-	while (max > 2) {
+	while (max > 0) {
 		//Runs loop for amount of stats
 		for (int i = 0; i < 5; i++) {
 			//Chooses random stat to start first
@@ -43,19 +43,19 @@ void Character::randStats() {
 				//Choose random stat
 				switch (chs) {
 				case 0:
-					this->stats.strength += min;
+					stats.strength += min;
 					break;
 				case 1:
-					this->stats.fortitude += min;
+					stats.fortitude += min;
 					break;
 				case 2:
-					this->stats.agility += min;
+					stats.agility += min;
 					break;
 				case 3:
-					this->stats.wisdom += min;
+					stats.wisdom += min;
 					break;
 				case 4:
-					this->stats.perception += min;
+					stats.perception += min;
 					break;
 				}
 			}
@@ -69,69 +69,69 @@ void Character::randStats() {
 }
 
 void Character::resetStats() {
-	this->stats.strength = 0;
-	this->stats.fortitude = 0;
-	this->stats.agility = 0;
-	this->stats.wisdom = 0;
-	this->stats.perception = 0;
+	stats.strength = 0;
+	stats.fortitude = 0;
+	stats.agility = 0;
+	stats.wisdom = 0;
+	stats.perception = 0;
 }
 
-void Character::configRaceStats(Stats* raceStat) {
-	switch(this->race){
-		case Character::Elf:
-			raceStat->strength = -1;
-			raceStat->fortitude = 0;
-			raceStat->agility = 0;
-			raceStat->wisdom = 2;
-			raceStat->perception = 1;
-			break;
+void Character::configRaceStats(Stats* t_raceStat) {
+	switch(race){
+	case Character::e_Race::ELF:
+		t_raceStat->strength = -1;
+		t_raceStat->fortitude = 0;
+		t_raceStat->agility = 0;
+		t_raceStat->wisdom = 2;
+		t_raceStat->perception = 1;
+		break;
 
-		case Character::Orc:
-			raceStat->strength = 2;
-			raceStat->fortitude = 1;
-			raceStat->agility = 0;
-			raceStat->wisdom = 0;
-			raceStat->perception = -2;
-			break;
+	case Character::e_Race::ORC:
+		t_raceStat->strength = 2;
+		t_raceStat->fortitude = 1;
+		t_raceStat->agility = 0;
+		t_raceStat->wisdom = 0;
+		t_raceStat->perception = -2;
+		break;
 
-		case Character::Human:
-			raceStat->strength = 0;
-			raceStat->fortitude = 1;
-			raceStat->agility = 0;
-			raceStat->wisdom = 1;
-			raceStat->perception = 1;
-			break;
+	case Character::e_Race::HUMAN:
+		t_raceStat->strength = 0;
+		t_raceStat->fortitude = 1;
+		t_raceStat->agility = 0;
+		t_raceStat->wisdom = 1;
+		t_raceStat->perception = 1;
+		break;
 
-		case Character::Goblin:
-			raceStat->strength = 1;
-			raceStat->fortitude = 0;
-			raceStat->agility = 1;
-			raceStat->wisdom = 0;
-			raceStat->perception = 1;
-			break;
+	case Character::e_Race::GOBLIN:
+		t_raceStat->strength = 1;
+		t_raceStat->fortitude = 0;
+		t_raceStat->agility = 1;
+		t_raceStat->wisdom = 0;
+		t_raceStat->perception = 1;
+		break;
 
-		case Character::Dwarf:
-			raceStat->strength = 1;
-			raceStat->fortitude = 2;
-			raceStat->agility = -1;
-			raceStat->wisdom = 0;
-			raceStat->perception = 0;
-			break;
+	case Character::e_Race::DWARF:
+		t_raceStat->strength = 1;
+		t_raceStat->fortitude = 2;
+		t_raceStat->agility = -1;
+		t_raceStat->wisdom = 0;
+		t_raceStat->perception = 0;
+		break;
 
-		case Character::Gnome:
-			raceStat->fortitude = 0;
-			raceStat->strength = 0;
-			raceStat->agility = 2;
-			raceStat->wisdom = -1;
-			raceStat->perception = 1;
-			break;
+	case Character::e_Race::GNOME:
+		t_raceStat->fortitude = 0;
+		t_raceStat->strength = 0;
+		t_raceStat->agility = 2;
+		t_raceStat->wisdom = -1;
+		t_raceStat->perception = 1;
+		break;
 	}
 }
 
-void Character::combineRaceStats(Stats* raceStat) {
-	this->stats.strength += raceStat->strength;
-	this->stats.fortitude += raceStat->fortitude;
-	this->stats.agility += raceStat->agility;
-	this->stats.wisdom += raceStat->wisdom;
-	this->stats.perception += raceStat->perception;
+void Character::combineRaceStats(Stats* t_raceStat) {
+	stats.strength += t_raceStat->strength;
+	stats.fortitude += t_raceStat->fortitude;
+	stats.agility += t_raceStat->agility;
+	stats.wisdom += t_raceStat->wisdom;
+	stats.perception += t_raceStat->perception;
 }

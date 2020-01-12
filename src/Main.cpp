@@ -9,15 +9,15 @@
 #include "../include/Enemy.h"
 
 /*-------TODO--------
- 1/2 dmg from other class weapons
- random enemy gen
- random wep gen
+ Cripple shop; 2 items, 2 armors, 1 consumable randomly generated.
+ Figure out what range is
+ room generator (3rd)
+ loot generator (4th)
  Battle Scene
  Class bonus check in each battle
  Combat Tutorial Scene 
- Vector enemies
+ hint: Vector enemies
  Balance Scenes 
- if weight > maxweight -50% speed
 */
 
 GameManager g_Game;
@@ -26,7 +26,6 @@ InputManager g_Input;
 InputManager g_Bpinput;
 Items g_Item;
 Player g_Player;
-Enemy g_Enemy;
 
 int main() {
 	/* INIT */
@@ -212,7 +211,7 @@ int main() {
 	//g_Game over condition
 	b_contin = false;
 	while (!b_contin) {
-		// Battle- Actions, Enemy race/weapons/position, Player Position
+		// Battle- Actions, Enemy race/v_Weapons/position, Player Position
 		if (!g_Player.b_inBattle) { //Wandering Scene
 			b_contin = g_Input.wanderInput();
 		}

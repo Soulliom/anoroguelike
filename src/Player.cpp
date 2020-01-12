@@ -3,108 +3,132 @@
 
 Player::Player() {
 	//Selected Weapon
-	selectedWep[0] = g_Item.weapons[12];
-	selectedWep[1] = g_Item.weapons[12];
+	selectedWep[0] = g_Item.v_Weapons[12];
+	selectedWep[1] = g_Item.v_Weapons[12];
 
 	//Selected Armor
-	selectedArm = g_Item.armors[3];
+	selectedArm = g_Item.v_Armors[3];
 }
 
-void Player::aquireWep(Items::Weapon wep) {
-	this->wep.push_back(wep);
+void Player::aquireWep(Items::Weapon t_wep) {
+	if (t_wep.type == Items::e_Type::MELEE && (clas != e_Class::WARRIOR && clas != e_Class::BANDIT)) {
+		t_wep.dmg /= 2;
+	}
+	if (t_wep.type == Items::e_Type::RANGED && (clas != e_Class::RANGER && clas != e_Class::BANDIT)) {
+		t_wep.dmg /= 2;
+	}
+	if (t_wep.type == Items::e_Type::MAGIC && clas != e_Class::MAGICIAN) {
+		t_wep.dmg /= 2;
+	}
+
+	v_Wep.push_back(t_wep);
 }
 
-void Player::aquireArm(Items::Armor arm) {
-	this->arm.push_back(arm);
+void Player::aquireArm(Items::Armor t_arm) {
+	v_Arm.push_back(t_arm);
 }
 
-void Player::aquireCon(Items::Consumable con) {
-	this->con.push_back(con);
+void Player::aquireCon(Items::Consumable t_con) {
+	v_Con.push_back(t_con);
 }
 
 void Player::levelUp() {
+	//Give option to upgrade stat
+	//Dont allow if stat > 10
+
 	//Health
-	this->maxHealth = stats.fortitude * 2;
-	this->health = maxHealth;
+	maxHealth = stats.fortitude * 2;
+	health = maxHealth;
 	//Mana
-	this->maxMana = stats.wisdom * 3;
-	this->mana = maxMana;
+	maxMana = stats.wisdom * 3;
+	mana = maxMana;
 	//Weight
-	this->maxWeight = stats.strength * 20;
+	maxWeight = stats.strength * 20;
 	//Stress
-	this->maxStress = stats.perception * 10;
-	this->maxStress += 10;
+	maxStress = stats.perception * 10;
+	maxStress += 10;
 	//Speed
-	this->maxSpeed = stats.agility;
-	this->speed = maxSpeed / (maxWeight / weight); // <-- make function
+	maxSpeed = stats.agility;
+	speed = maxSpeed / (maxWeight / weight); // <-- make function
 	//Exp
-	this->level++;
-	this->maxExp *= 2;
-	this->exp = 0;
+	level++;
+	maxExp *= 2;
+	exp = 0;
+	// Hit Chances;
+	meleeHit *= stats.strength;
+	rangedHit *= stats.perception;
+	specialHit *= stats.wisdom;
 }
 
 void Player::applyRacePassive() {
 	//Apply race passive
-	switch (this->race) {
-	case 0:	// Elf | Extra Mana / carry less				 
-		this->maxMana = round(maxMana * 1.2f);
-		this->mana = this->maxMana;
-		this->maxWeight = round(maxWeight * 0.8f);
+	switch (race) {
+	case e_Race::ELF:	// Elf | Extra Mana / carry less				 
+		maxMana = round(maxMana * 1.2f);
+		mana = maxMana;
+		maxWeight = round(maxWeight * 0.8f);
 		break;
 
-	case 1:	// Orc | NONE
+	case e_Race::ORC:	// Orc | NONE
 		break;	
 
-	case 2:	// Human | NONE				 
+	case e_Race::HUMAN:	// Human | NONE				 
 		break;
 
-	case 3: // Less Mana
-		this->maxMana = round(maxMana * 0.8f);
-		this->mana = this->maxMana;
+	case e_Race::GOBLIN: // Less Mana
+		maxMana = round(maxMana * 0.8f);
+		mana = maxMana;
 		break;
 
-	case 4: // Dwarf | Weight doesn't affect speed / move slower
-		this->maxWeight = 0;
+	case e_Race::DWARF: // Dwarf | Weight doesn't affect speed / move slower
+		maxWeight = 0;
 		break;
 
-	case 5: // Gnome | Moves faster / carry less
-		this->maxSpeed = round(maxSpeed * 1.2f);
-		this->maxWeight = round(maxWeight * 0.8f);
+	case e_Race::GNOME: // Gnome | Moves faster / carry less
+		maxSpeed = round(maxSpeed * 1.2f);
+		maxWeight = round(maxWeight * 0.8f);
 		break;
 	}
 }
 
 void Player::applyCurrentWeight() {
-	if (this->race == Dwarf) {
+	if (race == e_Race::DWARF) {
 		weight = 0;
 	}
 	else {
-		this->weight = 0;
-		for (auto w : this->wep) {
-			this->weight += w.weight;
+		weight = 0;
+		for (auto w : v_Wep) {
+			weight += w.weight;
 		}
-		for (auto a : this->arm) {
-			this->weight += a.weight;
+		for (auto a : v_Arm) {
+			weight += a.weight;
 		}
-		for (auto c : this->con) {
-			this->weight += c.weight;
+		for (auto c : v_Con) {
+			weight += c.weight;
 		}
+	}
+
+	if (weight > maxWeight) {
+		speed = maxSpeed / 2;
+	}
+	else {
+		speed = maxSpeed;
 	}
 }
 
-void Player::selectWep(Items::Weapon &wep) {
-	if (wep.b_equipped == false) {
-		if (wep.hands == 2) {
-			this->selectedWep[0] = wep;
-			this->selectedWep[1] = g_Item.weapons[12]; // Replace weapon with empty
+void Player::selectWep(Items::Weapon &t_wep) {
+	if (t_wep.b_equipped == false) {
+		if (t_wep.hands == 2) {
+			selectedWep[0] = t_wep;
+			selectedWep[1] = g_Item.v_Weapons[12]; // Replace weapon with empty
 
-			for (auto& w : this->wep) {
+			for (auto& w : v_Wep) {
 				w.b_equipped = false;
 			}
-			wep.b_equipped = true;
+			t_wep.b_equipped = true;
 		}
 
-		else if (wep.hands == 1) {
+		else if (t_wep.hands == 1) {
 			//Prompt which hand (1st or second) 
 			std::cout << "\nWhich hand would you like to equip this weapon to? [1] OR [2]\n";
 
@@ -113,57 +137,57 @@ void Player::selectWep(Items::Weapon &wep) {
 				int keyPress = _getch();
 				
 				if (keyPress == 49) { //49 = 1 ASCII
-					this->selectedWep[0] = wep;
+					selectedWep[0] = t_wep;
 
 					if (selectedWep[0].hands == 2) {
-						selectedWep[0] = g_Item.weapons.at(12);
+						selectedWep[0] = g_Item.v_Weapons.at(12);
 					}
 
-					for (auto& w : this->wep) {
+					for (auto& w : v_Wep) {
 						if (!(w == selectedWep[1])) {
 							w.b_equipped = false;
 						}
 					}
 
-					wep.b_equipped = true;
+					t_wep.b_equipped = true;
 					b_contin = true;
 				}
 				else if (keyPress == 50) { // 59 = 2 ASCII
-					this->selectedWep[1] = wep;
+					selectedWep[1] = t_wep;
 
 					if (selectedWep[0].hands == 2) {
-						selectedWep[0] = g_Item.weapons.at(12);
+						selectedWep[0] = g_Item.v_Weapons.at(12);
 					}
 
-					for (auto& w : this->wep) {
+					for (auto& w : v_Wep) {
 						if (!(w == selectedWep[0])) {
 							w.b_equipped = false;
 						}
 					}
 
-					wep.b_equipped = true;
+					t_wep.b_equipped = true;
 					b_contin = true;
 				}
 			}
 		}
 
-		g_Input.pause("You've b_equipped a weapon! Press [Space] to continue", 0, SPAC);
+		g_Input.pause("You've equipped a weapon! Press [Space] to continue", 0, SPAC);
 	}
 	else {
-		g_Input.pause("You've already b_equipped this weapon! Press [Space] to continue", 0, SPAC);
+		g_Input.pause("You've already equipped this weapon! Press [Space] to continue", 0, SPAC);
 	}
 }
 
-void Player::selectArm(Items::Armor arm) {
-	this->selectedArm = arm;
-	g_Input.pause("You've b_equipped an armor! Press [Space] to continue", 0, SPAC);
+void Player::selectArm(Items::Armor t_arm) {
+	selectedArm = t_arm;
+	g_Input.pause("You've equipped an armor! Press [Space] to continue", 0, SPAC);
 }
 
-void Player::useConsume(Items::Consumable con, int state) {
+void Player::useConsume(Items::Consumable t_con, int t_state) {
 	g_Input.pause("You used a potion! Press [Space] to continue", 0, SPAC);
-	this->health += con.amou;
-	if (this->health > this->maxHealth) {
-		this->health == this->maxHealth;
+	health += t_con.amou;
+	if (health > maxHealth) {
+		health = maxHealth;
 	}
-	this->con.erase(this->con.begin() + state);
+	v_Con.erase(v_Con.begin() + t_state);
 }
