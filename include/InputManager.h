@@ -17,16 +17,15 @@ private:
 public:
 	/* Pauses, Inputs, Navigations.*/
 	//Text- What text will be displayed. Seconds- length of delay. Key- what key is needed to press to continue, NULL for none.
-	void pause(std::string text, const unsigned int seconds, const unsigned int key = NULL);
+	void pause(std::string t_text, const unsigned int t_seconds, const unsigned int t_key = NULL);
 	//cin String Input
-	std::string stringInput(std::string text);
+	std::string stringInput(std::string t_text);
 	//cin Int Input
-	int intInput(std::string text);
+	int intInput(std::string t_text);
 	//Up/Down Navigation
-	void upDownNav(unsigned int g_Input, const int max);
+	void upDownNav(unsigned int t_input, const int max);
 	//Left/Right Navigation
-	void leftRightNav(unsigned int g_Input, const int max);
-	//Up/Left/Down/Right Navigation (Patent Pending)
+	void leftRightNav(unsigned int t_input, const int max);
 
 	/* Inputs for Specific Scenes */
 	// Returns b_contin
@@ -36,24 +35,24 @@ public:
 	void meleeInput();
 	void rangedInput();
 	void magicInput();
-	bool viewWepInput(Items::Weapon wep);
-	bool buyWepInput(Items::Weapon wep);
+	bool viewWepInput(Items::Weapon t_wep);
+	bool buyWepInput(Items::Weapon t_wep);
 	void wepInvInput();
 	// ARMORS 
 	void armInput();
-	bool viewArmInput(Items::Armor arm);
-	bool buyArmInput(Items::Armor arm);
+	bool viewArmInput(Items::Armor t_arm);
+	bool buyArmInput(Items::Armor t_arm);
 	void armInvInput();
 	// CONSUMABLES
 	void conInput();
-	bool viewConInput(Items::Consumable con);
-	bool buyConInput(Items::Consumable con);
+	bool viewConInput(Items::Consumable t_con);
+	bool buyConInput(Items::Consumable t_con);
 	void conInvInput(); 
 
 	// Player's Inventory
 	void inventoryInput();
 
-	//g_Game Scenes
+	//Game Scenes
 	//Wandering
 	int wanderInput();
 	void wanderActionInput();
@@ -61,11 +60,11 @@ public:
 
 	/* Inputs for Options in Scenes */
 	//Difficulty Input (Settings)
-	void diffInput(SelectState selectState);
+	void diffInput(SelectState t_selectState);
 	//Race Character Customization Input 
-	void raceInput(SelectState selectState);
+	void raceInput(SelectState t_selectState);
 	//Class Character Customization Input
-	void clasInput(SelectState selectState);
+	void clasInput(SelectState t_selectState);
 
 	// SelectState Obj
 	SelectState selectState;

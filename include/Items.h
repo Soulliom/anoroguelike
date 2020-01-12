@@ -4,35 +4,27 @@
 #include "DEFINITIONS.h"
 
 class Items {
-private:
-	/* Conditions */
-	enum class e_type {
-		melee,
-		ranged,
-		magic
-	};
-
-	enum class e_enchant {
-		none,
-		flame,
-		penetrate,
-		vamp
-	};
-
-	/* Weapons */
-	void createWeapon(std::string name, float weight, std::uint8_t hands, std::uint8_t range, std::uint8_t knockb, std::uint8_t dmg, e_type type, std::uint8_t cost);
-
-	/* Armor */
-	void createArmor(std::string name, float weight, float proc, std::uint8_t cost);
-
-	/* Consumables */
-	void createConsume(std::string name, float weight, float amou, std::uint8_t cost);
-
-	// Lesser/Medium/Large
-
 public:
 	Items();
 
+	/* Conditions */
+	const enum class e_Type {
+		NONE,
+		MELEE,
+		RANGED,
+		MAGIC
+	};
+
+	const enum class e_Enchant {
+		NONE,
+		FLAME,
+		PENETRATE,
+		VAMP
+	};
+
+	/* ITEMS */
+
+	/* Weapons */
 	struct Weapon {
 		std::string name = "";
 		int range = 0; //based in feet
@@ -40,13 +32,14 @@ public:
 		int hands = 0; //Upto 2 hands
 		int knockb = 0;
 		int dmg = 0;
-		int enchant = 0;
-		e_type type;
+		float dmgMulti = 0;
+		e_Enchant enchant = e_Enchant::NONE;
+		e_Type type = e_Type::NONE;
 		std::uint8_t cost = 0;
 		bool b_equipped = false;
 
-		bool operator==(const Weapon& w) {
-			if ((this->name == w.name) && (this->dmg == w.dmg) && (this->enchant == w.enchant) && (this->type == w.type)) {
+		inline bool operator==(const Weapon& t_wep) {
+			if ((name == t_wep.name) && (dmg == t_wep.dmg) && (enchant == t_wep.enchant) && (type == t_wep.type)) {
 				return true;
 			}
 			else{
@@ -54,16 +47,17 @@ public:
 			}
 		}
 	};
-	std::vector<Weapon> weapons;
+	std::vector<Weapon> v_Weapons;
 
+	/* Armors */
 	struct Armor {
 		std::string name = "";
 		float protection = 0; //How much less damage is taken
 		float weight = 0;
 		std::uint8_t cost = 0;
 
-		bool operator==(const Armor& a) {
-			if ((this->name == a.name) && (this->protection == a.protection)) {
+		inline bool operator==(const Armor& t_arm) {
+			if ((name == t_arm.name) && (protection == t_arm.protection)) {
 				return true;
 			}
 			else {
@@ -71,15 +65,26 @@ public:
 			}
 		}
 	};
-	std::vector<Armor> armors;
+	std::vector<Armor> v_Armors;
 
-	struct Consumable {
+	/* Consumables */
+	inline struct Consumable {
 		std::string name = "";
 		float amou = 0;
 		float weight = 0;
 		std::uint8_t cost = 0;
 	};
-	std::vector<Consumable> consumes;
+	std::vector<Consumable> v_Consumes;
+
+private:
+	/* Weapons */
+	void createWeapon(std::string t_name, float t_weight, std::uint8_t t_hands, std::uint8_t t_range, std::uint8_t t_knockb, std::uint8_t t_dmg, float t_dmgMulti ,e_Type t_type, std::uint8_t t_cost);
+
+	/* Armor */
+	void createArmor(std::string t_name, float t_weight, float t_proc, std::uint8_t cost);
+
+	/* Consumables */
+	void createConsume(std::string t_name, float t_weight, float t_amou, std::uint8_t cost);
 };
 extern Items g_Item;
 #endif

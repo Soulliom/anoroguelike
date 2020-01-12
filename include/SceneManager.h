@@ -9,7 +9,8 @@
 class SceneManager {
 private:
 	//If current g_Item is selected
-	void isSelected(std::string text, int selectColor, int defaultColor, std::int8_t state, std::int8_t selectState);
+	void isSelected(std::string t_text, int t_selectColor, int t_defaultColor, std::int8_t t_state, std::int8_t t_selectState);
+
 public:
 	//Console Init
 	SceneManager();
@@ -18,9 +19,9 @@ public:
 
 	/* Settings Scenes */
 	//Settings Scene
-	void settingsScene(std::int8_t state, std::string diff, long seed);
+	void settingsScene(std::int8_t t_state, std::string t_diff, long t_seed);
 	//Seed Setting Scene
-	void seedScene(std::int8_t state, long long seed);
+	void seedScene(std::int8_t t_state, long long t_seed);
 	//Character Tutorial 1
 	void charTut1Scene();
 	//Character Tutorial 2
@@ -32,37 +33,43 @@ public:
 
 	/* Character Customization Scenes*/
 	//Character Scene
-	void characterScene(std::int8_t state, std::string race, std::string clas, Character::Stats stats, Character::Stats raceStats);
+	void characterScene(std::int8_t t_state, std::string t_race, std::string t_clas, Character::Stats t_stats, Character::Stats t_raceStats);
 
 	/* Shop Scenes */
 	//Shop Scene
-	void shopScene(std::int8_t state, int gold);
+	void shopScene(std::int8_t t_state, int t_gold);
 	//Weapons Shop Scene
-	void weaponsScene(std::int8_t state);
+	void weaponsScene(std::int8_t t_state);
 	//Melee Shop Scene
-	void meleeScene(std::int8_t state, std::vector<Items::Weapon> weapons);
+	void meleeScene(std::int8_t t_state, std::vector<Items::Weapon> t_weapons);
 	//Ranged Shop Scene
-	void rangedScene(std::int8_t state, std::vector<Items::Weapon> weapons);
+	void rangedScene(std::int8_t t_state, std::vector<Items::Weapon> t_weapons);
 	//Magic Shop Scene
-	void magicScene(std::int8_t state, std::vector<Items::Weapon> weapons);
+	void magicScene(std::int8_t t_state, std::vector<Items::Weapon> t_weapons);
 	//Armor Scene
-	void armorsScene(std::int8_t state, std::vector<Items::Armor> armors);
+	void armorsScene(std::int8_t t_state, std::vector<Items::Armor> t_armors);
 	//Consumtion Scene
-	void consumeScene(std::int8_t state, std::vector<Items::Consumable> consume);
+	void consumeScene(std::int8_t t_state, std::vector<Items::Consumable> t_consume);
 
-	/* Items + Inventory */
-	void viewWeapon(Items::Weapon weapon);
-	void viewArmor(Items::Armor armor);
-	void viewConsume(Items::Consumable consume);
-	void viewInventory(std::int8_t state); //TODO: Check if weapon, armor, or consumables exist
-	void viewWepInv(std::int8_t stateY, std::int8_t stateX);
-	void viewArmInv(std::int8_t stateY, std::int8_t stateX);
-	void viewConInv(std::int8_t stateY, std::int8_t stateX);
+	/* View Items */
+	void viewWeapon(Items::Weapon t_weapon);
+	void viewArmor(Items::Armor t_armor);
+	void viewConsume(Items::Consumable t_consume);
+	void viewInventory(std::int8_t t_state);
+
+	/* View Inventory */
+	void viewWepInv(std::int8_t t_stateY, std::int8_t t_stateX);
+	void viewArmInv(std::int8_t t_stateY, std::int8_t t_stateX);
+	void viewConInv(std::int8_t t_stateY, std::int8_t t_stateX);
 
 	/* Game Scenes */
-	void wanderScene(std::int8_t stateX);
-	void wanderActionScene(std::int8_t stateX);
-	void otherScene(std::int8_t stateY);
+	void wanderScene(std::int8_t t_state);
+	void wanderActionScene(std::int8_t t_state);
+	void otherScene(std::int8_t t_state);
+
+	/* Extra Scenes */
+	std::string typeOutput(Items::e_Type t_type);
+	std::string enchantOutput(Items::e_Enchant t_enchant);
 
 private:
 	HWND consoleWindow = GetConsoleWindow();

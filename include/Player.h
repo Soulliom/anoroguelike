@@ -32,6 +32,11 @@ public:
 	// Weight
 	float weight = 0;
 	float maxWeight = 1;
+	// Hit Chances;
+	float meleeHit = .10;
+	float rangedHit = .10;
+	float specialHit = .10;
+
 	// Gold (Pregame)
 	int gold = 350; //Spent during pregame shop
 	//In battle
@@ -39,11 +44,11 @@ public:
 
 	/* Player's Inventory */
 	// Player Weapons
-	std::vector<Items::Weapon> wep;
+	std::vector<Items::Weapon> v_Wep;
 	// Player Armor
-	std::vector<Items::Armor> arm;
+	std::vector<Items::Armor> v_Arm;
 	// Player Consumables
-	std::vector<Items::Consumable> con;
+	std::vector<Items::Consumable> v_Con;
 
 	/* Player's Selected Items */
 	//Selected Weapon
@@ -53,14 +58,14 @@ public:
 
 	/* Functions */
 	//Aquire Items
-	void aquireWep(Items::Weapon wep);
-	void aquireArm(Items::Armor arm);
-	void aquireCon(Items::Consumable con);
+	void aquireWep(Items::Weapon t_wep);
+	void aquireArm(Items::Armor t_arm);
+	void aquireCon(Items::Consumable t_con);
 
 	//Use Items
-	void selectWep(Items::Weapon &wep);
-	void selectArm(Items::Armor arm);
-	void useConsume(Items::Consumable con, int state);
+	void selectWep(Items::Weapon &t_wep);
+	void selectArm(Items::Armor t_arm);
+	void useConsume(Items::Consumable t_con, int t_state);
 
 	//Applies actual stats (e.g. health) from stats (e.g. fortitude)
 	void levelUp();
