@@ -2,30 +2,30 @@
 #define ENEMY_H
 
 #include "DEFINITIONS.h"
-#include "GameManager.h"
 #include "Character.h"
 #include "Items.h"
-#include "Player.h"
 
 class Enemy : public Character {
 public:
-	Enemy(std::string name);
+	Enemy();
 
 	/* Enemy Settings */
 	// Enemy Name
 	std::string name;
+	int num = -1;
 
 	// Health
-	float health = 0;
-	int maxHealth = 1;
+	int health = 0;
 	// Speed
 	int speed = 0;
+	int maxSpeed = 1;
 	// Levels
 	int level = 0;
-	int maxLevel = 10;
+	const int MAXLEVEL = 10;
 	// Hit Chances;
-	float meleeHit = .10;
-	float rangedHit = .10;
+	float meleeHit = .0f;
+	float rangedHit = .0f;
+	float magicHit = .0f;
 
 	/* Enemy's Selected Items */
 	//Selected Weapon
@@ -45,6 +45,8 @@ private:
 	void whatsMyClass();
 	//Randomizes Name
 	void randName();
+	//Set Position
+	void setPosition();
 };
 
 #endif // ENEMY_H

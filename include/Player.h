@@ -2,7 +2,6 @@
 #define PLAYER_H
 
 #include "DEFINITIONS.h"
-#include "InputManager.h"
 #include "Character.h"
 #include "Items.h"
 
@@ -12,35 +11,30 @@ public:
 
 	/* Player Settings */
 	// Health
-	float health = 0;
+	float health = 0.f;
 	int maxHealth = 1;
-	// Mana
-	float mana = 0;
-	int maxMana = 1;
 	// Speed
 	int speed = 0;
-	int maxSpeed = 15;
+	int maxSpeed = 1;
 	// Stress
-	float stress = 0;
+	float stress = 0.f;
 	int maxStress = 1;
 	// Levels
 	int level = 0;
-	int maxLevel = 10;
+	const int MAXLEVEL = 10;
 	// Experience
 	int exp = 0;
 	int maxExp = 2;
 	// Weight
-	float weight = 0;
-	float maxWeight = 1;
+	float weight = 0.f;
+	int maxWeight = 1;
 	// Hit Chances;
-	float meleeHit = .10;
-	float rangedHit = .10;
-	float specialHit = .10;
+	float meleeHit = .9f;
+	float rangedHit = .9f;
+	float magicHit = .9f;
 
 	// Gold (Pregame)
 	int gold = 350; //Spent during pregame shop
-	//In battle
-	bool b_inBattle = false;
 
 	/* Player's Inventory */
 	// Player Weapons
@@ -69,10 +63,10 @@ public:
 
 	//Applies actual stats (e.g. health) from stats (e.g. fortitude)
 	void levelUp();
-	//Applies race passives to Player
-	void applyRacePassive();
 	//Apply weight by from g_Player's inventory
 	void applyCurrentWeight();
+	//Set Position
+	void setPosition();
 
 private:
 };

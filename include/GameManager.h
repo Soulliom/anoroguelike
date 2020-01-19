@@ -2,12 +2,12 @@
 #define GAME_M_H
 
 #include "DEFINITIONS.h"
-#include "Player.h"
 #include "Items.h"
+#include "Enemy.h"
 
 class GameManager {
 public:
-	/* Game Settings */
+	/* GAME SETTINGS */
 	//Difficulty
 	std::string diff = "Easy";
 	float diffRate = 0.80f;
@@ -20,6 +20,23 @@ public:
 	bool b_isPlayerTurn = false;
 	//Loot nearby
 	bool b_isLoot = false;
+	//In battle
+	bool b_inBattle = false;
+
+	/* GAME */
+	std::vector<Enemy> v_Enemy;
+	std::vector<Items::Weapon> v_wepLoot;
+	std::vector<Items::Armor> v_armLoot;
+	std::vector<Items::Consumable> v_conLoot;
+	std::vector<Character::Position> v_Block;
+	Character::Position Exit;
+
+	/* GAME SECTIONS */
+	void init();
+	void settings();
+	void character();
+	void shop();
+	void game();
 
 	/* GENERATORS */
 	/* Item Generators */
@@ -30,7 +47,11 @@ public:
 	//randomly generates any consumable
 	Items::Consumable conGenerator();
 
+	/* Room Generator */
+	//Randomly generates a room full of enemies,
+	void roomGenerator();
 
+	void checkCollision();
 private:
 };
 

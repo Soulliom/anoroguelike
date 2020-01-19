@@ -9,15 +9,34 @@ class InputManager {
 private:
 	//Current Selected Item
 	struct SelectState {
-		std::int8_t x = 0;
-		std::int8_t y = 0;
-
-		void reset();
+		int x = 0;
+		int y = 0;
 	};
+
+	// SelectState Obj
+	SelectState selectState;
+
+	enum class e_gameState {
+		ACTION,
+		INSPECT,
+		PLAYER,
+		ENEMY,
+		MAP
+	};
+	e_gameState bState = e_gameState::INSPECT;
+
 public:
+	/* Getters/Setters */
+	int getSelectStateX();
+	int getSelectStateY();
+	SelectState getSelectState();
+	void resetSelectState();
+
 	/* Pauses, Inputs, Navigations.*/
 	//Text- What text will be displayed. Seconds- length of delay. Key- what key is needed to press to continue, NULL for none.
 	void pause(std::string t_text, const unsigned int t_seconds, const unsigned int t_key = NULL);
+	//Output only text, is dependent on an input
+	void output(std::string t_text, const unsigned int t_seconds);
 	//cin String Input
 	std::string stringInput(std::string t_text);
 	//cin Int Input
@@ -30,33 +49,37 @@ public:
 	/* Inputs for Specific Scenes */
 	// Returns b_contin
 	void seedInput();
+	/* SHOP */
 	// WEAPONS
-	void wepInput();
-	void meleeInput();
-	void rangedInput();
-	void magicInput();
-	bool viewWepInput(Items::Weapon t_wep);
-	bool buyWepInput(Items::Weapon t_wep);
-	void wepInvInput();
+	void weapons();
+	void melee();
+	void ranged();
+	void magic();
+	bool viewWeapons(Items::Weapon t_wep);
+	bool buyWeapons(Items::Weapon t_wep);
+	void wepInv();
 	// ARMORS 
-	void armInput();
-	bool viewArmInput(Items::Armor t_arm);
-	bool buyArmInput(Items::Armor t_arm);
-	void armInvInput();
+	void armors();
+	bool viewArmors(Items::Armor t_arm);
+	bool buyArmors(Items::Armor t_arm);
+	void armInv();
 	// CONSUMABLES
-	void conInput();
-	bool viewConInput(Items::Consumable t_con);
-	bool buyConInput(Items::Consumable t_con);
-	void conInvInput(); 
+	void consume();
+	bool viewCon(Items::Consumable t_con);
+	bool buyCon(Items::Consumable t_con);
+	void conInv();
 
 	// Player's Inventory
-	void inventoryInput();
+	void inventory();
 
 	//Game Scenes
 	//Wandering
-	int wanderInput();
-	void wanderActionInput();
-	int otherInput();
+	bool wander();
+	bool other();
+	//Battling
+	bool battle();
+	void battleAction();
+	void playerAttack(Items::Weapon& t_wep);
 
 	/* Inputs for Options in Scenes */
 	//Difficulty Input (Settings)
@@ -66,13 +89,9 @@ public:
 	//Class Character Customization Input
 	void clasInput(SelectState t_selectState);
 
-	// SelectState Obj
-	SelectState selectState;
-
-	/* Getters/Setters */
-	//Get Select State
-	int getSelectStateX();
-	int getSelectStateY();
+	/* Keypress Inputs */
+	// Movement
+	void moveInput();
 };
 
 //Main g_Input
