@@ -1,14 +1,20 @@
 #include "../include/Enemy.h"
 
-Enemy::Enemy(std::string name) {
+#include "../include/GameManager.h"
+#include "../include/Player.h"
+#include "../include/Map.h"
+
+Enemy::Enemy() {
 	//Randomize Enemy's Items
 	randItems();
 	//Randomize Enemy's Stats
 	randStats();
+	//Set Enemy's Stats
+	setStats();
 	//Set Enemy Class
 	whatsMyClass();
 	//Set Enemy Name
-
+	randName();
 	//Set Enemy Position
 }
 
@@ -20,18 +26,24 @@ void Enemy::randItems() {
 
 //Randomize stats (e.g. fortitude) and applies them to actual stats (e.g. health), and race/class
 void Enemy::setStats() {
+	//Randomize if sub or add 1 to g_Player level
+	level = abs(((rand() % 1) == 1) ? rand() % 1 + g_Player.level : rand() % 1 - g_Player.level);
+	
 	randRace();
-	randStats(g_Player.level);
-	configRaceStats(&stats);
-
+	randStats(level);
+	configRaceStats(stats);
+	setPosition();
+	
 	//Health
-	maxHealth = stats.fortitude * 2;
-	health = maxHealth;
+	health = (stats.fortitude + 1) * 3;
 	//Speed
-	speed = stats.agility;
+	maxSpeed = (abs(stats.agility) + 1) * 1.5f;
+	speed = maxSpeed;
 	// Hit Chances;
-	meleeHit *= stats.strength;
-	rangedHit *= stats.perception;
+	meleeHit = stats.strength * .8f;
+	rangedHit = stats.perception * .8f;
+	magicHit = stats.wisdom * .8f;
+
 }
 
 void Enemy::randRace() {
@@ -73,26 +85,35 @@ void Enemy::randRace() {
 void Enemy::whatsMyClass() {
 	if (selectedWep.type == Items::e_Type::MELEE) {
 		clas = e_Class::WARRIOR;
+		clasStr = "Warrior";
 	}
 
 	else if (selectedWep.type == Items::e_Type::RANGED) {
 		clas = e_Class::RANGER;
+		clasStr = "Ranger";
 	}
 
 	else if (selectedWep.type == Items::e_Type::MAGIC) {
 		clas = e_Class::MAGICIAN;
+		clasStr = "Magician";
 	}
 }
 
 void Enemy::randName() {
 	std::array<std::string, 48> nameBank{
 	"Naenelis", "Keavalur", "Qixidor", "Morzeiros", "Lular", "Morris", "Zylbella", "Inara", //Elf
-	"Gorge", "Dominick", "Zachary", "Nikkolas", "Argreg", "Davy", "Elaine", "Celestine", //Human
+	"Gorge", "Norroni", "Zachary", "Nikkolas", "Argreg", "Davy", "Elaine", "Celestine", //Human
 	"Brukk", "Ratok", "Martal", "Bogvob", "Rhokk", "Zakk", "Enka", "Ranga", // Orc
 	"Halfteeth", "Jugruk", "Dalk", "Krirk", "Redeye", "Cradrurk", "Jabrena", "Qundok", //Goblin
 	"Gryren", "Hjolkum", "Balbrek", "Ermmus", "Vonron", "Bengran", "Arlen", "Gwinris", //Dwarf
 	"Loxif", "Algrim", "Xoxif", "Zanmop", "Fargim", "Kelkur", "Eilipine", "Ariphina" //Gnome
 	};
 
-	name = nameBank.at(rand() % nameBank.size);
+	name = nameBank.at(rand() % nameBank.size());
+}
+
+void Enemy::setPosition() {
+	pos.x = rand() % (g_Map.border.width - 7) + 5;
+	pos.y = rand() % (g_Map.border.height - 2) + 1;	
+	prevPos = pos;
 }

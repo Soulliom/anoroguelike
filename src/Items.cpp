@@ -4,30 +4,30 @@ Items::Items() {
 	/* WEAPONS */
 	//Player will have 2 slots, 2 hands per slot, can switch slots at beginning or end of turn.
 	/* Melee */
-	createWeapon("Rapier", 2, 1, 6, 0, 2, 1.4, e_Type::MELEE, 100);
-	createWeapon("Claymore", 5, 2, 10, 3, 5, 1.3, e_Type::MELEE, 125);
-	createWeapon("Dagger", .5, 1, 3, 0, 3, 1.2, e_Type::MELEE, 80);
-	createWeapon("Small Shield", 4, 1, 2, 2, 1, 1.2, e_Type::MELEE, 60);
-	createWeapon("Large Shield", 8, 2, 3, 3, 3, 1.4, e_Type::MELEE, 100);
+	createWeapon("Rapier", 2, 1, 2, 0, 2, 1.2f, e_Type::MELEE, 100);
+	createWeapon("Claymore", 5, 2, 3, 1, 5, 1.3f, e_Type::MELEE, 125);
+	createWeapon("Dagger", .5f, 1, 1, 0, 3, 1.4f, e_Type::MELEE, 80);
+	createWeapon("Small Shield", 4, 2, 2, 2, 1, 1.2f, e_Type::MELEE, 60);
+	createWeapon("Large Shield", 8, 3, 3, 3, 3, 1.3f, e_Type::MELEE, 100);
 
 	/* Ranged */
-	createWeapon("Recurve Bow", 4, 2, 40, 1, 3, 1.4, e_Type::RANGED, 150);
-	createWeapon("Longbow", 2, 2, 50, 0, 2, 1.4, e_Type::RANGED, 100);
-	createWeapon("Crossbow", 8, 2, 20, 3, 5, 1.2, e_Type::RANGED, 175);
+	createWeapon("Recurve Bow", 4, 6, 5, 0, 3, 1.3f, e_Type::RANGED, 150);
+	createWeapon("Longbow", 2, 2, 10, 0, 2, 1.2f, e_Type::RANGED, 100);
+	createWeapon("Crossbow", 8, 2, 4, 1, 5, 1.4f, e_Type::RANGED, 175);
 
 	/* Magic */
-	createWeapon("Sapphire Staff", 4, 2, 25, 0, 4, 1.5, e_Type::MAGIC, 125);
-	createWeapon("Ruby Staff", 6, 1, 50, 0, 2, 1.4, e_Type::MAGIC, 90);
-	createWeapon("Book of Chaos", 3, 2, 15, 0, 5, 1.4, e_Type::MAGIC, 150);
-	createWeapon("Book of Creation", 2, 1, 30, 0, 3, 1.3, e_Type::MAGIC, 100);
+	createWeapon("Sapphire Staff", 4, 2, 5, 0, 4, 1.5f, e_Type::MAGIC, 125);
+	createWeapon("Ruby Staff", 6, 1, 7, 0, 3, 1.4f, e_Type::MAGIC, 90);
+	createWeapon("Book of Chaos", 3, 2, 3, 0, 5, 1.4f, e_Type::MAGIC, 150);
+	createWeapon("Book of Creation", 2, 1, 12, 0, 1, 1.3f, e_Type::MAGIC, 100);
 
 	/* Empty Weapon */
 	createWeapon("Empty", 0, 0, 0, 0, 0, 0, e_Type::MELEE, 0);
 
 	/* ARMORS */
-	createArmor("Light Armor", 10, .20f, 100);
-	createArmor("Medium Armor", 20, .40f, 150);
-	createArmor("Heavy Armor", 50, .60f, 200);
+	createArmor("Light Armor", 10, 1.10f, 100);
+	createArmor("Medium Armor", 20, 1.20f, 150);
+	createArmor("Heavy Armor", 40, 1.40f, 200);
 
 	/* Empty Armor*/
 	createArmor("No Armor", 0, 0, 0);

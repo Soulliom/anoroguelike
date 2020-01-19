@@ -1,12 +1,25 @@
 #include "../include/InputManager.h"
+
 #include "../include/GameManager.h"
 #include "../include/Player.h"
 #include "../include/SceneManager.h"
 
+/* Setters / Getters */
+int InputManager::getSelectStateX() {
+	return selectState.x;
+}
+int InputManager::getSelectStateY() {
+	return selectState.y;
+}
+
+InputManager::SelectState InputManager::getSelectState() {
+	return selectState;
+}
+
 //Reset selectState structs
-void InputManager::SelectState::reset() {
-	x = 0;
-	y = 0;
+void InputManager::resetSelectState() {
+	selectState.x = 0;
+	selectState.y = 0;
 }
 
 /* Pauses, Inputs, Navigations.*/
@@ -35,6 +48,19 @@ void InputManager::pause(std::string t_text, const unsigned int t_seconds, const
 			b_contin = true;
 		}
 	}
+}
+
+void InputManager::output(std::string t_text, const unsigned int t_seconds) {
+	//Sleep
+	Sleep(t_seconds * 1000);
+
+	//Collects spammed keys pressed during sleep
+	while (_kbhit()) {
+		_getch();
+	}
+
+	//Print text
+	std::cout << std::endl << t_text;
 }
 
 std::string InputManager::stringInput(std::string t_text) {
@@ -102,11 +128,11 @@ void InputManager::leftRightNav(unsigned int t_input, const int t_max) {
 
 /* Inputs for Specific Scenes*/
 void InputManager::seedInput() {
-	selectState.reset();
+	resetSelectState();
 
 	bool b_contin = false;
 	while (!b_contin) {
-		g_Scene.seedScene(g_Input.getSelectStateY(), g_Game.seed);
+		g_Scene.seed(g_Input.getSelectStateY(), g_Game.seed);
 
 		int keyPress = _getch();
 		g_Input.upDownNav(keyPress, 2);
@@ -131,35 +157,35 @@ void InputManager::seedInput() {
 		}
 	}
 
-	selectState.reset();
+	resetSelectState();
 }
 
 /* WEAPONS */
-void InputManager::wepInput() {
+void InputManager::weapons() {
 	bool b_contin = false;
 
-	selectState.reset();
+	resetSelectState();
 	while (!b_contin) {
-		g_Scene.weaponsScene(selectState.y);
+		g_Scene.weapons(selectState.y);
 
 		int keyPress = _getch();
 		g_Input.upDownNav(keyPress, 3);
 		switch (g_Input.getSelectStateY()) {
 		case 0: //Melee Shop
 			if (keyPress == SPAC) {
-				g_Input.meleeInput();
+				g_Input.melee();
 			}
 			break;
 
 		case 1: //Ranged Shop
 			if (keyPress == SPAC) {
-				g_Input.rangedInput();
+				g_Input.ranged();
 			}
 			break;
 
 		case 2: //Magic Shop
 			if (keyPress == SPAC) {
-				g_Input.magicInput();
+				g_Input.magic();
 			}
 			break;
 
@@ -169,61 +195,61 @@ void InputManager::wepInput() {
 			}
 		}
 	}
-	selectState.reset();
+	resetSelectState();
 }
 
-void InputManager::meleeInput() {
-	selectState.reset();
+void InputManager::melee() {
+	resetSelectState();
 
 	bool b_contin = false;
 	while (!b_contin) {
-		g_Scene.meleeScene(selectState.y, g_Item.v_Weapons);
+		g_Scene.melee(selectState.y, g_Item.v_Weapons);
 
 		int keyPress = _getch();
 		upDownNav(keyPress, 5);
 		switch (selectState.y) {
 		case 0: //Rapier
 			if (keyPress == SPAC) {
-				b_contin = viewWepInput(g_Item.v_Weapons.at(0));
+				b_contin = viewWeapons(g_Item.v_Weapons.at(0));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyWepInput(g_Item.v_Weapons.at(0));
+				b_contin = buyWeapons(g_Item.v_Weapons.at(0));
 			}
 			break;
 
 		case 1: //Claymore
 			if (keyPress == SPAC) {
-				b_contin = viewWepInput(g_Item.v_Weapons.at(1));
+				b_contin = viewWeapons(g_Item.v_Weapons.at(1));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyWepInput(g_Item.v_Weapons.at(1));
+				b_contin = buyWeapons(g_Item.v_Weapons.at(1));
 			}
 			break;
 
 		case 2: //Dagger
 			if (keyPress == SPAC) {
-				b_contin = viewWepInput(g_Item.v_Weapons.at(2));
+				b_contin = viewWeapons(g_Item.v_Weapons.at(2));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyWepInput(g_Item.v_Weapons.at(2));
+				b_contin = buyWeapons(g_Item.v_Weapons.at(2));
 			}
 			break;
 
 		case 3: //Small Shield
 			if (keyPress == SPAC) {
-				b_contin = viewWepInput(g_Item.v_Weapons.at(3));
+				b_contin = viewWeapons(g_Item.v_Weapons.at(3));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyWepInput(g_Item.v_Weapons.at(3));
+				b_contin = buyWeapons(g_Item.v_Weapons.at(3));
 			}
 			break;
 
 		case 4: //Large Sheild
 			if (keyPress == SPAC) {
-				b_contin = viewWepInput(g_Item.v_Weapons.at(4));
+				b_contin = viewWeapons(g_Item.v_Weapons.at(4));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyWepInput(g_Item.v_Weapons.at(4));
+				b_contin = buyWeapons(g_Item.v_Weapons.at(4));
 			}
 			break;
 
@@ -236,43 +262,43 @@ void InputManager::meleeInput() {
 		}
 	}
 
-	selectState.reset();
+	resetSelectState();
 }
 
-void InputManager::rangedInput() {
-	selectState.reset();
+void InputManager::ranged() {
+	resetSelectState();
 
 	bool b_contin = false;
 	while (!b_contin) {
-		g_Scene.rangedScene(selectState.y, g_Item.v_Weapons);
+		g_Scene.ranged(selectState.y, g_Item.v_Weapons);
 
 		int keyPress = _getch();
 		upDownNav(keyPress, 3);
 		switch (selectState.y) {
 		case 0: //Recurve Bow
 			if (keyPress == SPAC) {
-				b_contin = viewWepInput(g_Item.v_Weapons.at(5));
+				b_contin = viewWeapons(g_Item.v_Weapons.at(5));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyWepInput(g_Item.v_Weapons.at(5));
+				b_contin = buyWeapons(g_Item.v_Weapons.at(5));
 			}
 			break;
 
 		case 1: //Longbow
 			if (keyPress == SPAC) {
-				b_contin = viewWepInput(g_Item.v_Weapons.at(6));
+				b_contin = viewWeapons(g_Item.v_Weapons.at(6));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyWepInput(g_Item.v_Weapons.at(6));
+				b_contin = buyWeapons(g_Item.v_Weapons.at(6));
 			}
 			break;
 
 		case 2: //Crossbow
 			if (keyPress == SPAC) {
-				b_contin = viewWepInput(g_Item.v_Weapons.at(7));
+				b_contin = viewWeapons(g_Item.v_Weapons.at(7));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyWepInput(g_Item.v_Weapons.at(7));
+				b_contin = buyWeapons(g_Item.v_Weapons.at(7));
 			}
 			break;
 
@@ -284,52 +310,52 @@ void InputManager::rangedInput() {
 		}
 	}
 
-	selectState.reset();
+	resetSelectState();
 }
 
-void InputManager::magicInput() {
-	selectState.reset();
+void InputManager::magic() {
+	resetSelectState();
 
 	bool b_contin = false;
 	while (!b_contin) {
-		g_Scene.magicScene(selectState.y, g_Item.v_Weapons);
+		g_Scene.magic(selectState.y, g_Item.v_Weapons);
 
 		int keyPress = _getch();
 		upDownNav(keyPress, 4);
 		switch (selectState.y) {
 		case 0: //Sapphire Staff
 			if (keyPress == SPAC) {
-				b_contin = viewWepInput(g_Item.v_Weapons.at(8));
+				b_contin = viewWeapons(g_Item.v_Weapons.at(8));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyWepInput(g_Item.v_Weapons.at(8));
+				b_contin = buyWeapons(g_Item.v_Weapons.at(8));
 			}
 			break;
 
 		case 1: //Ruby Staff
 			if (keyPress == SPAC) {
-				b_contin = viewWepInput(g_Item.v_Weapons.at(9));
+				b_contin = viewWeapons(g_Item.v_Weapons.at(9));
 			}
 			else if(keyPress == ENTR){
-				b_contin = buyWepInput(g_Item.v_Weapons.at(9));
+				b_contin = buyWeapons(g_Item.v_Weapons.at(9));
 			}
 			break;
 
 		case 2: //Book of Chaos
 			if (keyPress == SPAC) {
-				b_contin = viewWepInput(g_Item.v_Weapons.at(10));
+				b_contin = viewWeapons(g_Item.v_Weapons.at(10));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyWepInput(g_Item.v_Weapons.at(10));
+				b_contin = buyWeapons(g_Item.v_Weapons.at(10));
 			}
 			break;
 
 		case 3: //Book of Creation
 			if (keyPress == SPAC) {
-				b_contin = viewWepInput(g_Item.v_Weapons.at(11));
+				b_contin = viewWeapons(g_Item.v_Weapons.at(11));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyWepInput(g_Item.v_Weapons.at(11));
+				b_contin = buyWeapons(g_Item.v_Weapons.at(11));
 			}
 			break;
 
@@ -341,16 +367,16 @@ void InputManager::magicInput() {
 		}
 	}
 
-	selectState.reset();
+	resetSelectState();
 }
 
-bool InputManager::viewWepInput(Items::Weapon t_wep) {
+bool InputManager::viewWeapons(Items::Weapon t_wep) {
 	g_Scene.viewWeapon(t_wep);
 	pause("Press [Space] to Continue!", 2, SPAC);
 	return false;
 }
 
-bool InputManager::buyWepInput(Items::Weapon t_wep){
+bool InputManager::buyWeapons(Items::Weapon t_wep){
 	//Add weapon to inventory, subtract gold by cost
 	if (g_Player.gold >= t_wep.cost) {
 		g_Player.gold -= t_wep.cost;
@@ -364,9 +390,9 @@ bool InputManager::buyWepInput(Items::Weapon t_wep){
 	}
 }
 
-void InputManager::wepInvInput() 
+void InputManager::wepInv() 
 {
-	selectState.reset();
+	resetSelectState();
 
 	bool b_contin = false;
 
@@ -429,40 +455,40 @@ void InputManager::wepInvInput()
 }
 
 /* ARMORS */
-void InputManager::armInput() {
-	selectState.reset();
+void InputManager::armors() {
+	resetSelectState();
 	
 	bool b_contin = false;
 	while (!b_contin) {
-		g_Scene.armorsScene(selectState.y, g_Item.v_Armors);
+		g_Scene.armors(selectState.y, g_Item.v_Armors);
 
 		int keyPress = _getch();
 		upDownNav(keyPress, 3);
 		switch (selectState.y) {
 		case 0: //Light Armor
 			if (keyPress == SPAC) {
-				b_contin = viewArmInput(g_Item.v_Armors.at(0));
+				b_contin = viewArmors(g_Item.v_Armors.at(0));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyArmInput(g_Item.v_Armors.at(0));
+				b_contin = buyArmors(g_Item.v_Armors.at(0));
 			}
 			break;
 
 		case 1: //Medium Armor
 			if (keyPress == SPAC) {
-				b_contin = viewArmInput(g_Item.v_Armors.at(1));
+				b_contin = viewArmors(g_Item.v_Armors.at(1));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyArmInput(g_Item.v_Armors.at(1));
+				b_contin = buyArmors(g_Item.v_Armors.at(1));
 			}
 			break;
 
 		case 2: //Heavy Armor
 			if (keyPress == SPAC) {
-				b_contin = viewArmInput(g_Item.v_Armors.at(2));
+				b_contin = viewArmors(g_Item.v_Armors.at(2));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyArmInput(g_Item.v_Armors.at(2));
+				b_contin = buyArmors(g_Item.v_Armors.at(2));
 			}
 			break;
 
@@ -474,16 +500,16 @@ void InputManager::armInput() {
 		}
 	}
 
-	selectState.reset();
+	resetSelectState();
 }
 
-bool InputManager::viewArmInput(Items::Armor t_arm) {
+bool InputManager::viewArmors(Items::Armor t_arm) {
 	g_Scene.viewArmor(t_arm);
 	pause("Press [Space] to Continue!", 2, SPAC);
 	return false;
 }
 
-bool InputManager::buyArmInput(Items::Armor t_arm) {
+bool InputManager::buyArmors(Items::Armor t_arm) {
 	//Add weapon to inventory, subtract gold by cost
 	if (g_Player.gold >= t_arm.cost) {
 		g_Player.gold -= t_arm.cost;
@@ -497,8 +523,8 @@ bool InputManager::buyArmInput(Items::Armor t_arm) {
 	}
 }
 
-void InputManager::armInvInput() {
-	selectState.reset();
+void InputManager::armInv() {
+	resetSelectState();
 
 	bool b_contin = false;
 	
@@ -540,7 +566,7 @@ void InputManager::armInvInput() {
 			case 4: // Continue
 				//Reset g_Input and b_contin
 				if (keyPress == SPAC) {
-					selectState.reset();
+					resetSelectState();
 
 					b_contin = true;
 				}
@@ -556,40 +582,40 @@ void InputManager::armInvInput() {
 }
 
 /* CONSUMABLES */
-void InputManager::conInput() {
-	selectState.reset();
+void InputManager::consume() {
+	resetSelectState();
 
 	bool b_contin = false;
 	while (!b_contin) {
-		g_Scene.consumeScene(selectState.y, g_Item.v_Consumes);
+		g_Scene.consume(selectState.y, g_Item.v_Consumes);
 
 		int keyPress = _getch();
 		upDownNav(keyPress, 3);
 		switch (selectState.y) {
 		case 0: //Lesser healing potion
 			if (keyPress == SPAC) {
-				b_contin = viewConInput(g_Item.v_Consumes.at(0));
+				b_contin = viewCon(g_Item.v_Consumes.at(0));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyConInput(g_Item.v_Consumes.at(0));
+				b_contin = buyCon(g_Item.v_Consumes.at(0));
 			}
 			break;
 
 		case 1: //Healing potion
 			if (keyPress == SPAC) {
-				b_contin = viewConInput(g_Item.v_Consumes.at(1));
+				b_contin = viewCon(g_Item.v_Consumes.at(1));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyConInput(g_Item.v_Consumes.at(1));
+				b_contin = buyCon(g_Item.v_Consumes.at(1));
 			}
 			break;
 
 		case 2: //Bigger healing potion
 			if (keyPress == SPAC) {
-				b_contin = viewConInput(g_Item.v_Consumes.at(2));
+				b_contin = viewCon(g_Item.v_Consumes.at(2));
 			}
 			else if (keyPress == ENTR) {
-				b_contin = buyConInput(g_Item.v_Consumes.at(2));
+				b_contin = buyCon(g_Item.v_Consumes.at(2));
 			}
 			break;
 
@@ -601,16 +627,16 @@ void InputManager::conInput() {
 		}
 	}
 
-	selectState.reset();
+	resetSelectState();
 }
 
-bool InputManager::viewConInput(Items::Consumable t_con) {
+bool InputManager::viewCon(Items::Consumable t_con) {
 	g_Scene.viewConsume(t_con);
 	pause("Press [Space] to Continue!", 2, SPAC);
 	return false;
 }
 
-bool InputManager::buyConInput(Items::Consumable t_con) {
+bool InputManager::buyCon(Items::Consumable t_con) {
 	//Add weapon to inventory, subtract gold by cost
 	if (g_Player.gold >= t_con.cost) {
 		g_Player.gold -= t_con.cost;
@@ -624,8 +650,8 @@ bool InputManager::buyConInput(Items::Consumable t_con) {
 	}
 }
 
-void InputManager::conInvInput() {
-	selectState.reset();
+void InputManager::conInv() {
+	resetSelectState();
 
 	bool b_contin = false;
 
@@ -679,8 +705,8 @@ void InputManager::conInvInput() {
 } 
 
 //Inventory Input/Scene
-void InputManager::inventoryInput() {
-	selectState.reset();
+void InputManager::inventory() {
+	resetSelectState();
 
 	bool b_contin = false;
 	while (!b_contin) {
@@ -692,21 +718,21 @@ void InputManager::inventoryInput() {
 		switch (selectState.y) {
 		case 0: // Weapons Inventory
 			if (keyPress == SPAC) {
-				wepInvInput();
+				wepInv();
 				b_contin = false;
 			}
 			break;
 
 		case 1: // Armor
 			if (keyPress == SPAC) {
-				g_Input.armInvInput();
+				g_Input.armInv();
 				b_contin = false;
 			}
 			break;
 
 		case 2: // Consumables
 			if (keyPress == SPAC) {
-				g_Input.conInvInput();
+				g_Input.conInv();
 				b_contin = false;
 			}
 			break;
@@ -719,90 +745,83 @@ void InputManager::inventoryInput() {
 		}
 	}
 
-	selectState.reset();
+	resetSelectState();
 }
 
-int InputManager::wanderInput() {
-	g_Scene.wanderScene(selectState.x);
-
-	int keyPress = _getch();
-	g_Input.leftRightNav(keyPress, 2);
-
-	switch (selectState.x) {
-	case 0: // Actions (move forward)
-		if (keyPress == SPAC) {
-			wanderActionInput();
-		}
-		break;
-
-	case 1: // Inventory (Prompts inventory)
-		if (keyPress == SPAC) {
-			inventoryInput();
-		}
-		break;
-
-	case 2: // Other (g_Game Exit, Tutorials)
-		if (keyPress == SPAC) {
-			if (otherInput()) {
-				return true;
-			}
-		}
-		break;
-	}
-
-	return false;
-}
-
-void InputManager::wanderActionInput() {
-	selectState.reset();
-
-	bool b_contin = false;
-
-	while (!b_contin) {
-		g_Scene.wanderActionScene(selectState.y);
+bool InputManager::wander() {
+	if (bState == e_gameState::INSPECT) {
+		g_Scene.wander(selectState.x);
 
 		int keyPress = _getch();
-		g_Input.upDownNav(keyPress, 2);
+		g_Input.leftRightNav(keyPress, 2);
 
-		switch (selectState.y) {
-		case 0: //Loot
+		switch (selectState.x) {
+		case 0: // Actions (move forward)
+			if (keyPress == SPAC) {
+				bState = e_gameState::ACTION;
+			}
+			break;
+
+		case 1: // Inventory (Prompts inventory)
+			if (keyPress == SPAC) {
+				inventory();
+			}
+			break;
+
+		case 2: // Other (g_Game Exit, Tutorials)
+			if (keyPress == SPAC) {
+				if (other()) {
+					return true;
+				}
+			}
+			break;
+		}
+	}
+
+	else if (bState == e_gameState::ACTION) {
+		g_Scene.action(selectState.x);
+
+		int keyPress = _getch();
+		g_Input.leftRightNav(keyPress, 2);
+
+		switch (selectState.x) {
+		case 0: // Change View
+			if (keyPress == SPAC) {
+				bState = e_gameState::INSPECT;
+			}
+			break;
+
+		case 1: // Onwards
 			if (keyPress == SPAC) {
 				//check isloot
 				//get num of enemies,
 				//get class of enemies,
-				//randomly choose dmg type corresponding to class
-				//make loot g_Scene
-				b_contin = true;
+				//make loot scene
+				g_Game.b_inBattle = true;
+				g_Game.roomGenerator();
+				bState = e_gameState::PLAYER;
 			}
 			break;
 
-		case 1: //Onwards
+		case 2: // Other
 			if (keyPress == SPAC) {
-				//randomly generate next room,
-				//battle = true;
-				//Set g_Scene
-				b_contin = true;
-			}
-			break;
-
-		case 2: //Back
-			if (keyPress == SPAC) {
-				b_contin = true;
+				if (other()) {
+					return true;
+				}
 			}
 			break;
 		}
 	}
-
-	selectState.reset();
+	return false;
 }
 
-int InputManager::otherInput() {
-	selectState.reset();
+bool InputManager::other() {
+	resetSelectState();
 
 	bool b_contin = false;
 
 	while (!b_contin) {
-		g_Scene.otherScene(selectState.y);
+		g_Scene.other(selectState.y);
 
 		int keyPress = _getch();
 		g_Input.upDownNav(keyPress, 3);
@@ -810,25 +829,25 @@ int InputManager::otherInput() {
 		switch (selectState.y) {
 		case 0: //Tut on Character
 			if (keyPress == SPAC) {
-				g_Scene.charTut1Scene();
+				g_Scene.charTut1();
 				pause("Press [Space] to cotinue to the next Page.", 2, SPAC);
-				g_Scene.charTut2Scene();
+				g_Scene.charTut2();
 				pause("Press [Space] to Continue.", 2, SPAC);
 			}
 			break;
 
 		case 1: //Tut on Combat
 			if (keyPress == SPAC) {
-				g_Scene.combatTut1Scene();
+				g_Scene.combatTut1();
 				pause("Press [Space] to cotinue to the next Page.", 2, SPAC);
-				g_Scene.combatTut2Scene();
+				g_Scene.combatTut2();
 				pause("Press [Space] to Continue.", 2, SPAC);
 			}
 			break;
 		
 		case 2: // Exit
 			if(keyPress == SPAC){
-				//Exit g_Game
+				//Exit Game
 				return true;
 			}
 			break;
@@ -841,9 +860,218 @@ int InputManager::otherInput() {
 		}
 	}
 
-	selectState.reset();
+	resetSelectState();
 
 	return false;
+}
+
+bool InputManager::battle() {
+	//Display
+	switch (bState) {
+	case e_gameState::PLAYER:
+		g_Scene.battlePlayer(selectState.x);
+		break;
+
+	case e_gameState::ENEMY:
+		g_Scene.battleEnemy(selectState.x);
+		break;
+
+	case e_gameState::MAP:
+		g_Scene.battleMap(selectState.x);
+		break;
+	}
+
+	if (g_Game.b_isPlayerTurn) {
+		//Input
+		int keyPress = _getch();
+		g_Input.leftRightNav(keyPress, 2);
+
+		//Process
+		switch (selectState.x) {
+		case 0:
+			if (keyPress == SPAC) {
+				switch (bState) {
+				case e_gameState::PLAYER:
+					bState = e_gameState::ENEMY;
+					break;
+
+				case e_gameState::ENEMY:
+					bState = e_gameState::MAP;
+					break;
+
+				case e_gameState::MAP:
+					bState = e_gameState::PLAYER;
+					break;
+				}
+			}
+			break;
+
+		case 1: // ACTIONS 
+			if (keyPress == SPAC) {
+				switch (bState) {
+				case e_gameState::PLAYER: // Inventory
+					inventory();
+					break;
+
+				case e_gameState::ENEMY: //ATTACK INPUT
+					battleAction();
+					break;
+
+				case e_gameState::MAP: //MOVEMENT INPUT
+					moveInput();
+					break;
+				}
+			}
+			break;
+
+		case 2: // Other (Game Exit, Tutorials)
+			if (keyPress == SPAC) {
+				if (other()) {
+					return true;
+				}
+			}
+			break;
+
+		}
+		
+		if (keyPress == ENTR) { //Skip turn
+			g_Game.b_isPlayerTurn = false;
+			pause("You have skipped your turn! Press [Space] to continue!", 0, SPAC);
+		}
+
+		if (g_Player.speed > 0 && g_Player.selectedWep.at(0).b_wasUsed == true && g_Player.selectedWep.at(1).b_wasUsed == true) {
+			g_Game.b_isPlayerTurn = false;
+			pause("Your turn has ended! Press [Space] to continue!", 0, SPAC);
+		}
+	}
+	else { //Not player's turn, Process Enemy turns
+
+
+		//Player stuff
+		g_Player.speed = g_Player.maxSpeed;
+		g_Player.stress += 1;
+		g_Player.selectedWep.at(0).b_wasUsed = false;
+		g_Player.selectedWep.at(1).b_wasUsed = false;
+		g_Game.b_isPlayerTurn = true;
+	}
+	return false;
+}
+
+void InputManager::battleAction() {
+	resetSelectState();
+	bool b_contin = false;
+
+	while (!b_contin) {
+		g_Scene.battleAction(selectState.y);
+
+		//Input
+		int keyPress = _getch();
+		upDownNav(keyPress, 3);
+
+		switch (selectState.y) {
+		case 0: // Wep 1
+			if (keyPress == SPAC) {
+				playerAttack(g_Player.selectedWep.at(0));
+			}
+			break;
+
+		case 1: // Wep 2
+			if (keyPress == SPAC) {
+				playerAttack(g_Player.selectedWep.at(1));
+			}
+			break;
+
+		case 2: // Block
+			if (keyPress == SPAC) {
+
+			}
+			break;
+
+		case 3: // Back
+			if (keyPress == SPAC) {
+				b_contin = true;
+			}
+			break;
+		}
+	}
+}
+
+void InputManager::playerAttack(Items::Weapon& t_wep) {
+	resetSelectState();
+
+	bool b_contin = false;
+	int size = 0;
+	selectState.y = 1;
+
+	while (!b_contin) {
+		size = g_Scene.playerAttack(t_wep, selectState.y);
+		if (size == 0) {
+			b_contin = true;
+			break;
+		}
+
+		int keyPress = _getch();
+		upDownNav(keyPress, size);
+
+		std::cout << selectState.y;	
+		switch (selectState.y) {
+		case 0:
+			if (keyPress == SPAC) { //SKIP
+				b_contin = true;
+			}
+			break;
+
+		case 1:			
+			if (keyPress == SPAC) {
+				g_Game.v_Enemy.at(0).health -= t_wep.dmg / g_Game.v_Enemy.at(0).selectedArm.protection;
+				b_contin = true;
+			}
+			break;
+
+		case 2:	
+			if (keyPress == SPAC) {
+				g_Game.v_Enemy.at(1).health -= t_wep.dmg / g_Game.v_Enemy.at(1).selectedArm.protection;
+				b_contin = true;
+			}
+			break;
+
+		case 3:
+			if (keyPress == SPAC) {
+				g_Game.v_Enemy.at(2).health -= t_wep.dmg / g_Game.v_Enemy.at(2).selectedArm.protection;
+				b_contin = true;
+			}
+			break;
+
+		case 4:
+			if (keyPress == SPAC) {
+				g_Game.v_Enemy.at(3).health -= t_wep.dmg / g_Game.v_Enemy.at(3).selectedArm.protection;
+				b_contin = true;
+			}
+			break;
+
+		case 5:
+			if (keyPress == SPAC) {
+				g_Game.v_Enemy.at(4).health -= t_wep.dmg / g_Game.v_Enemy.at(4).selectedArm.protection;
+				b_contin = true;
+			}
+			break;
+
+		case 6:
+			if (keyPress == SPAC) {
+				g_Game.v_Enemy.at(5).health -= t_wep.dmg / g_Game.v_Enemy.at(5).selectedArm.protection;
+				b_contin = true;
+			}
+			break;
+
+		case 7:
+			if (keyPress == SPAC) {
+				g_Game.v_Enemy.at(6).health -= t_wep.dmg * g_Game.v_Enemy.at(6).selectedArm.protection;
+				b_contin = true;
+			}
+			break;
+		}
+	}
+	resetSelectState();
 }
 
 /* Inputs for Scrolls in Scenes */
@@ -919,10 +1147,51 @@ void InputManager::clasInput(SelectState t_selectState) {
 	}
 }
 
-/* Setters / Getters */
-int InputManager::getSelectStateX() {
-	return selectState.x;
-}
-int InputManager::getSelectStateY() {
-	return selectState.y;
+void InputManager::moveInput() {
+	if (g_Player.speed > 0) {
+		g_Player.speed = g_Player.maxSpeed;
+
+		while (g_Player.speed > 0) {
+			g_Scene.battleMap(3);
+
+			output(static_cast<std::string>("Moves left: ").append(std::to_string(g_Player.speed)), 0);
+			output("Press [Space] to skip!", 0);
+
+			int keyPress = _getch();
+
+			g_Player.prevPos = g_Player.pos;
+			switch (keyPress) {
+			case WKEY:
+
+				g_Player.pos.y -= 1;
+				g_Player.speed -= 1;
+				break;
+
+			case AKEY:
+				g_Player.pos.x -= 1;
+				g_Player.speed -= 1;
+				break;
+
+			case SKEY:
+				g_Player.pos.y += 1;
+				g_Player.speed -= 1;
+				break;
+
+			case DKEY:
+				g_Player.pos.x += 1;
+				g_Player.speed -= 1;
+				break;
+
+			case SPAC:
+				g_Player.speed = 0;
+			}
+			g_Game.checkCollision();
+		}
+
+		g_Scene.battleMap(3);
+		pause("You have ran out of moves! Press [Space] to continue!", 0, SPAC);
+	}
+	else {
+		pause("You have already moved! Press [Space] to continue!", 0, SPAC);
+	}
 }
