@@ -918,12 +918,6 @@ bool InputManager::battle() {
 		}
 		g_Player.selectedWep.at(1).uses = 1;
 
-		if (g_Player.clas == Character::e_Class::WARRIOR) {
-			if (g_Player.health < g_Player.maxHealth) {
-				g_Player.health++;
-			}
-		}
-
 		g_Game.b_isPlayerTurn = true;
 		
 		//Check if player is dead
@@ -1227,7 +1221,7 @@ void InputManager::clasInput(SelectState t_selectState) {
 
 void InputManager::moveInput() {
 	if (g_Player.speed > 0) {
-		while (g_Player.speed > 0 && g_Game.b_inBattle) {
+		while (g_Game.b_inBattle) {
 			g_Scene.battleMap(3);
 
 			output(static_cast<std::string>("Moves left: ").append(std::to_string(g_Player.speed)), 0);
@@ -1240,27 +1234,36 @@ void InputManager::moveInput() {
 
 			int keyPress = _getch();
 
+			
 			g_Player.prevPos = g_Player.pos;
 			switch (keyPress) {
-			case WKEY:
 
-				g_Player.pos.y -= 1;
-				g_Player.speed -= 1;
+			case WKEY:
+				if (g_Player.speed > 0) {
+					g_Player.pos.y -= 1;
+					g_Player.speed -= 1;
+				}
 				break;
 
 			case AKEY:
-				g_Player.pos.x -= 1;
-				g_Player.speed -= 1;
+				if (g_Player.speed > 0) {
+					g_Player.pos.x -= 1;
+					g_Player.speed -= 1;
+				}
 				break;
 
 			case SKEY:
-				g_Player.pos.y += 1;
-				g_Player.speed -= 1;
+				if (g_Player.speed > 0) {
+					g_Player.pos.y += 1;
+					g_Player.speed -= 1;
+				}
 				break;
 
 			case DKEY:
-				g_Player.pos.x += 1;
-				g_Player.speed -= 1;
+				if (g_Player.speed > 0) {
+					g_Player.pos.x += 1;
+					g_Player.speed -= 1;
+				}
 				break;
 
 			case SPAC:

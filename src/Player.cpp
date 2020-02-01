@@ -2,6 +2,7 @@
 
 #include "../include/InputManager.h"
 #include "../include/Map.h"
+#include "../include/GameManager.h"
 
 Player::Player() {
 	//Selected Weapon
@@ -216,6 +217,10 @@ bool Player::takeDamage(Items::Weapon t_wep) {
 			break;
 		}
 
+		if (g_Player.clas == Character::e_Class::WARRIOR) {
+			dmg--;
+		}
+		
 		health -= ++dmg * block;
 	}
 
@@ -231,7 +236,11 @@ bool Player::takeDamage(Items::Weapon t_wep) {
 			break;
 		}
 
-		health -= --dmg * block;
+		if (g_Player.clas == Character::e_Class::WARRIOR) {
+			dmg--;
+		}
+
+		health -= dmg * block;
 	}
 
 	g_Player.stress += 4;
@@ -239,16 +248,18 @@ bool Player::takeDamage(Items::Weapon t_wep) {
 	//Knockback
 	if (pos.x >= g_Player.pos.x) {
 		g_Player.pos.x -= t_wep.knockb;
+		g_Game.checkCollision();
 	}
 	else if (pos.x <= g_Player.pos.x) {
 		g_Player.pos.x += t_wep.knockb;
+		g_Game.checkCollision();
 	}
 
 	g_Input.pause(static_cast<std::string>("You were hit for: ").append(std::to_string(dmg)).append(" damage!"), 0);
 
 	//Check if dead
 	if (health <= 0) {
-		g_Input.pause("You have fallen. In your final moments, you watch as your killers loot you and disappear into the darkness.", 0);
+		g_Input.pause("You have fallen. As your vision starts to fade, you watch as your killers loot you. Everything turns to black.", 0);
 		return true;
 	}
 

@@ -9,7 +9,7 @@
 #include "../include/GameManager.h"
 
 /*-------TODO--------
-
+	Fix bugs, balance game
  */
 
 GameManager g_Game;

@@ -99,9 +99,11 @@ bool Enemy::takeDamage(Items::Weapon t_wep) {
 	//Knockback
 	if (pos.x >= g_Player.pos.x) {
 		pos.x += t_wep.knockb;
+		g_Game.checkEnemyCollision(*this);
 	}
 	else if (pos.x <= g_Player.pos.x) {
 		pos.x -= t_wep.knockb;
+		g_Game.checkEnemyCollision(*this);
 	}
 
 	g_Input.pause(static_cast<std::string>("You managed to hit your target and did: ").append(std::to_string(dmg + 1)).append(" damage!"), 0);
@@ -136,9 +138,12 @@ void Enemy::setStats() {
 	//Randomize if sub or add 1 to g_Player level
 	level = abs(((rand() % 1) == 1) ? rand() % 1 + g_Player.level : rand() % 1 - g_Player.level);
 	
+	Character::Stats raceStats;
+
 	randRace();
-	randStats(level - 6);
-	configRaceStats(stats);
+	randStats(level - 4);
+	configRaceStats(raceStats);
+	combineRaceStats(raceStats);
 	
 	//Health
 	health = (stats.fortitude + 1) * 2;
@@ -287,7 +292,7 @@ void Enemy::rangerTurn() { // wander, if in range shoot, if too close run
 		&& ((2 + pos.y >= g_Player.pos.y) && (pos.y - 2 <= g_Player.pos.y))) {
 
 		speed = maxSpeed;
-		while (speed / 2 > 0) {
+		while ((speed + 1) / 2 > 0) {
 			// rand 50 / 50 move updown leftright
 			int randMove = rand() % 2;
 
@@ -309,6 +314,22 @@ void Enemy::rangerTurn() { // wander, if in range shoot, if too close run
 			else if ((pos.y <= g_Player.pos.y) && (randMove == 1)) {
 				pos.y--;
 				speed--;
+			}
+
+			if (((selectedWep.range + pos.x >= g_Player.pos.x) && (pos.x - selectedWep.range <= g_Player.pos.x)) // Attack
+				&& ((selectedWep.range + pos.y >= g_Player.pos.y) && (pos.y - selectedWep.range <= g_Player.pos.y))) {
+				float hitChance = .0f;
+				int randChance = rand() % 10 + 1;
+
+				hitChance = g_Player.stats.perception;
+
+				if (hitChance > randChance) {
+					g_Player.takeDamage(selectedWep);
+				}
+				else {
+					g_Input.pause("An enemy tried to attack you and missed!", 0);
+				}
+				speed = 0;
 			}
 
 			g_Game.checkEnemyCollision(*this);

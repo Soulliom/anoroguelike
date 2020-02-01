@@ -201,6 +201,10 @@ void GameManager::game() {
 		else if (g_Game.b_inBattle) { //Battling Scene
 			b_contin = g_Input.battle();
 		}
+		if (g_Player.level == g_Player.MAXLEVEL) {
+			g_Input.pause("Huh, you actually played the entire game... Thank you. You become powerful enough to rule the entire tomb. All bow down to the new elder for the first time in hundreds of years.", 0);
+			b_contin = true;
+		}
 	}
 }
 

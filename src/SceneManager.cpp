@@ -158,7 +158,7 @@ void SceneManager::charTut1() {
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 13);
 	std::cout << "\n   + Classes: "; SetConsoleTextAttribute(textConsole, 5);
 	std::cout << "\n       + Warrior:  |Equipment| -Swords, Shields.";
-	std::cout << "\n                   |Ability| +Regenerate 1HP each turn .";
+	std::cout << "\n                   |Ability| +Take 1 less damage from all sources.";
 	std::cout << "\n       + Ranger:   |Equpment|  -Bows, Crossbows.";
 	std::cout << "\n                   |Ability| +Double usage on weapon in the first hand slot.";
 	std::cout << "\n       + Magician: |Equipment| -Staffs, Books.";
@@ -250,9 +250,9 @@ void SceneManager::combatTut2() {
 	std::cout << "\n       + Penetration: Target's armor is less effective.";
 	std::cout << "\n ";
 	std::cout << "\n   + Health Regenerates after each battle. Stress does not.";
-	std::cout << "\n ";
-	std::cout << "\n   + If you carry more weight than your max, you move 2x slower.";
-	std::cout << "\n ";
+	std::cout << "\n   + Weapons can be 1 or 2 handed.";
+	std::cout << "\n   + If you carry too weight, you move 2x slower.";
+	std::cout << "\n   + Make sure to equip your weapons in your inventory!";
 	std::cout << "\n   + If you gain too much stress you will lose 1/4 of you health.";
 	std::cout << "\n ";
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
