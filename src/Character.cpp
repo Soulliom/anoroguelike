@@ -84,51 +84,51 @@ void Character::resetStats() {
 void Character::configRaceStats(Stats& t_raceStat) {
 	switch(race){
 	case Character::e_Race::ELF:
-		t_raceStat.strength = -1;
-		t_raceStat.fortitude = 0;
-		t_raceStat.agility = 0;
-		t_raceStat.wisdom = 2;
-		t_raceStat.perception = 1;
+		t_raceStat.strength += -1;
+		t_raceStat.fortitude += 0;
+		t_raceStat.agility += 0;
+		t_raceStat.wisdom += 2;
+		t_raceStat.perception += 1;
 		break;
 
 	case Character::e_Race::ORC:
-		t_raceStat.strength = 2;
-		t_raceStat.fortitude = 1;
-		t_raceStat.agility = 0;
-		t_raceStat.wisdom = 0;
-		t_raceStat.perception = -2;
+		t_raceStat.strength += 2;
+		t_raceStat.fortitude += 1;
+		t_raceStat.agility += 0;
+		t_raceStat.wisdom += 0;
+		t_raceStat.perception += -2;
 		break;
 
 	case Character::e_Race::HUMAN:
-		t_raceStat.strength = 0;
-		t_raceStat.fortitude = 1;
-		t_raceStat.agility = 0;
-		t_raceStat.wisdom = 1;
-		t_raceStat.perception = 1;
+		t_raceStat.strength += 0;
+		t_raceStat.fortitude += 1;
+		t_raceStat.agility += 0;
+		t_raceStat.wisdom += 1;
+		t_raceStat.perception += 1;
 		break;
 
 	case Character::e_Race::GOBLIN:
-		t_raceStat.strength = 1;
-		t_raceStat.fortitude = 0;
-		t_raceStat.agility = 1;
-		t_raceStat.wisdom = 0;
-		t_raceStat.perception = 1;
+		t_raceStat.strength += 1;
+		t_raceStat.fortitude += 0;
+		t_raceStat.agility += 1;
+		t_raceStat.wisdom += 0;
+		t_raceStat.perception += 1;
 		break;
 
 	case Character::e_Race::DWARF:
-		t_raceStat.strength = 1;
-		t_raceStat.fortitude = 1;
-		t_raceStat.agility = -1;
-		t_raceStat.wisdom = 0;
-		t_raceStat.perception = 0;
+		t_raceStat.strength += 1;
+		t_raceStat.fortitude += 1;
+		t_raceStat.agility += -1;
+		t_raceStat.wisdom += 0;
+		t_raceStat.perception += 0;
 		break;
 
 	case Character::e_Race::GNOME:
-		t_raceStat.fortitude = 0;
-		t_raceStat.strength = 0;
-		t_raceStat.agility = 2;
-		t_raceStat.wisdom = -1;
-		t_raceStat.perception = 1;
+		t_raceStat.fortitude += 0;
+		t_raceStat.strength += 0;
+		t_raceStat.agility += 2;
+		t_raceStat.wisdom += -1;
+		t_raceStat.perception += 1;
 		break;
 	}
 }

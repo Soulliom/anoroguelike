@@ -168,7 +168,12 @@ void GameManager::shop() {
 
 		case 4: // Continue
 			if (keyPress == SPAC) {
-				b_contin = true;
+				if (g_Player.v_Wep.empty()) {
+					g_Input.pause("You must have bought a weapon in order to continue. Press [Space] to go back.", 0, SPAC);
+				}
+				else {
+					b_contin = true;
+				}
 			}
 			break;
 		}
@@ -209,7 +214,7 @@ Items::Weapon GameManager::wepGenerator() {
 	float multiAdd = ((g_Player.level / 2) * randWep.dmgMulti);
 	int randAdd = rand() % 1 + ((g_Player.level + 1) / 2);
 
-	randWep.dmg += randAdd; // 4 6
+	randWep.dmg += randAdd;
 
 	//Randomize Weapon Enchantment
 	int randEnchant = rand() % 10;
@@ -264,6 +269,13 @@ Items::Consumable GameManager::conGenerator() {
 }
 
 void GameManager::roomGenerator() {
+	if (!v_Enemy.empty()) {
+		v_Enemy.erase(v_Enemy.begin(), v_Enemy.end());
+	}
+	if (!v_Block.empty()) {
+		v_Block.erase(v_Block.begin(), v_Block.end());
+	}
+
 	std::vector<Character::Position> v_tPositions;
 
 	for (unsigned int t = 0; t < v_tPositions.size(); t++) {
@@ -272,26 +284,27 @@ void GameManager::roomGenerator() {
 
 	//Create Exit
 	Exit.x = g_Map.border.width;
-	Exit.y = rand() % (g_Map.border.height - 2);
+	Exit.y = rand() % (g_Map.border.height - 2) + 1;
 	v_tPositions.push_back(Exit);
 
 	//Create Enemies
 	for (int i = 0; i <= g_Player.level; i++) {
 		if (i <= 6) {
 			bool skip = false;
-			Enemy Enemy;
+			v_Enemy.push_back(new Enemy);
+
+			v_Enemy.at(i)->setPosition();
 			for (auto tPos : v_tPositions) {
-				if (Enemy.pos == tPos) {
+				if (v_Enemy.at(i)->pos == tPos) {
 					i--;
 					skip = true;
 					break;
 				}
 			}
 			if (!skip) {
-				Enemy.num = i + 1;
+				v_Enemy.at(i)->num = i + 1;
 
-				v_tPositions.push_back(Enemy.pos);
-				v_Enemy.push_back(Enemy);
+				v_tPositions.push_back(v_Enemy.at(i)->pos);
 			}
 		}
 		else {
@@ -355,10 +368,71 @@ void GameManager::checkCollision() {
 
 	/* Check for Enemies */
 	for (auto e : v_Enemy) {
-		if (e.pos.x == g_Player.pos.x) {
-			if (e.pos.y == g_Player.pos.y) {
+		if (e->pos.x == g_Player.pos.x) {
+			if (e->pos.y == g_Player.pos.y) {
 				g_Player.pos = g_Player.prevPos;
 				g_Player.speed++;
+			}
+		}
+	}
+
+	//Check end
+	if (Exit == g_Player.pos) {
+		if (g_Player.clas == Character::e_Class::MAGICIAN) {
+			g_Player.stress -= 20;
+		}
+		else {
+			g_Player.stress -= 10;
+		}
+
+		if (g_Player.stress < 0) {
+			g_Player.stress = 0;
+		}
+
+		g_Input.pause("You have proceeded to the next room. Press [Space] to continue!", 0, SPAC);
+		g_Input.bState = InputManager::e_gameState::INSPECT;
+		g_Game.b_isPlayerTurn = false;
+		g_Game.b_inBattle = false;
+	}
+}
+
+void GameManager::checkEnemyCollision(Enemy& t_enemy) {
+	/* Check If Out of Border */
+	if (t_enemy.pos.y == g_Map.border.height) {
+		t_enemy.pos = t_enemy.prevPos;
+		t_enemy.speed++;
+	}
+	else if (t_enemy.pos.y == 0) {
+		t_enemy.pos = t_enemy.prevPos;
+		t_enemy.speed++;
+	}
+	if (g_Player.pos.x == -1) {
+		t_enemy.pos = t_enemy.prevPos;
+		t_enemy.speed++;
+	}
+	else if (g_Player.pos.x == g_Map.border.width + 1) {
+		t_enemy.pos = t_enemy.prevPos;
+		t_enemy.speed++;
+	}
+
+	/* Check for Blocks */
+	for (auto b : v_Block) {
+		if (b.x == t_enemy.pos.x) {
+			if (b.y == t_enemy.pos.y) {
+				t_enemy.pos = t_enemy.prevPos;
+				t_enemy.speed++;
+			}
+		}
+	}
+
+	/* Check for other Enemies */
+	for (auto e : v_Enemy) {
+		if(e->num != t_enemy.num){
+			if (e->pos.x == t_enemy.pos.x) {
+				if (e->pos.y == t_enemy.pos.y) {
+					t_enemy.pos = t_enemy.prevPos;
+					t_enemy.speed++;
+				}
 			}
 		}
 	}

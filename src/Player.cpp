@@ -55,6 +55,7 @@ void Player::selectWep(Items::Weapon &t_wep) {
 				w.b_equipped = false;
 			}
 			t_wep.b_equipped = true;
+			selectedWep[0].uses = 0;
 		}
 
 		else if (t_wep.hands == 1) {
@@ -79,9 +80,10 @@ void Player::selectWep(Items::Weapon &t_wep) {
 					}
 
 					t_wep.b_equipped = true;
+					selectedWep[0].uses = 0;
 					b_contin = true;
 				}
-				else if (keyPress == 50) { // 59 = 2 ASCII
+				else if (keyPress == 50) { // 50 = 2 ASCII
 					selectedWep[1] = t_wep;
 
 					if (selectedWep[0].hands == 2) {
@@ -95,6 +97,7 @@ void Player::selectWep(Items::Weapon &t_wep) {
 					}
 
 					t_wep.b_equipped = true;
+					selectedWep[1].uses = 0;
 					b_contin = true;
 				}
 			}
@@ -108,7 +111,7 @@ void Player::selectWep(Items::Weapon &t_wep) {
 }
 
 void Player::selectArm(Items::Armor t_arm) {
-	selectedArm = t_arm;
+	selectedArm = t_arm; 
 	g_Input.pause("You've equipped an armor! Press [Space] to continue", 0, SPAC);
 }
 
@@ -122,44 +125,44 @@ void Player::useConsume(Items::Consumable t_con, int t_state) {
 }
 
 void Player::levelUp() {
-	//Give option to upgrade stat
-	//Dont allow if stat > 10
+	if (level < MAXLEVEL && exp >= maxExp) {
+		if (level >= 1) {
+			g_Input.levelUp(g_Player.stats);
+		}
 
-	//Health
-	maxHealth = stats.fortitude * 2;
-	health = static_cast<float>(maxHealth);
+		//Health
+		maxHealth = stats.fortitude * 3;
+		health = static_cast<float>(maxHealth);
 
-	//Weight
-	if (race == e_Race::DWARF) { //Dwarf
-		weight = 0;
-	}
-	else { //Other
-		maxWeight = stats.strength * 10;
-	}
-	if (race == e_Race::ELF || race == e_Race::GNOME) { //Gnome/Elf
-		maxWeight = static_cast<int>(maxWeight * 0.8f);
-	}
+		//Weight
+		if (race == e_Race::DWARF) { //Dwarf
+			weight = 0;
+		}
+		else { //Other
+			maxWeight = stats.strength * 5;
+		}
+		if (race == e_Race::ELF || race == e_Race::GNOME) { //Gnome/Elf
+			maxWeight = static_cast<int>(maxWeight * 0.8f);
+		}
 
-	//Stress
-	maxStress = stats.perception * 10;
-	maxStress += 10;
-	//Speed
-	maxSpeed = (stats.agility) * 2;
-	speed = maxSpeed;
-	//Exp
-	level++;
-	maxExp *= 2;
-	exp = 0;
-	// Hit Chances;
-	meleeHit = (stats.strength + 1) * .8f;
-	rangedHit = (stats.perception + 1) * .8f;
-	magicHit = (stats.wisdom + 1) * .8f;
+		//Stress
+		maxStress = stats.perception * 10;
+		maxStress += 10;
+		//Speed
+		maxSpeed = (stats.agility) * 2;
+		speed = maxSpeed;
+		//Exp
+		level++;
+		maxExp = 4 * level;
+		exp = 0;
+	}
 }
 
 void Player::applyCurrentWeight() {
 	if (race == e_Race::DWARF) {
 		weight = 0;
 	}
+
 	else {
 		weight = 0;
 		for (auto w : v_Wep) {
@@ -174,7 +177,7 @@ void Player::applyCurrentWeight() {
 	}
 
 	if (weight > maxWeight) {
-		maxSpeed = ((stats.agility) + 1) / 2;
+		maxSpeed = stats.agility;
 		speed = maxSpeed;
 	}
 	else {
@@ -187,4 +190,67 @@ void Player::setPosition() {
 	pos.x = 0;
 	pos.y = rand() % (g_Map.border.height - 2) + 1;
 	prevPos = pos;
+}
+
+bool Player::takeDamage(Items::Weapon t_wep) {
+	int dmg = 0;
+	 
+	if (selectedArm.protection != 0) {
+		switch (t_wep.enchant) {
+		case Items::e_Enchant::NONE:
+			dmg = t_wep.dmg / selectedArm.protection;
+
+			break;
+
+		case Items::e_Enchant::FLAME:
+			dmg = t_wep.dmg / selectedArm.protection;
+			dmg += (g_Player.level + 1) / 3;
+			break;
+
+		case Items::e_Enchant::PENETRATE:
+			dmg = t_wep.dmg / (selectedArm.protection / 2);
+			break;
+
+		case Items::e_Enchant::VAMP:
+			dmg = t_wep.dmg / selectedArm.protection;
+			break;
+		}
+
+		health -= ++dmg * block;
+	}
+
+	else {
+		switch (t_wep.enchant) {
+		case Items::e_Enchant::FLAME:
+			dmg = t_wep.dmg - 1;
+			dmg += (g_Player.level + 1) / 3;
+			break;
+
+		default:
+			dmg = t_wep.dmg;
+			break;
+		}
+
+		health -= --dmg * block;
+	}
+
+	g_Player.stress += 4;
+
+	//Knockback
+	if (pos.x >= g_Player.pos.x) {
+		g_Player.pos.x -= t_wep.knockb;
+	}
+	else if (pos.x <= g_Player.pos.x) {
+		g_Player.pos.x += t_wep.knockb;
+	}
+
+	g_Input.pause(static_cast<std::string>("You were hit for: ").append(std::to_string(dmg)).append(" damage!"), 0);
+
+	//Check if dead
+	if (health <= 0) {
+		g_Input.pause("You have fallen. In your final moments, you watch as your killers loot you and disappear into the darkness.", 0);
+		return true;
+	}
+
+	return false;
 }

@@ -206,7 +206,7 @@ void InputManager::melee() {
 		g_Scene.melee(selectState.y, g_Item.v_Weapons);
 
 		int keyPress = _getch();
-		upDownNav(keyPress, 5);
+		upDownNav(keyPress, 3);
 		switch (selectState.y) {
 		case 0: //Rapier
 			if (keyPress == SPAC) {
@@ -226,16 +226,7 @@ void InputManager::melee() {
 			}
 			break;
 
-		case 2: //Dagger
-			if (keyPress == SPAC) {
-				b_contin = viewWeapons(g_Item.v_Weapons.at(2));
-			}
-			else if (keyPress == ENTR) {
-				b_contin = buyWeapons(g_Item.v_Weapons.at(2));
-			}
-			break;
-
-		case 3: //Small Shield
+		case 2: //Small Shield
 			if (keyPress == SPAC) {
 				b_contin = viewWeapons(g_Item.v_Weapons.at(3));
 			}
@@ -244,16 +235,7 @@ void InputManager::melee() {
 			}
 			break;
 
-		case 4: //Large Sheild
-			if (keyPress == SPAC) {
-				b_contin = viewWeapons(g_Item.v_Weapons.at(4));
-			}
-			else if (keyPress == ENTR) {
-				b_contin = buyWeapons(g_Item.v_Weapons.at(4));
-			}
-			break;
-
-		case 5: //Continue
+		case 3: //Continue
 			if (keyPress == SPAC) {
 				b_contin = true;
 			}
@@ -273,7 +255,7 @@ void InputManager::ranged() {
 		g_Scene.ranged(selectState.y, g_Item.v_Weapons);
 
 		int keyPress = _getch();
-		upDownNav(keyPress, 3);
+		upDownNav(keyPress, 1);
 		switch (selectState.y) {
 		case 0: //Recurve Bow
 			if (keyPress == SPAC) {
@@ -284,25 +266,7 @@ void InputManager::ranged() {
 			}
 			break;
 
-		case 1: //Longbow
-			if (keyPress == SPAC) {
-				b_contin = viewWeapons(g_Item.v_Weapons.at(6));
-			}
-			else if (keyPress == ENTR) {
-				b_contin = buyWeapons(g_Item.v_Weapons.at(6));
-			}
-			break;
-
-		case 2: //Crossbow
-			if (keyPress == SPAC) {
-				b_contin = viewWeapons(g_Item.v_Weapons.at(7));
-			}
-			else if (keyPress == ENTR) {
-				b_contin = buyWeapons(g_Item.v_Weapons.at(7));
-			}
-			break;
-
-		case 3: //Continue
+		case 1: //Continue
 			if (keyPress == SPAC) {
 				b_contin = true;
 			}
@@ -321,36 +285,18 @@ void InputManager::magic() {
 		g_Scene.magic(selectState.y, g_Item.v_Weapons);
 
 		int keyPress = _getch();
-		upDownNav(keyPress, 4);
+		upDownNav(keyPress, 2);
 		switch (selectState.y) {
-		case 0: //Sapphire Staff
+		case 0: //Saphire Staff
 			if (keyPress == SPAC) {
 				b_contin = viewWeapons(g_Item.v_Weapons.at(8));
 			}
-			else if (keyPress == ENTR) {
+			else if(keyPress == ENTR){
 				b_contin = buyWeapons(g_Item.v_Weapons.at(8));
 			}
 			break;
 
-		case 1: //Ruby Staff
-			if (keyPress == SPAC) {
-				b_contin = viewWeapons(g_Item.v_Weapons.at(9));
-			}
-			else if(keyPress == ENTR){
-				b_contin = buyWeapons(g_Item.v_Weapons.at(9));
-			}
-			break;
-
-		case 2: //Book of Chaos
-			if (keyPress == SPAC) {
-				b_contin = viewWeapons(g_Item.v_Weapons.at(10));
-			}
-			else if (keyPress == ENTR) {
-				b_contin = buyWeapons(g_Item.v_Weapons.at(10));
-			}
-			break;
-
-		case 3: //Book of Creation
+		case 1: //Book of Creation
 			if (keyPress == SPAC) {
 				b_contin = viewWeapons(g_Item.v_Weapons.at(11));
 			}
@@ -359,7 +305,7 @@ void InputManager::magic() {
 			}
 			break;
 
-		case 4: //Continue
+		case 2: //Continue
 			if (keyPress == SPAC) {
 				b_contin = true;
 			}
@@ -393,7 +339,6 @@ bool InputManager::buyWeapons(Items::Weapon t_wep){
 void InputManager::wepInv() 
 {
 	resetSelectState();
-
 	bool b_contin = false;
 
 	while (!b_contin) {
@@ -411,7 +356,7 @@ void InputManager::wepInv()
 			case 1: // Wep Inspect
 				if (keyPress == SPAC) {
 					g_Scene.viewWeapon(g_Player.v_Wep.at(selectState.x));
-					pause("Press [Space] to continue", 2, SPAC);
+					pause("Press [Space] to continue", 1, SPAC);
 				}
 				break;
 
@@ -432,6 +377,7 @@ void InputManager::wepInv()
 					}
 
 					g_Player.v_Wep.erase(g_Player.v_Wep.begin() + selectState.x);
+					b_contin = true;
 				}
 				break;
 
@@ -452,6 +398,7 @@ void InputManager::wepInv()
 			b_contin = true;
 		}
 	}
+	resetSelectState();
 }
 
 /* ARMORS */
@@ -463,7 +410,7 @@ void InputManager::armors() {
 		g_Scene.armors(selectState.y, g_Item.v_Armors);
 
 		int keyPress = _getch();
-		upDownNav(keyPress, 3);
+		upDownNav(keyPress, 2);
 		switch (selectState.y) {
 		case 0: //Light Armor
 			if (keyPress == SPAC) {
@@ -483,16 +430,7 @@ void InputManager::armors() {
 			}
 			break;
 
-		case 2: //Heavy Armor
-			if (keyPress == SPAC) {
-				b_contin = viewArmors(g_Item.v_Armors.at(2));
-			}
-			else if (keyPress == ENTR) {
-				b_contin = buyArmors(g_Item.v_Armors.at(2));
-			}
-			break;
-
-		case 3: //Continue
+		case 2: //Continue
 			if (keyPress == SPAC) {
 				b_contin = true;
 			}
@@ -505,7 +443,7 @@ void InputManager::armors() {
 
 bool InputManager::viewArmors(Items::Armor t_arm) {
 	g_Scene.viewArmor(t_arm);
-	pause("Press [Space] to Continue!", 2, SPAC);
+	pause("Press [Space] to Continue!", 1, SPAC);
 	return false;
 }
 
@@ -525,7 +463,6 @@ bool InputManager::buyArmors(Items::Armor t_arm) {
 
 void InputManager::armInv() {
 	resetSelectState();
-
 	bool b_contin = false;
 	
 	while (!b_contin) {
@@ -542,7 +479,7 @@ void InputManager::armInv() {
 			case 1: // Armor Inspect
 				if (keyPress == SPAC) {
 					g_Scene.viewArmor(g_Player.v_Arm.at(selectState.x));
-					pause("Press [Space] to continue", 2, SPAC);
+					pause("Press [Space] to continue", 1, SPAC);
 				}
 				break;
 
@@ -560,6 +497,7 @@ void InputManager::armInv() {
 					}
 
 					g_Player.v_Arm.erase(g_Player.v_Arm.begin() + selectState.x);
+					b_contin = true;
 				}
 				break;
 
@@ -579,6 +517,7 @@ void InputManager::armInv() {
 			b_contin = true;
 		}
 	}
+	resetSelectState();
 }
 
 /* CONSUMABLES */
@@ -590,7 +529,7 @@ void InputManager::consume() {
 		g_Scene.consume(selectState.y, g_Item.v_Consumes);
 
 		int keyPress = _getch();
-		upDownNav(keyPress, 3);
+		upDownNav(keyPress, 2);
 		switch (selectState.y) {
 		case 0: //Lesser healing potion
 			if (keyPress == SPAC) {
@@ -610,16 +549,7 @@ void InputManager::consume() {
 			}
 			break;
 
-		case 2: //Bigger healing potion
-			if (keyPress == SPAC) {
-				b_contin = viewCon(g_Item.v_Consumes.at(2));
-			}
-			else if (keyPress == ENTR) {
-				b_contin = buyCon(g_Item.v_Consumes.at(2));
-			}
-			break;
-
-		case 3: //Continue
+		case 2: //Continue
 			if (keyPress == SPAC) {
 				b_contin = true;
 			}
@@ -652,7 +582,6 @@ bool InputManager::buyCon(Items::Consumable t_con) {
 
 void InputManager::conInv() {
 	resetSelectState();
-
 	bool b_contin = false;
 
 	while(!b_contin)
@@ -676,6 +605,7 @@ void InputManager::conInv() {
 		case 2: //Use Consume
 			if (keyPress == SPAC) {
 				g_Player.useConsume(g_Player.v_Con.at(selectState.x), selectState.x);
+				b_contin = true;
 			}
 			break;
 
@@ -683,6 +613,7 @@ void InputManager::conInv() {
 			// Delete g_Item
 			if (keyPress == SPAC) {
 				g_Player.v_Con.erase(g_Player.v_Con.begin() + selectState.x);
+				b_contin = true;
 			}
 			break;
 
@@ -702,6 +633,7 @@ void InputManager::conInv() {
 
 		b_contin = true;
 	}
+	resetSelectState();
 } 
 
 //Inventory Input/Scene
@@ -793,10 +725,27 @@ bool InputManager::wander() {
 
 		case 1: // Onwards
 			if (keyPress == SPAC) {
-				//check isloot
-				//get num of enemies,
-				//get class of enemies,
-				//make loot scene
+				//Player stuff
+				//Speed
+				g_Player.speed = g_Player.maxSpeed;
+				//Stress
+				g_Player.stress += 1;
+
+				if (g_Player.clas == Character::e_Class::RANGER) {
+					g_Player.selectedWep.at(0).uses = 2;
+				}
+				else {
+					g_Player.selectedWep.at(0).uses = 1;
+				}
+				g_Player.selectedWep.at(1).uses = 1;
+
+				if (g_Player.clas == Character::e_Class::WARRIOR) {
+					if (g_Player.health < g_Player.maxHealth) {
+						g_Player.health++;
+					}
+				}
+
+				g_Game.b_isPlayerTurn = true;
 				g_Game.b_inBattle = true;
 				g_Game.roomGenerator();
 				bState = e_gameState::PLAYER;
@@ -824,7 +773,7 @@ bool InputManager::other() {
 		g_Scene.other(selectState.y);
 
 		int keyPress = _getch();
-		g_Input.upDownNav(keyPress, 3);
+		upDownNav(keyPress, 3);
 
 		switch (selectState.y) {
 		case 0: //Tut on Character
@@ -884,7 +833,7 @@ bool InputManager::battle() {
 	if (g_Game.b_isPlayerTurn) {
 		//Input
 		int keyPress = _getch();
-		g_Input.leftRightNav(keyPress, 2);
+		leftRightNav(keyPress, 2);
 
 		//Process
 		switch (selectState.x) {
@@ -931,29 +880,59 @@ bool InputManager::battle() {
 				}
 			}
 			break;
-
 		}
 		
 		if (keyPress == ENTR) { //Skip turn
 			g_Game.b_isPlayerTurn = false;
-			pause("You have skipped your turn! Press [Space] to continue!", 0, SPAC);
-		}
-
-		if (g_Player.speed > 0 && g_Player.selectedWep.at(0).b_wasUsed == true && g_Player.selectedWep.at(1).b_wasUsed == true) {
-			g_Game.b_isPlayerTurn = false;
-			pause("Your turn has ended! Press [Space] to continue!", 0, SPAC);
+			pause("You have ended your turn! Press [Space] to continue!", 0, SPAC);
 		}
 	}
-	else { //Not player's turn, Process Enemy turns
+	else { //Not player's turn, Process Enemy turns and setup.
 
+		for (auto e : g_Game.v_Enemy) {
+			e->speed = e->maxSpeed;
+			e->enemyTurn();
+		}
 
 		//Player stuff
+		//Speed
 		g_Player.speed = g_Player.maxSpeed;
-		g_Player.stress += 1;
-		g_Player.selectedWep.at(0).b_wasUsed = false;
-		g_Player.selectedWep.at(1).b_wasUsed = false;
+		//Stress
+		g_Player.stress++; 
+		if (g_Player.stress >= g_Player.maxStress) {
+			pause("You become self destructive, and lose a 1/4 of your health", 0);
+			g_Player.health -= (g_Player.maxHealth / 4);
+			g_Player.stress = 0;
+		}
+
+		//Reset Block
+		g_Player.b_block = true;
+		g_Player.block = 1;
+		g_Player.blockType = Items::e_Type::NONE;
+
+		if (g_Player.clas == Character::e_Class::RANGER) {
+			g_Player.selectedWep.at(0).uses = 2;
+		}
+		else {
+			g_Player.selectedWep.at(0).uses = 1;
+		}
+		g_Player.selectedWep.at(1).uses = 1;
+
+		if (g_Player.clas == Character::e_Class::WARRIOR) {
+			if (g_Player.health < g_Player.maxHealth) {
+				g_Player.health++;
+			}
+		}
+
 		g_Game.b_isPlayerTurn = true;
+		
+		//Check if player is dead
+		if (g_Player.health <= 0) {
+			return true;
+		}
+
 	}
+
 	return false;
 }
 
@@ -982,8 +961,42 @@ void InputManager::battleAction() {
 			break;
 
 		case 2: // Block
-			if (keyPress == SPAC) {
+			if (keyPress == SPAC ) {
+				if (g_Player.b_block) {
+					pause("You ready for an attack. Press [Space] to continue!", 0, SPAC);
+					g_Player.blockType = g_Player.selectedWep.at(0).type;
 
+					switch (g_Player.blockType) {
+					case Items::e_Type::NONE:
+						g_Player.block = 0.95f;
+						break;
+
+					case Items::e_Type::MELEE:
+						
+						if (g_Player.selectedWep.at(0) == g_Item.v_Weapons.at(3) || g_Player.selectedWep.at(0) == g_Item.v_Weapons.at(4)) {
+							g_Player.block = 0.70f;
+						}
+						else {
+							g_Player.block = 0.80f;
+						}
+						break;
+
+					case Items::e_Type::RANGED:
+						g_Player.block = 0.90f;
+						break;
+
+					case Items::e_Type::MAGIC:
+						g_Player.block = 0.85f;
+						break;
+					}
+
+
+					g_Player.speed = 0;
+					b_contin = true;
+				}
+				else {
+					pause("You have already moved! Press [Space] to continue!", 0, SPAC);
+				}
 			}
 			break;
 
@@ -1000,79 +1013,144 @@ void InputManager::playerAttack(Items::Weapon& t_wep) {
 	resetSelectState();
 
 	bool b_contin = false;
-	int size = 0;
 	selectState.y = 1;
 
 	while (!b_contin) {
-		size = g_Scene.playerAttack(t_wep, selectState.y);
-		if (size == 0) {
+		g_Scene.playerAttack(t_wep, selectState.y);
+
+		int keyPress = _getch();
+		upDownNav(keyPress, g_Game.v_Enemy.size());
+
+		if (selectState.y == 0 && keyPress == SPAC) {
 			b_contin = true;
 			break;
 		}
 
+		if (keyPress == SPAC) {
+			if (t_wep.uses > 0) {
+				if (((t_wep.range + g_Player.pos.x >= g_Game.v_Enemy.at(selectState.y - 1)->pos.x) && (t_wep.range - g_Player.pos.x <= g_Game.v_Enemy.at(selectState.y - 1)->pos.x))
+					&& ((t_wep.range + g_Player.pos.y >= g_Game.v_Enemy.at(selectState.y - 1)->pos.y) && (t_wep.range - g_Player.pos.y <= g_Game.v_Enemy.at(selectState.y - 1)->pos.y))) {
+
+					if ((g_Player.stats.perception * 2) + g_Player.pos.x >= g_Game.v_Enemy.at(selectState.y - 1)->pos.x){
+
+						int hitChance = 0;
+						int randChance = rand() % 10 + 1;
+
+						switch (t_wep.type) {
+						case Items::e_Type::MELEE:
+							hitChance = g_Player.stats.strength;
+							break;
+
+						case Items::e_Type::RANGED:
+							hitChance = g_Player.stats.perception;
+							break;
+
+						case Items::e_Type::MAGIC:
+							hitChance = g_Player.stats.wisdom;
+							break;
+						}
+
+						if (hitChance > randChance) {
+							bool b_isDead = g_Game.v_Enemy.at(selectState.y - 1)->takeDamage(t_wep);
+							if (b_isDead) {
+								g_Game.v_Enemy.erase(g_Game.v_Enemy.begin() + selectState.y - 1);
+							}
+
+							t_wep.uses--;
+							b_contin = true;
+							break;
+						}
+						else {
+							g_Player.stress += 2;
+							pause("You missed your attack.", 0);
+
+							t_wep.uses--;
+							b_contin = true;
+							break;
+						}
+					}
+					else {
+						pause("Your perception isn't good enough to hit this target! Press [Space] to Continue!", 0, SPAC);
+						b_contin = true;
+						break;
+					}
+				}
+				else {
+					pause("Your weapon doesn't have enough range to hit this target! Press [Space] to Continue!", 0, SPAC);
+					b_contin = true;
+					break;
+				}
+			}
+			
+			else {
+				pause("Your weapon doesn't have anymore uses! Press [Space] to Continue!", 0, SPAC);
+			}
+		}
+	}
+
+	resetSelectState();
+	g_Player.levelUp();
+	resetSelectState();
+}
+
+void InputManager::levelUp(Character::Stats& t_stats) {
+	resetSelectState();
+
+	bool b_contin = false;
+	while (!b_contin) {
+		g_Scene.levelUp(t_stats, selectState.y);
+
 		int keyPress = _getch();
-		upDownNav(keyPress, size);
+		upDownNav(keyPress, 5);
 
-		std::cout << selectState.y;	
 		switch (selectState.y) {
-		case 0:
-			if (keyPress == SPAC) { //SKIP
+		case 0: // Str
+			if (keyPress == SPAC) {
+				t_stats.strength++;
 				b_contin = true;
 			}
 			break;
 
-		case 1:			
+		case 1: // Fort
 			if (keyPress == SPAC) {
-				g_Game.v_Enemy.at(0).health -= t_wep.dmg / g_Game.v_Enemy.at(0).selectedArm.protection;
+				t_stats.fortitude++;
 				b_contin = true;
 			}
 			break;
 
-		case 2:	
+		case 2: // Agl
 			if (keyPress == SPAC) {
-				g_Game.v_Enemy.at(1).health -= t_wep.dmg / g_Game.v_Enemy.at(1).selectedArm.protection;
+				t_stats.agility++;
 				b_contin = true;
 			}
 			break;
 
-		case 3:
+		case 3: // Wis
 			if (keyPress == SPAC) {
-				g_Game.v_Enemy.at(2).health -= t_wep.dmg / g_Game.v_Enemy.at(2).selectedArm.protection;
+				t_stats.wisdom++;
 				b_contin = true;
 			}
 			break;
 
-		case 4:
+		case 4: // Perc
 			if (keyPress == SPAC) {
-				g_Game.v_Enemy.at(3).health -= t_wep.dmg / g_Game.v_Enemy.at(3).selectedArm.protection;
+				t_stats.perception++;
 				b_contin = true;
 			}
 			break;
 
-		case 5:
+		case 5: // Tutorial
 			if (keyPress == SPAC) {
-				g_Game.v_Enemy.at(4).health -= t_wep.dmg / g_Game.v_Enemy.at(4).selectedArm.protection;
-				b_contin = true;
-			}
-			break;
-
-		case 6:
-			if (keyPress == SPAC) {
-				g_Game.v_Enemy.at(5).health -= t_wep.dmg / g_Game.v_Enemy.at(5).selectedArm.protection;
-				b_contin = true;
-			}
-			break;
-
-		case 7:
-			if (keyPress == SPAC) {
-				g_Game.v_Enemy.at(6).health -= t_wep.dmg * g_Game.v_Enemy.at(6).selectedArm.protection;
-				b_contin = true;
+				g_Scene.charTut1();
+				pause("Press [Space] to cotinue to the next Page.", 2, SPAC);
+				g_Scene.charTut2();
+				pause("Press [Space] to Continue.", 2, SPAC);
 			}
 			break;
 		}
 	}
-	resetSelectState();
 }
+
 
 /* Inputs for Scrolls in Scenes */
 void InputManager::diffInput(SelectState t_selectState) {
@@ -1149,13 +1227,16 @@ void InputManager::clasInput(SelectState t_selectState) {
 
 void InputManager::moveInput() {
 	if (g_Player.speed > 0) {
-		g_Player.speed = g_Player.maxSpeed;
-
-		while (g_Player.speed > 0) {
+		while (g_Player.speed > 0 && g_Game.b_inBattle) {
 			g_Scene.battleMap(3);
 
 			output(static_cast<std::string>("Moves left: ").append(std::to_string(g_Player.speed)), 0);
-			output("Press [Space] to skip!", 0);
+			if (g_Player.clas == Character::e_Class::BANDIT) {
+				output("Press [Space] to pause your move!", 0);
+			}
+			else {
+				output("Press [Space] to end your move!", 0);
+			}
 
 			int keyPress = _getch();
 
@@ -1183,15 +1264,20 @@ void InputManager::moveInput() {
 				break;
 
 			case SPAC:
-				g_Player.speed = 0;
+				if (g_Player.clas != Character::e_Class::BANDIT) {
+					g_Player.speed = 0;
+				}
+				return;
 			}
 			g_Game.checkCollision();
 		}
 
-		g_Scene.battleMap(3);
-		pause("You have ran out of moves! Press [Space] to continue!", 0, SPAC);
+		if (g_Game.b_inBattle) {
+			g_Scene.battleMap(3);
+		}
 	}
-	else {
+	else if (g_Game.b_inBattle) {
 		pause("You have already moved! Press [Space] to continue!", 0, SPAC);
 	}
+	
 }

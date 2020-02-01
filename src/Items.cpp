@@ -4,22 +4,22 @@ Items::Items() {
 	/* WEAPONS */
 	//Player will have 2 slots, 2 hands per slot, can switch slots at beginning or end of turn.
 	/* Melee */
-	createWeapon("Rapier", 2, 1, 2, 0, 2, 1.2f, e_Type::MELEE, 100);
-	createWeapon("Claymore", 5, 2, 3, 1, 5, 1.3f, e_Type::MELEE, 125);
-	createWeapon("Dagger", .5f, 1, 1, 0, 3, 1.4f, e_Type::MELEE, 80);
-	createWeapon("Small Shield", 4, 2, 2, 2, 1, 1.2f, e_Type::MELEE, 60);
-	createWeapon("Large Shield", 8, 3, 3, 3, 3, 1.3f, e_Type::MELEE, 100);
+	createWeapon("Rapier", 2, 1, 2, 0, 2, 1.3f, e_Type::MELEE, 100);
+	createWeapon("Claymore", 6, 2, 3, 1, 4, 1.2f, e_Type::MELEE, 125);
+	createWeapon("Dagger", 1, 1, 1, 0, 3, 1.4f, e_Type::MELEE, 80);
+	createWeapon("Small Shield", 4, 1, 1, 2, 1, 1.2f, e_Type::MELEE, 60);
+	createWeapon("Large Shield", 8, 2, 2, 3, 3, 1.3f, e_Type::MELEE, 100);
 
 	/* Ranged */
-	createWeapon("Recurve Bow", 4, 6, 5, 0, 3, 1.3f, e_Type::RANGED, 150);
-	createWeapon("Longbow", 2, 2, 10, 0, 2, 1.2f, e_Type::RANGED, 100);
-	createWeapon("Crossbow", 8, 2, 4, 1, 5, 1.4f, e_Type::RANGED, 175);
+	createWeapon("Recurve Bow", 4, 2, 4, 0, 3, 1.3f, e_Type::RANGED, 150);
+	createWeapon("Longbow", 2, 2, 5, 0, 2, 1.4f, e_Type::RANGED, 100);
+	createWeapon("Crossbow", 8, 2, 2, 1, 5, 1.2f, e_Type::RANGED, 175);
 
 	/* Magic */
-	createWeapon("Sapphire Staff", 4, 2, 5, 0, 4, 1.5f, e_Type::MAGIC, 125);
-	createWeapon("Ruby Staff", 6, 1, 7, 0, 3, 1.4f, e_Type::MAGIC, 90);
-	createWeapon("Book of Chaos", 3, 2, 3, 0, 5, 1.4f, e_Type::MAGIC, 150);
-	createWeapon("Book of Creation", 2, 1, 12, 0, 1, 1.3f, e_Type::MAGIC, 100);
+	createWeapon("Sapphire Staff", 4, 2, 4, 0, 4, 1.2f, e_Type::MAGIC, 125);
+	createWeapon("Ruby Staff", 6, 1, 5, 0, 3, 1.4f, e_Type::MAGIC, 90);
+	createWeapon("Book of Chaos", 3, 2, 3, 0, 5, 1.2f, e_Type::MAGIC, 150);
+	createWeapon("Book of Creation", 2, 1, 6, 0, 1, 1.4f, e_Type::MAGIC, 100);
 
 	/* Empty Weapon */
 	createWeapon("Empty", 0, 0, 0, 0, 0, 0, e_Type::MELEE, 0);
@@ -33,26 +33,26 @@ Items::Items() {
 	createArmor("No Armor", 0, 0, 0);
 
 	/* CONSUMABLES*/
-	createConsume("Lesser Health Pot", 1, 0.25, 75);
-	createConsume("Health Pot", 3, 0.50, 100);
-	createConsume("Large Health Pot", 8, 1.00, 150);
+	createConsume("Lesser Health Pot", 1, 1.25, 75);
+	createConsume("Health Pot", 3, 1.50, 100);
+	createConsume("Large Health Pot", 8, 2.00, 150);
 }
 
 void Items::createWeapon(std::string t_name, float t_weight, std::uint8_t t_hands, std::uint8_t t_range, std::uint8_t t_knockb, std::uint8_t t_dmg, float t_dmgMulti, e_Type t_type, std::uint8_t t_cost) {
 	static int i;
 
 	Weapon w;
+	w.name = t_name;
+	w.weight = t_weight;
+	w.hands = t_hands;
+	w.range = t_range;
+	w.knockb = t_knockb;
+	w.dmg = t_dmg;
+	w.dmgMulti = t_dmgMulti;
+	w.type = t_type;
+	w.cost = t_cost;
+	w.enchant = e_Enchant::NONE;
 	v_Weapons.push_back(w);
-	v_Weapons.at(i).name = t_name;
-	v_Weapons.at(i).weight = t_weight;
-	v_Weapons.at(i).hands = t_hands;
-	v_Weapons.at(i).range = t_range;
-	v_Weapons.at(i).knockb = t_knockb;
-	v_Weapons.at(i).dmg = t_dmg;
-	v_Weapons.at(i).dmgMulti = t_dmgMulti;
-	v_Weapons.at(i).type = t_type;
-	v_Weapons.at(i).cost = t_cost;
-	v_Weapons.at(i).enchant = e_Enchant::NONE;
 	i++; 
 }
 

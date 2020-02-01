@@ -1,6 +1,6 @@
 #include "../include/Map.h"
 
-void Map::displayMap(Player t_Player, Character::Position t_Exit, std::vector<Enemy> t_v_Enemy, std::vector<Character::Position> t_v_Block) {
+void Map::displayMap(Player t_Player, Character::Position t_Exit, std::vector<Enemy*> t_v_Enemy, std::vector<Character::Position> t_v_Block) {
 	bool b_blank = true;
 
 	for (int y = 0; y <= border.height; y++) {
@@ -44,7 +44,7 @@ void Map::displayMap(Player t_Player, Character::Position t_Exit, std::vector<En
 					//Enemy
 					if (b_blank) {
 						for (unsigned int e = 0; e < t_v_Enemy.size(); e++) {
-							if (x == t_v_Enemy.at(e).pos.x && y == t_v_Enemy.at(e).pos.y) {
+							if (x == t_v_Enemy.at(e)->pos.x && y == t_v_Enemy.at(e)->pos.y) {
 								std::cout << e + 1;
 								b_blank = false;
 								break;
@@ -54,7 +54,7 @@ void Map::displayMap(Player t_Player, Character::Position t_Exit, std::vector<En
 
 					if (b_blank) {
 						for (unsigned int e = 0; e < t_v_Enemy.size(); e++) {
-							if (x == t_v_Enemy.at(e).pos.x && y == t_v_Enemy.at(e).pos.y) {
+							if (x == t_v_Enemy.at(e)->pos.x && y == t_v_Enemy.at(e)->pos.y) {
 								std::cout << e + 1;
 								b_blank = false;
 								break;

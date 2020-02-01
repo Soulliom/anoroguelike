@@ -158,13 +158,13 @@ void SceneManager::charTut1() {
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 13);
 	std::cout << "\n   + Classes: "; SetConsoleTextAttribute(textConsole, 5);
 	std::cout << "\n       + Warrior:  |Equipment| -Swords, Shields.";
-	std::cout << "\n                   |Ability| +In the beginning of combat, Roll Strength, Gain extra run speed for x turns.";
+	std::cout << "\n                   |Ability| +Regenerate 1HP each turn .";
 	std::cout << "\n       + Ranger:   |Equpment|  -Bows, Crossbows.";
-	std::cout << "\n                   |Ability| +In the beginning of combat, Roll Perception, Gain extra x turns.";
+	std::cout << "\n                   |Ability| +Double usage on weapon in the first hand slot.";
 	std::cout << "\n       + Magician: |Equipment| -Staffs, Books.";
-	std::cout << "\n                   |Ability| +In the beginning of combat, Roll Wisdom, choose temp buff: Weapon range, Damage.";
-	std::cout << "\n       + Bandit:   |Equipment| -Daggers, Throwables.";
-	std::cout << "\n                   |Ability| +In the beginning of combat, Roll Agility, Hidden for x turns.";
+	std::cout << "\n                   |Ability| + Regenerate Stress 2 times faster.";
+	std::cout << "\n       + Bandit:   |Equipment| -Melee, Ranged.";
+	std::cout << "\n                   |Ability| +Keeps remaining moves after moving.";
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
 	std::cout << "\n ";
@@ -206,23 +206,23 @@ void SceneManager::combatTut1() {
 	SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 13);
+	std::cout << "\n                                               ~~~ Combat Tutorial 1 / 2 ~~~";
 	std::cout << "\n ";
+	std::cout << "\n   + There are two modes, Wandering and Battling.";
 	std::cout << "\n ";
+	std::cout << "\n   + Each turn in Battling, you may Attack, Use Items, and Move/Block.";
 	std::cout << "\n ";
+	std::cout << "\n   + IMPORTANT: Press Enter to end turn.";
 	std::cout << "\n ";
+	std::cout << "\n   + There are 3 additional options when in battling mode. Fend, Move, and Enemies: ";
+	std::cout << "\n       + Fending: Attack and Block.";
+	std::cout << "\n       + Move: Move with [WASD] and skip with [Space]";
+	std::cout << "\n       + Enemies: Displays each enemy and their stats and equipment.";
 	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
+	std::cout << "\n   + There are 2 additional options when in wandering mode. Inventory and Onward.";
+	std::cout << "\n       + Inventory is split into 3: Consumables, Armors and Weapons.";
+	std::cout << "\n       ^ You can inspect, equip, use, and delete items in your inventory.";
+	std::cout << "\n       ^ Items also have weight, therefore it is good to keep only essentials.";
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
@@ -236,24 +236,24 @@ void SceneManager::combatTut2() {
 	SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 13);
+	std::cout << "\n                                               ~~~ Combat Tutorial 2 / 2 ~~~";
 	std::cout << "\n ";
+	std::cout << "\n   + In 'Move', you are able to see a map, in this map, there are 4 signs:";
+	std::cout << "\n       + & : You.";
+	std::cout << "\n       + 1 - 7 : Enemies.";
+	std::cout << "\n       + # : Void / Impassable, but can attack through.";
+	std::cout << "\n       + H : Exit.";
 	std::cout << "\n ";
+	std::cout << "\n   + Weapons have 3 different effects:";
+	std::cout << "\n       + Vampire: Grants health upon hit.";
+	std::cout << "\n       + Flame: Extra damage based on your level.";
+	std::cout << "\n       + Penetration: Target's armor is less effective.";
 	std::cout << "\n ";
+	std::cout << "\n   + Health Regenerates after each battle. Stress does not.";
 	std::cout << "\n ";
+	std::cout << "\n   + If you carry more weight than your max, you move 2x slower.";
 	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
+	std::cout << "\n   + If you gain too much stress you will lose 1/4 of you health.";
 	std::cout << "\n ";
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
@@ -365,16 +365,16 @@ void SceneManager::melee(int t_state, std::vector<Items::Weapon> t_weapons) {
 	std::cout << "\n "; isSelected("  - " + t_weapons.at(1).name + " - " + std::to_string(t_weapons.at(1).cost), 14, 13, 1, t_state);
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected("  - " + t_weapons.at(2).name + " - " + std::to_string(t_weapons.at(2).cost), 14, 13, 2, t_state);
+	std::cout << "\n "; isSelected("  - " + t_weapons.at(3).name + " - " + std::to_string(t_weapons.at(3).cost), 14, 13, 2, t_state);
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected("  - " + t_weapons.at(3).name + " - " + std::to_string(t_weapons.at(3).cost), 14, 13, 3, t_state);
+	std::cout << "\n "; 
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected("  - " + t_weapons.at(4).name + " - " + std::to_string(t_weapons.at(4).cost), 14, 13, 4, t_state);
+	std::cout << "\n "; 
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected("  * Back *", 14, 13, 5, t_state);
+	std::cout << "\n "; isSelected("  * Back *", 14, 13, 3, t_state);
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
 	std::cout << "\n ";
@@ -392,19 +392,19 @@ void SceneManager::ranged(int t_state, std::vector<Items::Weapon> t_weapons) {
 	std::cout << "\n "; isSelected("  - " + t_weapons.at(5).name + " - " + std::to_string(t_weapons.at(5).cost), 14, 13, 0, t_state);
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected("  - " + t_weapons.at(6).name + " - " + std::to_string(t_weapons.at(6).cost), 14, 13, 1, t_state);
+	std::cout << "\n "; 
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected("  - " + t_weapons.at(7).name + " - " + std::to_string(t_weapons.at(7).cost), 14, 13, 2, t_state);
-	std::cout << "\n ";
-	std::cout << "\n ";
-	std::cout << "\n ";
+	std::cout << "\n "; 
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected("  * Back *", 14, 13, 3, t_state);
+	std::cout << "\n ";
+	std::cout << "\n ";
+	std::cout << "\n ";
+	std::cout << "\n "; isSelected("  * Back *", 14, 13, 1, t_state);
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
 	std::cout << "\n ";
@@ -422,19 +422,19 @@ void SceneManager::magic(int t_state, std::vector<Items::Weapon> t_weapons) {
 	std::cout << "\n "; isSelected("  - " + t_weapons.at(8).name + " : " + std::to_string(t_weapons.at(8).cost), 14, 13, 0, t_state);
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected("  - " + t_weapons.at(9).name + " : " + std::to_string(t_weapons.at(9).cost), 14, 13, 1, t_state);
+	std::cout << "\n "; isSelected("  - " + t_weapons.at(11).name + " : " + std::to_string(t_weapons.at(11).cost), 14, 13, 1, t_state);
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected("  - " + t_weapons.at(10).name + " : " + std::to_string(t_weapons.at(10).cost), 14, 13, 2, t_state);
+	std::cout << "\n "; 
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected("  - " + t_weapons.at(11).name + " : " +  std::to_string(t_weapons.at(11).cost), 14, 13, 3, t_state);
+	std::cout << "\n "; 
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected("  * Back *", 14, 13, 4, t_state);
+	std::cout << "\n "; isSelected("  * Back *", 14, 13, 2, t_state);
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
 	std::cout << "\n ";
@@ -455,7 +455,6 @@ void SceneManager::armors(int t_state, std::vector<Items::Armor> t_armors) {
 	std::cout << "\n "; isSelected("  - " + t_armors.at(1).name + " - " + std::to_string(t_armors.at(1).cost), 14, 13, 1, t_state);
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected("  - " + t_armors.at(2).name + " - " + std::to_string(t_armors.at(2).cost), 14, 13, 2, t_state);
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
@@ -464,7 +463,8 @@ void SceneManager::armors(int t_state, std::vector<Items::Armor> t_armors) {
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected("  * Back *", 14, 13, 3, t_state);
+	std::cout << "\n ";
+	std::cout << "\n "; isSelected("  * Back *", 14, 13, 2, t_state);
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
 	std::cout << "\n ";
@@ -485,7 +485,6 @@ void SceneManager::consume(int t_state, std::vector<Items::Consumable> t_consume
 	std::cout << "\n "; isSelected("  - " + t_consume.at(1).name + " - " + std::to_string(t_consume.at(1).cost), 14, 13, 1, t_state);
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected("  - " + t_consume.at(2).name + " - " + std::to_string(t_consume.at(2).cost), 14, 13, 2, t_state);
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
@@ -494,7 +493,8 @@ void SceneManager::consume(int t_state, std::vector<Items::Consumable> t_consume
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected("  * Back *", 14, 13, 3, t_state);
+	std::cout << "\n ";
+	std::cout << "\n "; isSelected("  * Back *", 14, 13, 2, t_state);
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
 	std::cout << "\n ";
@@ -515,9 +515,9 @@ void SceneManager::viewWeapon(Items::Weapon t_weapon) {
 	std::cout << "\n ";
 	std::cout << "\n   + Weapon Damage: " << t_weapon.dmg;
 	std::cout << "\n ";
-	std::cout << "\n   + Weapon Range: " << t_weapon.range << " feet";
+	std::cout << "\n   + Weapon Range: " << t_weapon.range << " units";
 	std::cout << "\n ";
-	std::cout << "\n   + Weapon Knockback: " << t_weapon.knockb << " feet";
+	std::cout << "\n   + Weapon Knockback: " << t_weapon.knockb << " units";
 	std::cout << "\n ";
 	std::cout << "\n   + Hands to use Weapon: " << t_weapon.hands;
 	std::cout << "\n ";
@@ -541,7 +541,7 @@ void SceneManager::viewArmor(Items::Armor t_armor) {
 	std::cout << "\n ";
 	std::cout << "\n   + Armor Name: " << t_armor.name;
 	std::cout << "\n ";
-	std::cout << "\n   + Armor Protection: " << t_armor.protection * 100 << " %";
+	std::cout << "\n   + Armor Protection: " << (t_armor.protection * 100) - 100 << " %";
 	std::cout << "\n ";
 	std::cout << "\n   + Armor Weight: " << t_armor.weight << " pounds";
 	std::cout << "\n ";
@@ -571,7 +571,7 @@ void SceneManager::viewConsume(Items::Consumable t_consume) {
 	std::cout << "\n ";
 	std::cout << "\n   + Consumable Name: " << t_consume.name;
 	std::cout << "\n ";
-	std::cout << "\n   + Consumable Healing: " << t_consume.amou * 100 << " %";
+	std::cout << "\n   + Consumable Healing: " << (t_consume.amou * 100) - 100 << " %";
 	std::cout << "\n ";
 	std::cout << "\n   + Consumable Weight: " << t_consume.weight << " pounds";
 	std::cout << "\n ";
@@ -630,22 +630,22 @@ void SceneManager::viewWepInv(int t_stateY, int t_stateX) {
 	std::cout << "\n                                                ~~~ Weapon Inventory ~~~";
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected(" < Weapon Inventory >: ", 14, 13, 0, t_stateY); std::cout << t_stateX + 1 << " / " << g_Player.v_Wep.size();
+	std::cout << "\n "; isSelected("  < Weapon Inventory >: ", 14, 13, 0, t_stateY); std::cout << t_stateX + 1 << " / " << g_Player.v_Wep.size();
  	std::cout << "\n "; 
 	std::cout << "\n ";  
-	std::cout << "\n "; isSelected(" - Inspect Weapon : ", 14, 13, 1, t_stateY); std::cout << g_Player.v_Wep.at(t_stateX).name;
+	std::cout << "\n "; isSelected("  - Inspect Weapon : ", 14, 13, 1, t_stateY); std::cout << g_Player.v_Wep.at(t_stateX).name;
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected(" - Equip Weapon - ", 14, 13, 2, t_stateY);
+	std::cout << "\n "; isSelected("  - Equip Weapon - ", 14, 13, 2, t_stateY);
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected(" - Delete Weapon - ", 14, 13, 3, t_stateY);
+	std::cout << "\n "; isSelected("  - Delete Weapon - ", 14, 13, 3, t_stateY);
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
+	std::cout << "\n "; 
 	std::cout << "\n "; isSelected("  * Back *", 14, 13, 4, t_stateY);
-	std::cout << "\n ";
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
 	std::cout << "\n ";
@@ -660,22 +660,22 @@ void SceneManager::viewArmInv(int t_stateY, int t_stateX) {
 	std::cout << "\n                                                ~~~ Armor Inventory ~~~";
 	std::cout << "\n "; 
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected(" < Armor Inventory >: ", 14, 13, 0, t_stateY); std::cout << t_stateX + 1 << " / " << g_Player.v_Arm.size();
+	std::cout << "\n "; isSelected("  < Armor Inventory >: ", 14, 13, 0, t_stateY); std::cout << t_stateX + 1 << " / " << g_Player.v_Arm.size();
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected(" - Inspect Armor : ", 14, 13, 1, t_stateY); std::cout << g_Player.v_Arm.at(t_stateX).name;
+	std::cout << "\n "; isSelected("  - Inspect Armor : ", 14, 13, 1, t_stateY); std::cout << g_Player.v_Arm.at(t_stateX).name;
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected(" - Wear Armor - ", 14, 13, 2, t_stateY);
+	std::cout << "\n "; isSelected("  - Wear Armor - ", 14, 13, 2, t_stateY);
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected(" - Delete Armor - ", 14, 13, 3, t_stateY);
+	std::cout << "\n "; isSelected("  - Delete Armor - ", 14, 13, 3, t_stateY);
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
+	std::cout << "\n "; 
 	std::cout << "\n "; isSelected("  * Back *", 14, 13, 4, t_stateY);
-	std::cout << "\n ";
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
 	std::cout << "\n ";
@@ -690,22 +690,22 @@ void SceneManager::viewConInv(int t_stateY, int t_stateX) {
 	std::cout << "\n                                              ~~~ Consumable Inventory ~~~";
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected(" < Consumable Inventory >: ", 14, 13, 0, t_stateY); std::cout << t_stateX + 1 << " / " << g_Player.v_Con.size();
+	std::cout << "\n "; isSelected("  < Consumable Inventory >: ", 14, 13, 0, t_stateY); std::cout << t_stateX + 1 << " / " << g_Player.v_Con.size();
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected(" - Inspect Consumable : ", 14, 13, 1, t_stateY); std::cout << g_Player.v_Con.at(t_stateX).name;
+	std::cout << "\n "; isSelected("  - Inspect Consumable : ", 14, 13, 1, t_stateY); std::cout << g_Player.v_Con.at(t_stateX).name;
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected(" - Use Consumable - ", 14, 13, 2, t_stateY);
+	std::cout << "\n "; isSelected("  - Use Consumable - ", 14, 13, 2, t_stateY);
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected(" - Delete Consumable - ", 14, 13, 3, t_stateY);
+	std::cout << "\n "; isSelected("  - Delete Consumable - ", 14, 13, 3, t_stateY);
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
+	std::cout << "\n "; 
 	std::cout << "\n "; isSelected("  * Back *", 14, 13, 4, t_stateY);
-	std::cout << "\n ";
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
 	std::cout << "\n ";
@@ -734,7 +734,7 @@ void SceneManager::wander(int t_stateX) {
 	std::cout << "\n                                      + Health: " << static_cast<int>(g_Player.health) << " / " << g_Player.maxHealth;
 	std::cout << "\n                                                                     + Stress: " << g_Player.stress << " / " << g_Player.maxStress;
 	std::cout << "\n                                      + Level: " << g_Player.level;
-	std::cout << "\n                                                                     + Speed: " << g_Player.maxSpeed;
+	std::cout << "\n                                                                     + Speed: " << g_Player.speed << " / " << g_Player.maxSpeed;
 	std::cout << "\n                                      + Exp: " << g_Player.exp << " / " << g_Player.maxExp;
 	std::cout << "\n                                                                     + Weight: " << g_Player.weight << " / " << g_Player.maxWeight; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
@@ -764,7 +764,7 @@ void SceneManager::action(int t_stateX) {
 	std::cout << "\n                                      + Health: " << static_cast<int>(g_Player.health) << " / " << g_Player.maxHealth;
 	std::cout << "\n                                                                     + Stress: " << g_Player.stress << " / " << g_Player.maxStress;
 	std::cout << "\n                                      + Level: " << g_Player.level;
-	std::cout << "\n                                                                     + Speed: " << g_Player.maxSpeed;
+	std::cout << "\n                                                                     + Speed: " << g_Player.speed << " / " << g_Player.maxSpeed;
 	std::cout << "\n                                      + Exp: " << g_Player.exp << " / " << g_Player.maxExp;
 	std::cout << "\n                                                                     + Weight: " << g_Player.weight << " / " << g_Player.maxWeight; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
@@ -794,8 +794,8 @@ void SceneManager::other(int t_stateY) {
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
+	std::cout << "\n "; 
 	std::cout << "\n "; isSelected("  * Continue Game * ", 14, 13, 3, t_stateY);
-	std::cout << "\n ";
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
 	std::cout << "\n ";
@@ -859,7 +859,7 @@ void SceneManager::battlePlayer(int t_stateX) {
 	std::cout << "\n                                      + Health: " << static_cast<int>(g_Player.health) << " / " << g_Player.maxHealth;
 	std::cout << "\n                                                                     + Stress: " << g_Player.stress << " / " << g_Player.maxStress;
 	std::cout << "\n                                      + Level: " << g_Player.level;
-	std::cout << "\n                                                                     + Speed: " << g_Player.maxSpeed;
+	std::cout << "\n                                                                     + Speed: " << g_Player.speed << " / " << g_Player.maxSpeed;
 	std::cout << "\n                                      + Exp: " << g_Player.exp << " / " << g_Player.maxExp;
 	std::cout << "\n                                                                     + Weight: " << g_Player.weight << " / " << g_Player.maxWeight; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
@@ -874,11 +874,11 @@ void SceneManager::battleAction(int t_stateY) {
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 13);
 	std::cout << "\n                                                    ~~~ Fend ~~~"; 
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected(static_cast<std::string>("  - ").append(g_Player.selectedWep.at(0).name).append(" -"), 14, 13, 0, t_stateY);
+	std::cout << "\n "; isSelected(static_cast<std::string>("  - ").append(g_Player.selectedWep.at(0).name).append(" | Uses: ").append(std::to_string(g_Player.selectedWep.at(0).uses)), 14, 13, 0, t_stateY);
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
-	std::cout << "\n "; isSelected(static_cast<std::string>("  - ").append(g_Player.selectedWep.at(1).name).append(" -"), 14, 13, 1, t_stateY);
+	std::cout << "\n "; isSelected(static_cast<std::string>("  - ").append(g_Player.selectedWep.at(1).name).append(" | Uses: ").append(std::to_string(g_Player.selectedWep.at(1).uses)), 14, 13, 1, t_stateY);
 	std::cout << "\n ";
 	std::cout << "\n ";
 	std::cout << "\n ";
@@ -897,42 +897,64 @@ void SceneManager::battleAction(int t_stateY) {
 	Sleep(SLP);
 }
 
-int SceneManager::playerAttack(Items::Weapon t_selectedWep, int& t_stateY) {
+void SceneManager::playerAttack(Items::Weapon t_selectedWep, int& t_stateY) {
 	system("CLS");
 	SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
 	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 13);
 	std::cout << "\n                                                   ~~~ Attack ~~~";
-	std::cout << "\n";
+	std::cout << "\n ";
 
-	int size = 0;
-	for (unsigned int e = 0; e < g_Game.v_Enemy.size(); e++) {
-		if (t_selectedWep.range + g_Player.pos.x >= g_Game.v_Enemy.at(e).pos.x && t_selectedWep.range - g_Player.pos.x <= g_Game.v_Enemy.at(e).pos.x) {
+	int i = 0;
+	for (auto e : g_Game.v_Enemy) {
+		i++;
 
-			if (t_selectedWep.range + g_Player.pos.y >= g_Game.v_Enemy.at(e).pos.y && t_selectedWep.range - g_Player.pos.y <= g_Game.v_Enemy.at(e).pos.y) {
-				
-				if (g_Player.stats.perception * 2 >= t_selectedWep.range) {
-					std::cout << std::endl;
-					isSelected(static_cast<std::string>("  - ").append(std::to_string(g_Game.v_Enemy.at(e).num)).append(". ").append(g_Game.v_Enemy.at(e).name).append(" -"), 14, 13, e + 1, t_stateY);
-					std::cout << std::endl;
-					size++;
-				}
-			}
-		}
+		std::cout << std::endl;
+		isSelected(static_cast<std::string>("   - ").append(std::to_string(i)).append(". ").append(e->name).append(" | Health: ").append(std::to_string(e->health)).append(" -"), 14, 13, i, t_stateY);
+		std::cout << std::endl;
 	}
-	for (int i = size; i < 7; i++) {
+
+	for (int i = g_Game.v_Enemy.size(); i < 7; i++) {
 		std::cout << "\n\n";
 	}
 
-	std::cout << "\n";
-	std::cout << "\n";
-	std::cout << "\n"; isSelected("  * Back *", 14, 13, 0, t_stateY);
-	std::cout << "\n"; SetConsoleTextAttribute(textConsole, 2);
+	std::cout << "\n ";
+	std::cout << "\n ";
+	std::cout << "\n "; isSelected("  * Back *", 14, 13, 0, t_stateY);
+	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
 	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
 	std::cout << "\n ";
 	Sleep(SLP);
+}
 
-	return size;
+void SceneManager::levelUp(Character::Stats t_stats, int t_stateY) {
+	system("CLS");
+	SetConsoleTextAttribute(textConsole, 2);
+	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
+	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 13);
+	std::cout << "\n                                                   ~~~ Level Up! ~~~";
+	std::cout << "\n ";
+	std::cout << "\n ";
+	std::cout << "\n "; isSelected("  - Strength : ", 14, 13, 0, t_stateY); std::cout << t_stats.strength;
+	std::cout << "\n ";
+	std::cout << "\n ";
+	std::cout << "\n "; isSelected("  - Fortification : ", 14, 13, 1, t_stateY); std::cout << t_stats.fortitude;
+	std::cout << "\n ";
+	std::cout << "\n ";
+	std::cout << "\n "; isSelected("  - Agility : ", 14, 13, 2, t_stateY); std::cout << t_stats.agility;
+	std::cout << "\n ";
+	std::cout << "\n ";
+	std::cout << "\n "; isSelected("  - Wisdom : ", 14, 13, 3, t_stateY); std::cout << t_stats.wisdom;
+	std::cout << "\n ";
+	std::cout << "\n ";
+	std::cout << "\n "; isSelected("  - Perception : ", 14, 13, 4, t_stateY); std::cout << t_stats.perception;
+	std::cout << "\n ";
+	std::cout << "\n ";
+	std::cout << "\n "; isSelected("  - Stats Tutorial -", 14, 13, 5, t_stateY);
+	std::cout << "\n "; SetConsoleTextAttribute(textConsole, 2);
+	std::cout << "\n*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*";
+	std::cout << "\n ";
+	Sleep(SLP);
 }
 
 /* Extra Scenes*/
@@ -975,8 +997,8 @@ void SceneManager::enemyOutput() {
 	for (unsigned int i = 0; i < 7; i++) {
 		if (i < g_Game.v_Enemy.size()) {
 			std::cout << "\n";
-			std::cout << " " << i + 1 << ". Name: " << g_Game.v_Enemy.at(i).name << " || Hp: " << g_Game.v_Enemy.at(i).health << " || Lv: " << g_Game.v_Enemy.at(i).level << " || Spd: " << g_Game.v_Enemy.at(i).maxSpeed;
-			std::cout << " || " << g_Game.v_Enemy.at(i).raceStr << " || " << g_Game.v_Enemy.at(i).clasStr << " || " << g_Game.v_Enemy.at(i).selectedWep.name << " || " << g_Game.v_Enemy.at(i).selectedArm.name << "\n";
+			std::cout << " " << i + 1 << ". Name: " << g_Game.v_Enemy.at(i)->name << " || Hp: " << g_Game.v_Enemy.at(i)->health << " || Lv: " << g_Game.v_Enemy.at(i)->level << " || Spd: " << g_Game.v_Enemy.at(i)->maxSpeed;
+			std::cout << " || " << g_Game.v_Enemy.at(i)->raceStr << " || " << g_Game.v_Enemy.at(i)->clasStr << " || " << g_Game.v_Enemy.at(i)->selectedWep.name << " || " << g_Game.v_Enemy.at(i)->selectedArm.name << "\n";
 		}
 		else {
 			std::cout << "\n";
