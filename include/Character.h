@@ -2,6 +2,7 @@
 #define CHARACTER_H
 
 #include "DEFINITIONS.h"
+#include "Items.h"
 
 class Character {
 public:
@@ -79,6 +80,8 @@ public:
 	void combineRaceStats(Stats& t_raceStat);
 	//Position set
 	virtual void setPosition() = 0;
+	//Returns if dead or not
+	virtual bool takeDamage(Items::Weapon t_wep) = 0;
 };
 
 #endif  

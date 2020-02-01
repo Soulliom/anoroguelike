@@ -24,7 +24,7 @@ public:
 	bool b_inBattle = false;
 
 	/* GAME */
-	std::vector<Enemy> v_Enemy;
+	std::vector<Enemy*> v_Enemy;
 	std::vector<Items::Weapon> v_wepLoot;
 	std::vector<Items::Armor> v_armLoot;
 	std::vector<Items::Consumable> v_conLoot;
@@ -52,6 +52,8 @@ public:
 	void roomGenerator();
 
 	void checkCollision();
+	void checkEnemyCollision(Enemy& t_enemy);
+	
 private:
 };
 

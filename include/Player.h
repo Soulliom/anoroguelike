@@ -23,15 +23,11 @@ public:
 	int level = 0;
 	const int MAXLEVEL = 10;
 	// Experience
-	int exp = 0;
+	int exp = 2;
 	int maxExp = 2;
 	// Weight
 	float weight = 0.f;
 	int maxWeight = 1;
-	// Hit Chances;
-	float meleeHit = .9f;
-	float rangedHit = .9f;
-	float magicHit = .9f;
 
 	// Gold (Pregame)
 	int gold = 350; //Spent during pregame shop
@@ -49,6 +45,10 @@ public:
 	std::array<Items::Weapon, 2> selectedWep;
 	//Selected Armor
 	Items::Armor selectedArm;
+	//Block type
+	Items::e_Type blockType = Items::e_Type::NONE;
+	float block = 0;
+	bool b_block = true;
 
 	/* Functions */
 	//Aquire Items
@@ -66,7 +66,9 @@ public:
 	//Apply weight by from g_Player's inventory
 	void applyCurrentWeight();
 	//Set Position
-	void setPosition();
+	virtual void setPosition();
+	//Returns if dead or not
+	virtual bool takeDamage(Items::Weapon t_wep);
 
 private:
 };

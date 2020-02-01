@@ -36,7 +36,7 @@ public:
 		e_Type type = e_Type::NONE;
 		std::uint8_t cost = 0;
 		bool b_equipped = false;
-		bool b_wasUsed = false;
+		int uses = 1;
 
 		inline bool operator==(const Weapon& t_wep) {
 			if ((name == t_wep.name) && (dmg == t_wep.dmg) && (enchant == t_wep.enchant) && (type == t_wep.type)) {

@@ -16,9 +16,7 @@ private:
 public:
 	/* Functions */
 	//Display map NOTE: use dots to represent empty space
-	void displayMap(Player t_Player, Character::Position t_Exit, std::vector<Enemy> t_v_Enemy, std::vector<Character::Position> t_v_Block);
-
-	//Detect Collision
+	void displayMap(Player t_Player, Character::Position t_Exit, std::vector<Enemy*> t_v_Enemy, std::vector<Character::Position> t_v_Block);
 
 	/* MapSize */
 	MapSize border;

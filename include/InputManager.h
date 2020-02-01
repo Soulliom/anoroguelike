@@ -3,6 +3,7 @@
 
 #include "DEFINITIONS.h"
 #include "Items.h"
+#include "Character.h"
 
 //Saves SceneState and updates when different scenes are loaded
 class InputManager {
@@ -16,6 +17,14 @@ private:
 	// SelectState Obj
 	SelectState selectState;
 
+public:
+	/* Getters/Setters */
+	int getSelectStateX();
+	int getSelectStateY();
+	SelectState getSelectState();
+	void resetSelectState();
+	
+	//GameState
 	enum class e_gameState {
 		ACTION,
 		INSPECT,
@@ -23,14 +32,8 @@ private:
 		ENEMY,
 		MAP
 	};
+	  
 	e_gameState bState = e_gameState::INSPECT;
-
-public:
-	/* Getters/Setters */
-	int getSelectStateX();
-	int getSelectStateY();
-	SelectState getSelectState();
-	void resetSelectState();
 
 	/* Pauses, Inputs, Navigations.*/
 	//Text- What text will be displayed. Seconds- length of delay. Key- what key is needed to press to continue, NULL for none.
@@ -80,6 +83,8 @@ public:
 	bool battle();
 	void battleAction();
 	void playerAttack(Items::Weapon& t_wep);
+	//Level up input
+	void levelUp(Character::Stats& t_stats);
 
 	/* Inputs for Options in Scenes */
 	//Difficulty Input (Settings)

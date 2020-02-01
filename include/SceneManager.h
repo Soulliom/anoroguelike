@@ -71,7 +71,9 @@ public:
 	void battleEnemy(int t_stateX);
 	void battlePlayer(int t_stateX);
 	void battleAction(int t_stateY);
-	int playerAttack(Items::Weapon t_selectedWep, int& t_stateY);
+	void playerAttack(Items::Weapon t_selectedWep, int& t_stateY);
+	//Level up
+	void levelUp(Character::Stats t_stats, int t_stateY);
 
 	/* Extra Scenes */
 	std::string typeOutput(Items::e_Type t_type);

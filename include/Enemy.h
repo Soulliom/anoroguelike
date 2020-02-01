@@ -9,6 +9,9 @@ class Enemy : public Character {
 public:
 	Enemy();
 
+	//Set Position
+	void setPosition();
+
 	/* Enemy Settings */
 	// Enemy Name
 	std::string name;
@@ -22,16 +25,17 @@ public:
 	// Levels
 	int level = 0;
 	const int MAXLEVEL = 10;
-	// Hit Chances;
-	float meleeHit = .0f;
-	float rangedHit = .0f;
-	float magicHit = .0f;
 
 	/* Enemy's Selected Items */
 	//Selected Weapon
 	Items::Weapon selectedWep;
 	//Selected Armor
 	Items::Armor selectedArm;
+
+	//Take Damage
+	virtual bool takeDamage(Items::Weapon t_wep);
+	//Enemy turn
+	void enemyTurn();
 
 private:
 	/* Functions */
@@ -45,8 +49,12 @@ private:
 	void whatsMyClass();
 	//Randomizes Name
 	void randName();
-	//Set Position
-	void setPosition();
+	
+	/* Class turns */
+	void warriorTurn();
+	void rangerTurn();
+	void magicianTurn();
+
 };
 
 #endif // ENEMY_H
